@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cg55xdtkd1td2" path="res://Fonts/T_Space_Key_Dark.png" id="5_yh7ir"]
 [ext_resource type="Texture2D" uid="uid://csl1q3hv1e5cv" path="res://Fonts/T_Mouse_Left_Key_Dark.png" id="6_ga2p0"]
 [ext_resource type="AudioStream" uid="uid://i552n3q2hc0l" path="res://Sounds/Music/fpc3beat120bpm.wav" id="7_a3l7o"]
-[ext_resource type="AudioStream" uid="uid://bekv3f7fogliq" path="res://Sounds/SFX/snareclap9.wav" id="8_pgtw2"]
+[ext_resource type="AudioStream" uid="uid://bbvq43sk07fbw" path="res://Sounds/SFX/snareclp10.wav" id="8_oijp6"]
 [ext_resource type="Shader" path="res://signal.gdshader" id="11_x1txl"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ankj7"]
@@ -43,7 +43,8 @@ volume_db = 7.658
 anchors_preset = 0
 anchor_right = 1.00052
 anchor_bottom = 1.00465
-offset_right = 0.00012207
+offset_right = 0.00219727
+offset_bottom = 0.0012207
 script = ExtResource("2_ids38")
 metadata/_edit_use_anchors_ = true
 
@@ -51,10 +52,14 @@ metadata/_edit_use_anchors_ = true
 material = SubResource("ShaderMaterial_ankj7")
 layout_mode = 1
 anchors_preset = -1
-anchor_left = -0.00412433
-anchor_top = -0.00728682
-anchor_right = 0.995876
-anchor_bottom = 0.992713
+anchor_left = -0.00416667
+anchor_top = -0.00740741
+anchor_right = 1.00104
+anchor_bottom = 0.997222
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -2.00061
+offset_bottom = 3.00024
 color = Color(0.341176, 0.341176, 0.341176, 1)
 metadata/_edit_use_anchors_ = true
 
@@ -73,6 +78,11 @@ anchor_left = 0.00468994
 anchor_top = 0.0613953
 anchor_right = 0.991141
 anchor_bottom = 0.255814
+theme_override_colors/font_color = Color(0.101961, 0.772549, 0.376471, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 20
+theme_override_constants/shadow_offset_y = 10
 theme_override_fonts/font = ExtResource("4_n04ua")
 theme_override_font_sizes/font_size = 120
 text = "Syncopath"
@@ -173,7 +183,7 @@ theme_override_font_sizes/font_size = 48
 horizontal_alignment = 1
 
 [node name="Clap" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("8_pgtw2")
+stream = ExtResource("8_oijp6")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false
