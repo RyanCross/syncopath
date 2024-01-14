@@ -13,9 +13,10 @@ const MAX_TOTAL_SCORE = 1000
 @onready var prompt2 := $VBoxContainer/Prompt2
 @onready var prompt3 := $VBoxContainer/Prompt3
 @onready var prompt4 := $VBoxContainer/Prompt4
-@onready var trackFadeTimerLabel := $VBoxContainer/TrackFadeTimerLabel
+@onready var trackFadeTimerLabel := $DebugModeViewport/DebugContents/TimeInformation/TimeTillAudioFades
 
 @onready var audioPlayer = $AudioStreamPlayer2D
+@onready var clapFx = $Clap
 
 @onready var gameTimerDebug := $VBoxContainer/GameTimerDebug
 
@@ -24,8 +25,9 @@ const MAX_TOTAL_SCORE = 1000
 @onready var beatTrackingDuration := 10
 @onready var beatsPerSecond := beatsPerMinute / 60 
 
-@onready var timeToStopTracking = timeTillBeatTrackingStart + beatTrackingDuration
 @onready var beatDurationMs = 1000 / beatsPerSecond
+@onready var endingBuffer = ceil(beatDurationMs / 1000)
+@onready var timeToStopTracking = timeTillBeatTrackingStart + beatTrackingDuration + endingBuffer
 @onready var beatsToTrack = beatTrackingDuration * beatsPerSecond
 
 var gameStarted := false
@@ -73,15 +75,23 @@ func calculateBeatScore(distanceFromPerfect):
 	var score = newMax - round(((oldValue - oldMin) * newRange / oldRange) + newMin)
 	return score
 
-func fadeInAndMakeVisible(nodeToTween: Node):
+func fadeInAndMakeVisible(nodeToTween: Node, fadeTime := .5):
 	nodeToTween.set_visible(1)
 	var tween: Tween = nodeToTween.create_tween()
-	tween.tween_property(nodeToTween, "modulate", Color(1,1,1,1), .5)
+	tween.tween_property(nodeToTween, "modulate", Color(1,1,1,1), fadeTime)
 
-func fadeOutAndDestroy(nodeToTween: Node):
+func fadeOutAndDestroy(nodeToTween: Node, fadeTime := .5):
 	var tween: Tween = nodeToTween.create_tween()
-	tween.tween_property(nodeToTween, "modulate", Color(1,1,1,0), .5)
+	tween.tween_property(nodeToTween, "modulate", Color(1,1,1,0), fadeTime)
 	tween.tween_callback(nodeToTween.queue_free)
+	
+func fadeOut(nodeToTween: Node, fadeTime := .5):
+	var tween: Tween = nodeToTween.create_tween()
+	var callback = func (node: Node):
+		node.visible = true
+	tween.tween_property(nodeToTween, "modulate", Color(1,1,1,0), fadeTime)
+	tween.tween_callback(func(): nodeToTween.set_visible(false))
+	return tween
 
 func generatePerfectBeatTimings():
 	for i in range(0,beatsToTrack):
@@ -103,8 +113,11 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if !gameOver:
-		if gameStarted == false && Input.is_action_just_pressed("ui_accept"):
-			emit_signal("game_has_started")
+		if Input.is_action_just_pressed("ui_accept"):
+			clapFx.play()
+			
+			if gameStarted == false:
+				emit_signal("game_has_started")
 		if gameStarted:
 			timeSinceGameStart += delta
 			gameTimerDebug.set_text(String.num(round(timeSinceGameStart)))
@@ -117,9 +130,9 @@ func _process(delta):
 				$VBoxContainer/Prompt4/GameEndingCountdownLabel.set_text("0")
 		if !beatTrackingStarted:
 			if (timeTillBeatTrackingStart - round(timeSinceGameStart) >= 0):
-				trackFadeTimerLabel.set_text(String.num(timeTillBeatTrackingStart - round(timeSinceGameStart)))
+				trackFadeTimerLabel.set_text("Time till tracking start: " + String.num(timeTillBeatTrackingStart - round(timeSinceGameStart)))
 			else: 
-				trackFadeTimerLabel.set_text("0")
+				trackFadeTimerLabel.set_text("Tracking Started")
 				emit_signal("beat_tracking_has_started")
 					
 		if timeSinceGameStart > timeTillBeatTrackingStart:
@@ -141,12 +154,12 @@ func _process(delta):
 func _on_game_has_started():
 	print("Game Start")
 	fadeOutAndDestroy(prompt) 
-	fadeOutAndDestroy(title)
+	fadeOut(title)
 	gameStarted = true
 	
 	# timers are for juice, creatings small delays in visual/audio changes
 	await get_tree().create_timer(.5).timeout
-	audioPlayer.play() # Play the track
+	audioPlayer.play() # Play the track 
 	await get_tree().create_timer(2).timeout
 	fadeInAndMakeVisible(prompt2)
 	await get_tree().create_timer(2).timeout
@@ -154,7 +167,12 @@ func _on_game_has_started():
 	fadeInAndMakeVisible(trackFadeTimerLabel)
 	
 func _on_game_over():
-	calculateFinalScore()
+	fadeOutAndDestroy(prompt4, .1)
+	var finalScore = calculateFinalScore()
+	var gameOverText = "Final Score: " + String.num_int64(finalScore)
+	title.set_text(gameOverText)
+	fadeInAndMakeVisible(title, 1)
+	
 	gameOver = true;
 
 
@@ -168,6 +186,7 @@ func _on_beat_tracking_has_started():
 
 func _on_game_ending():
 	fadeInAndMakeVisible(prompt4)
+	
 	gameIsEnding = true;
 	
 	
