@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://dns3vic506tdf"]
+[gd_scene load_steps=14 format=3 uid="uid://dns3vic506tdf"]
 
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_df0y5"]
 [ext_resource type="Shader" path="res://Shaders/analyzer.gdshader" id="2_glvls"]
 [ext_resource type="Script" path="res://Scripts/analyzer.gd" id="2_ids38"]
 [ext_resource type="FontFile" uid="uid://drmbltel11xaa" path="res://Fonts/glitch-goblin-font/GlitchGoblin-2O87v.ttf" id="4_n04ua"]
+[ext_resource type="Shader" uid="uid://c748gcjji8ses" path="res://Shaders/uvdistortion.tres" id="5_la6xr"]
 [ext_resource type="Texture2D" uid="uid://cg55xdtkd1td2" path="res://Fonts/T_Space_Key_Dark.png" id="5_yh7ir"]
 [ext_resource type="Texture2D" uid="uid://csl1q3hv1e5cv" path="res://Fonts/T_Mouse_Left_Key_Dark.png" id="6_ga2p0"]
 [ext_resource type="AudioStream" uid="uid://i552n3q2hc0l" path="res://Sounds/Music/fpc3beat120bpm.wav" id="7_a3l7o"]
@@ -13,6 +14,9 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ankj7"]
 shader = ExtResource("2_glvls")
 shader_parameter/freq_data = null
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b6n5o"]
+shader = ExtResource("5_la6xr")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fviuc"]
 shader = ExtResource("11_x1txl")
@@ -72,6 +76,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Title" type="Label" parent="."]
+material = SubResource("ShaderMaterial_b6n5o")
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.00468994
@@ -196,6 +201,7 @@ offset_bottom = 754.0
 color = Color(0.803922, 0.803922, 0.803922, 1)
 
 [node name="DebugModeViewport" type="SubViewportContainer" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.269411
@@ -211,7 +217,7 @@ handle_input_locally = false
 gui_disable_input = true
 size = Vector2i(516, 873)
 size_2d_override_stretch = true
-render_target_update_mode = 4
+render_target_update_mode = 0
 
 [node name="DebugContents" type="VBoxContainer" parent="DebugModeViewport"]
 layout_mode = 2
@@ -234,13 +240,11 @@ horizontal_alignment = 1
 [node name="PlayerBeatTracking" type="VBoxContainer" parent="DebugModeViewport/DebugContents"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="DebugModeViewport/DebugContents/PlayerBeatTracking"]
+[node name="BeatsCaptured" type="Label" parent="DebugModeViewport/DebugContents/PlayerBeatTracking"]
 layout_mode = 2
-text = "Player Beat Tracking"
 
-[node name="Label3" type="Label" parent="DebugModeViewport/DebugContents/PlayerBeatTracking"]
+[node name="MissedBeats" type="Label" parent="DebugModeViewport/DebugContents/PlayerBeatTracking"]
 layout_mode = 2
-text = "Beat 1: "
 
 [connection signal="beat_tracking_has_started" from="." to="." method="_on_beat_tracking_has_started"]
 [connection signal="game_ending" from="." to="." method="_on_game_ending"]

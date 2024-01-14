@@ -14,11 +14,15 @@ const MAX_TOTAL_SCORE = 1000
 @onready var prompt3 := $VBoxContainer/Prompt3
 @onready var prompt4 := $VBoxContainer/Prompt4
 @onready var trackFadeTimerLabel := $DebugModeViewport/DebugContents/TimeInformation/TimeTillAudioFades
-
 @onready var audioPlayer = $AudioStreamPlayer2D
 @onready var clapFx = $Clap
 
+### DebuggerInformation
+@onready var debugModeViewport = $DebugModeViewport
+@onready var debugBeatsCaptured = $DebugModeViewport/DebugContents/PlayerBeatTracking/BeatsCaptured
+@onready var debugMissedBeats = $DebugModeViewport/DebugContents/PlayerBeatTracking/MissedBeats
 @onready var gameTimerDebug := $VBoxContainer/GameTimerDebug
+@onready var debugPlayerBeatTracking : VBoxContainer = $DebugModeViewport/DebugContents/PlayerBeatTracking
 
 @onready var beatsPerMinute := 120
 @onready var timeTillBeatTrackingStart := 10
@@ -112,6 +116,8 @@ func _ready():
 	generatePerfectBeatTimings()
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if Input.is_action_just_pressed("toggle_debug_mode"): #F2
+		debugModeViewport.set_visible(!debugModeViewport.is_visible())
 	if !gameOver:
 		if Input.is_action_just_pressed("ui_accept"):
 			clapFx.play()
@@ -138,12 +144,15 @@ func _process(delta):
 		if timeSinceGameStart > timeTillBeatTrackingStart:
 			if Input.is_action_just_pressed("ui_accept"):
 				if playerBeatTimings.size() < beatsToTrack: 
-					print("Time of Beat: ", playerBeatTimings.size(), "is ", timeSinceGameStart)
-					print("float time of beat * 1000: ", timeSinceGameStart * 1000 )
-					print("Time of beat in MS: ", String.num(timeSinceGameStart * 1000, 5))
-					var beatTiming : float = timeSinceGameStart * 1000
-					playerBeatTimings.append(int(beatTiming))
-					
+					var captureTimeMs : String = String.num(int(timeSinceGameStart * 1000), 5)		
+#region Collect Debug Information
+					var beatCaptureInfo: Label = Label.new()
+					var beatNumber : String =  String.num(playerBeatTimings.size()) 
+					var captureTimeSecondsRounded : String = String.num(int(captureTimeMs) / 1000)
+					beatCaptureInfo.set_text(beatNumber + " | " + captureTimeMs + " ms | " + "Perfect: " + String.num(perfectBeatTimings[playerBeatTimings.size()]))
+					debugPlayerBeatTracking.add_child(beatCaptureInfo)
+#endregion
+					playerBeatTimings.append(int(captureTimeMs))			
 		if !gameIsEnding && round(timeSinceGameStart) >= timeToStopTracking - 5:
 			emit_signal("game_ending")
 			
