@@ -27,19 +27,19 @@ const MAX_TOTAL_SCORE = 1000
 
 @onready var beatsPerMinute := 120
 @onready var beatsPerSecond := beatsPerMinute / 60 
-@onready var beatDurationMs = 1000 / beatsPerSecond
+@onready var beatDurationMs : int = ceil(1000 / beatsPerSecond)
 # subtract beatDuration as a buffer if player is early on first beat
-@onready var timeTillBeatTrackingStart : int = 10
-@onready var beatTrackingDuration := 10
-@onready var endingBuffer = ceil(beatDurationMs / 1000)
-@onready var timeToStopTracking = timeTillBeatTrackingStart + beatTrackingDuration + endingBuffer
-@onready var beatsToTrack = beatTrackingDuration * beatsPerSecond
+@onready var introDurationMs : int = 10000 
+@onready var beatTrackingDurationMs : int = 10000 
+@onready var beatWindowBufferMs : int = beatDurationMs # the window for beat input is before the next beat or after the previous
+@onready var gameDurationMs = introDurationMs + beatTrackingDurationMs + beatWindowBufferMs
+@onready var beatsToTrack = beatTrackingDurationMs / 1000 * beatsPerSecond
+@onready var timeSinceGameStartMs = 0;
 
 var gameStarted := false
 var gameIsEnding := false
 var gameOver := false
 var beatTrackingStarted := false
-var timeSinceGameStart = 0;
 var perfectBeatTimings = Array()
 var playerBeatTimings = Array()
 var beatScores = Array()
@@ -99,9 +99,9 @@ func fadeOut(nodeToTween: Node, fadeTime := .5):
 func generatePerfectBeatTimings():
 	for i in range(0,beatsToTrack):
 		if i > 0:
-			perfectBeatTimings.append(timeTillBeatTrackingStart * 1000 + (i * beatDurationMs))
+			perfectBeatTimings.append(introDurationMs + (i * beatDurationMs))
 		else:
-			perfectBeatTimings.append(timeTillBeatTrackingStart * 1000) 
+			perfectBeatTimings.append(introDurationMs) 
 	
 	print("perfect beats array size")
 	print(perfectBeatTimings.size())
@@ -129,26 +129,28 @@ func _process(delta):
 			if gameStarted == false:
 				emit_signal("game_has_started")
 		if gameStarted:
-			timeSinceGameStart += delta
-			debugTimeSinceGameStart.set_text("Game Time: " +  String.num(round(timeSinceGameStart)) + " | ")
+			timeSinceGameStartMs += roundi(delta * 1000)
+			debugTimeSinceGameStart.set_text("Game Time: " +  String.num(roundi(timeSinceGameStartMs)) + " | ")
 			
-			var gameEndingCountdown = timeToStopTracking - round(timeSinceGameStart)
-			if (gameEndingCountdown > 0):
+			var timeTillGameOver = gameDurationMs - timeSinceGameStartMs
+			# if game ending display 0, otherwise update countdown node that will be displayed at last 5 seconds
+			if (timeTillGameOver > 0):
+				var displayTime = timeTillGameOver
 				# hidden until last 5 seconds of game
-				$VBoxContainer/Prompt4/GameEndingCountdownLabel.set_text(String.num(gameEndingCountdown))
+				$VBoxContainer/Prompt4/GameEndingCountdownLabel.set_text(String.num(round(displayTime / 1000)))
 			else:
 				$VBoxContainer/Prompt4/GameEndingCountdownLabel.set_text("0")
 		if !beatTrackingStarted:
-			if (timeTillBeatTrackingStart - round(timeSinceGameStart) >= 0):
-				debugTimeTillTrackingStart.set_text("Time till tracking start: " + String.num(timeTillBeatTrackingStart - round(timeSinceGameStart)))
+			if (introDurationMs - timeSinceGameStartMs >= 0):
+				debugTimeTillTrackingStart.set_text("Time till tracking start: " + String.num(introDurationMs - timeSinceGameStartMs))
 			else: 
 				debugTimeTillTrackingStart.set_text("Tracking Started")
 				emit_signal("beat_tracking_has_started")
 					
-		if timeSinceGameStart > timeTillBeatTrackingStart:
+		if timeSinceGameStartMs >= introDurationMs: #add beatDuration buffer here 
 			if Input.is_action_just_pressed("ui_accept"):
 				if playerBeatTimings.size() < beatsToTrack: 
-					var captureTimeMs : String = String.num(int(timeSinceGameStart * 1000), 5)		
+					var captureTimeMs : String = String.num(timeSinceGameStartMs, 5)		
 #region Collect Debug Information
 					var beatCaptureInfo: Label = Label.new()
 					var beatNumber : String =  String.num(playerBeatTimings.size() + 1) 
@@ -157,10 +159,12 @@ func _process(delta):
 					debugPlayerBeatTracking.add_child(beatCaptureInfo)
 #endregion
 					playerBeatTimings.append(int(captureTimeMs))			
-		if !gameIsEnding && round(timeSinceGameStart) >= timeToStopTracking - 5:
+		# at last five(ish) seconds of game, emit a warning
+		var promptFadeInTime = 500
+		if !gameIsEnding && timeSinceGameStartMs >= gameDurationMs - 5000 - promptFadeInTime - beatWindowBufferMs:
 			emit_signal("game_ending")
 			
-		if timeSinceGameStart > timeToStopTracking:
+		if timeSinceGameStartMs > gameDurationMs:
 			# todo, could add a buffer so that user doesn't have to be frame perfect on last beat... which probably a good idea
 			emit_signal("game_over")
 		
@@ -179,7 +183,7 @@ func _on_game_has_started():
 	fadeInAndMakeVisible(prompt3)
 	
 func _on_game_over():
-	fadeOutAndDestroy(prompt4, .1)
+	fadeOutAndDestroy(prompt4, .5)
 	var finalScore = calculateFinalScore()
 	var gameOverText = "Final Score: " + String.num_int64(finalScore)
 	title.set_text(gameOverText)
@@ -196,8 +200,7 @@ func _on_beat_tracking_has_started():
 
 
 func _on_game_ending():
-	fadeInAndMakeVisible(prompt4)
-	
+	fadeInAndMakeVisible(prompt4, .1)
 	gameIsEnding = true;
 	
 	
