@@ -13,23 +13,24 @@ const MAX_TOTAL_SCORE = 1000
 @onready var prompt2 := $VBoxContainer/Prompt2
 @onready var prompt3 := $VBoxContainer/Prompt3
 @onready var prompt4 := $VBoxContainer/Prompt4
-@onready var trackFadeTimerLabel := $DebugModeViewport/DebugContents/TimeInformation/TimeTillAudioFades
+
 @onready var audioPlayer = $AudioStreamPlayer2D
 @onready var clapFx = $Clap
 
 ### DebuggerInformation
 @onready var debugModeViewport = $DebugModeViewport
+@onready var debugTimeTillTrackingStart := $DebugModeViewport/DebugContents/TimeInformation/TimeTillAudioFades
 @onready var debugBeatsCaptured = $DebugModeViewport/DebugContents/PlayerBeatTracking/BeatsCaptured
 @onready var debugMissedBeats = $DebugModeViewport/DebugContents/PlayerBeatTracking/MissedBeats
-@onready var gameTimerDebug := $VBoxContainer/GameTimerDebug
+@onready var debugTimeSinceGameStart := $DebugModeViewport/DebugContents/TimeInformation/TimeSinceGameStarted
 @onready var debugPlayerBeatTracking : VBoxContainer = $DebugModeViewport/DebugContents/PlayerBeatTracking
 
 @onready var beatsPerMinute := 120
-@onready var timeTillBeatTrackingStart := 10
-@onready var beatTrackingDuration := 10
 @onready var beatsPerSecond := beatsPerMinute / 60 
-
 @onready var beatDurationMs = 1000 / beatsPerSecond
+# subtract beatDuration as a buffer if player is early on first beat
+@onready var timeTillBeatTrackingStart : int = 10
+@onready var beatTrackingDuration := 10
 @onready var endingBuffer = ceil(beatDurationMs / 1000)
 @onready var timeToStopTracking = timeTillBeatTrackingStart + beatTrackingDuration + endingBuffer
 @onready var beatsToTrack = beatTrackingDuration * beatsPerSecond
@@ -58,7 +59,7 @@ func calculateFinalScore():
 		
 	return finalScore
 			
-func calculateBeatScore(distanceFromPerfect):
+func calculateBeatScore(distanceFromPerfect : int):
 	# https://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio
 	# a little confusing here, as this is a bit of a bastardization of the top answer above
 	# technically our MAX (best) distance is 0, our min is 1s / beatsPerSecond ( a new beat has already occured), but we can't divide by zero in the linear conversion formula which will be the case if newMin is also 0, which it is, so we must swap our oldMin and max to get the inverse value. 
@@ -91,8 +92,6 @@ func fadeOutAndDestroy(nodeToTween: Node, fadeTime := .5):
 	
 func fadeOut(nodeToTween: Node, fadeTime := .5):
 	var tween: Tween = nodeToTween.create_tween()
-	var callback = func (node: Node):
-		node.visible = true
 	tween.tween_property(nodeToTween, "modulate", Color(1,1,1,0), fadeTime)
 	tween.tween_callback(func(): nodeToTween.set_visible(false))
 	return tween
@@ -107,7 +106,12 @@ func generatePerfectBeatTimings():
 	print("perfect beats array size")
 	print(perfectBeatTimings.size())
 		
-	
+func secondsToMs(timeInSeconds : int):
+	return timeInSeconds * 1000
+
+func msToSeconds(timeInMs : int):
+	return timeInMs / 1000
+
 func resetGame():
 	pass
 	
@@ -116,7 +120,7 @@ func _ready():
 	generatePerfectBeatTimings()
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if Input.is_action_just_pressed("toggle_debug_mode"): #F2
+	if Input.is_action_just_pressed("toggle_debug_mode"): # F2
 		debugModeViewport.set_visible(!debugModeViewport.is_visible())
 	if !gameOver:
 		if Input.is_action_just_pressed("ui_accept"):
@@ -126,7 +130,7 @@ func _process(delta):
 				emit_signal("game_has_started")
 		if gameStarted:
 			timeSinceGameStart += delta
-			gameTimerDebug.set_text(String.num(round(timeSinceGameStart)))
+			debugTimeSinceGameStart.set_text("Game Time: " +  String.num(round(timeSinceGameStart)) + " | ")
 			
 			var gameEndingCountdown = timeToStopTracking - round(timeSinceGameStart)
 			if (gameEndingCountdown > 0):
@@ -136,9 +140,9 @@ func _process(delta):
 				$VBoxContainer/Prompt4/GameEndingCountdownLabel.set_text("0")
 		if !beatTrackingStarted:
 			if (timeTillBeatTrackingStart - round(timeSinceGameStart) >= 0):
-				trackFadeTimerLabel.set_text("Time till tracking start: " + String.num(timeTillBeatTrackingStart - round(timeSinceGameStart)))
+				debugTimeTillTrackingStart.set_text("Time till tracking start: " + String.num(timeTillBeatTrackingStart - round(timeSinceGameStart)))
 			else: 
-				trackFadeTimerLabel.set_text("Tracking Started")
+				debugTimeTillTrackingStart.set_text("Tracking Started")
 				emit_signal("beat_tracking_has_started")
 					
 		if timeSinceGameStart > timeTillBeatTrackingStart:
@@ -147,8 +151,8 @@ func _process(delta):
 					var captureTimeMs : String = String.num(int(timeSinceGameStart * 1000), 5)		
 #region Collect Debug Information
 					var beatCaptureInfo: Label = Label.new()
-					var beatNumber : String =  String.num(playerBeatTimings.size()) 
-					var captureTimeSecondsRounded : String = String.num(int(captureTimeMs) / 1000)
+					var beatNumber : String =  String.num(playerBeatTimings.size() + 1) 
+					debugBeatsCaptured.set_text("Beats Captured: ")
 					beatCaptureInfo.set_text(beatNumber + " | " + captureTimeMs + " ms | " + "Perfect: " + String.num(perfectBeatTimings[playerBeatTimings.size()]))
 					debugPlayerBeatTracking.add_child(beatCaptureInfo)
 #endregion
@@ -173,7 +177,6 @@ func _on_game_has_started():
 	fadeInAndMakeVisible(prompt2)
 	await get_tree().create_timer(2).timeout
 	fadeInAndMakeVisible(prompt3)
-	fadeInAndMakeVisible(trackFadeTimerLabel)
 	
 func _on_game_over():
 	fadeOutAndDestroy(prompt4, .1)
@@ -189,7 +192,6 @@ func _on_beat_tracking_has_started():
 	audioPlayer.stop();
 	fadeOutAndDestroy(prompt2)
 	fadeOutAndDestroy(prompt3)
-	fadeOutAndDestroy(trackFadeTimerLabel)
 	beatTrackingStarted = true
 
 

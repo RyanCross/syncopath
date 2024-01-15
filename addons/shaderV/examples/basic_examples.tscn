@@ -106,7 +106,7 @@ expanded_output_ports = [0]
 source = 2
 
 [sub_resource type="VisualShaderNodeFloatConstant" id="4"]
-constant = 7.0
+constant = 3.025
 
 [sub_resource type="VisualShaderNodeFloatConstant" id="5"]
 constant = 0.1
@@ -129,7 +129,7 @@ void fragment() {
 
 
 // FloatConstant:5
-	float n_out5p0 = 7.000000;
+	float n_out5p0 = 3.025000;
 
 
 // FloatConstant:7
@@ -3197,7 +3197,6 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(36, 196)
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2(660, 220)
@@ -3215,7 +3214,7 @@ nodes/fragment/52/node = SubResource("250")
 nodes/fragment/52/position = Vector2(100, 400)
 nodes/fragment/53/node = SubResource("611")
 nodes/fragment/53/position = Vector2(380, 220)
-nodes/fragment/connections = PackedInt32Array(53, 1, 0, 1, 47, 0, 53, 0, 48, 0, 53, 1, 49, 0, 53, 2, 50, 0, 53, 3, 51, 0, 53, 4, 52, 0, 53, 5, 53, 0, 0, 0)
+nodes/fragment/connections = PackedInt32Array(53, 1, 0, 1, 48, 0, 53, 1, 49, 0, 53, 2, 50, 0, 53, 3, 51, 0, 53, 4, 52, 0, 53, 5, 53, 0, 0, 0, 47, 0, 53, 0)
 
 [sub_resource type="ShaderMaterial" id="252"]
 shader = SubResource("251")
