@@ -28,11 +28,11 @@ const MAX_TOTAL_SCORE = 1000
 @onready var beatsPerMinute := 120
 @onready var beatsPerSecond := beatsPerMinute / 60 
 @onready var beatDurationMs : int = ceil(1000 / beatsPerSecond)
-# subtract beatDuration as a buffer if player is early on first beat
 @onready var introDurationMs : int = 10000 
-@onready var beatTrackingDurationMs : int = 10000 
+@onready var beatTrackingDurationMs : int = 10000 + beatWindowBufferMs
+# a buffer in case player is early/late on first or last beat, respectively
 @onready var beatWindowBufferMs : int = beatDurationMs # the window for beat input is before the next beat or after the previous
-@onready var gameDurationMs = introDurationMs + beatTrackingDurationMs + beatWindowBufferMs
+@onready var gameDurationMs = introDurationMs + beatTrackingDurationMs 
 @onready var beatsToTrack = beatTrackingDurationMs / 1000 * beatsPerSecond
 @onready var timeSinceGameStartMs = 0;
 
@@ -148,17 +148,19 @@ func _process(delta):
 				debugTimeTillTrackingStart.set_text("Tracking Started")
 				emit_signal("beat_tracking_has_started")
 					
-		if timeSinceGameStartMs >= introDurationMs: #add beatDuration buffer here 
+		if timeSinceGameStartMs >= introDurationMs - beatWindowBufferMs: #subtract beat buffer length here in case player inputs early
+			# pad missed beats
+			# if worst score already made, then 
+			if (playerBeatTimings.size() < beatsToTrack):
+				if timeSinceGameStartMs >= perfectBeatTimings[playerBeatTimings.size()] + beatDurationMs:
+					#player has missed a beat, pad the array so they can still recover 
+					debug_capture_beat_info(String.num(perfectBeatTimings[playerBeatTimings.size()] + beatDurationMs))
+					playerBeatTimings.append(perfectBeatTimings[playerBeatTimings.size()] + beatDurationMs)
+	
 			if Input.is_action_just_pressed("ui_accept"):
 				if playerBeatTimings.size() < beatsToTrack: 
-					var captureTimeMs : String = String.num(timeSinceGameStartMs, 5)		
-#region Collect Debug Information
-					var beatCaptureInfo: Label = Label.new()
-					var beatNumber : String =  String.num(playerBeatTimings.size() + 1) 
-					debugBeatsCaptured.set_text("Beats Captured: ")
-					beatCaptureInfo.set_text(beatNumber + " | " + captureTimeMs + " ms | " + "Perfect: " + String.num(perfectBeatTimings[playerBeatTimings.size()]))
-					debugPlayerBeatTracking.add_child(beatCaptureInfo)
-#endregion
+					var captureTimeMs : String = String.num(timeSinceGameStartMs, 5)
+					debug_capture_beat_info(captureTimeMs)
 					playerBeatTimings.append(int(captureTimeMs))			
 		# at last five(ish) seconds of game, emit a warning
 		if !gameIsEnding && timeSinceGameStartMs >= gameDurationMs - 5000 - endingCountdownFadeInTime - beatWindowBufferMs:
@@ -205,3 +207,11 @@ func _on_game_ending():
 	
 	
 	pass # Replace with function body.
+
+func debug_capture_beat_info(captureTimeMs : String):
+	var beatCaptureInfo: Label = Label.new()
+	var beatNumber : String =  String.num(playerBeatTimings.size() + 1) 
+	debugBeatsCaptured.set_text("Beats Captured: ")
+	beatCaptureInfo.set_text(beatNumber + " | " + captureTimeMs + " ms | " + "Perfect: " + String.num(perfectBeatTimings[playerBeatTimings.size()]))
+	debugPlayerBeatTracking.add_child(beatCaptureInfo)
+	
