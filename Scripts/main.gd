@@ -43,6 +43,7 @@ var beatTrackingStarted := false
 var perfectBeatTimings = Array()
 var playerBeatTimings = Array()
 var beatScores = Array()
+var endingCountdownFadeInTime = 500
 
 func calculateFinalScore():
 	var finalScore := 0;  
@@ -160,8 +161,7 @@ func _process(delta):
 #endregion
 					playerBeatTimings.append(int(captureTimeMs))			
 		# at last five(ish) seconds of game, emit a warning
-		var promptFadeInTime = 500
-		if !gameIsEnding && timeSinceGameStartMs >= gameDurationMs - 5000 - promptFadeInTime - beatWindowBufferMs:
+		if !gameIsEnding && timeSinceGameStartMs >= gameDurationMs - 5000 - endingCountdownFadeInTime - beatWindowBufferMs:
 			emit_signal("game_ending")
 			
 		if timeSinceGameStartMs > gameDurationMs:
@@ -200,7 +200,7 @@ func _on_beat_tracking_has_started():
 
 
 func _on_game_ending():
-	fadeInAndMakeVisible(prompt4, .1)
+	fadeInAndMakeVisible(prompt4, endingCountdownFadeInTime)
 	gameIsEnding = true;
 	
 	
