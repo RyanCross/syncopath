@@ -1,9 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://dmbxfskpuaso4"]
+[gd_scene load_steps=6 format=3 uid="uid://dmbxfskpuaso4"]
 
 [ext_resource type="FontFile" uid="uid://drmbltel11xaa" path="res://Fonts/glitch-goblin-font/GlitchGoblin-2O87v.ttf" id="1_23iis"]
 [ext_resource type="Texture2D" uid="uid://dv0oxssbilfq1" path="res://Images/ux/UI Hologram Interface - Wenrexa/Card X1/Card X2.png" id="1_vcg05"]
 [ext_resource type="Script" path="res://Scripts/score_panel.gd" id="2_d1pxp"]
 [ext_resource type="Theme" uid="uid://bbk4lpdcigx8v" path="res://theme.tres" id="2_ibnba"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_6q65s"]
+color = Color(1, 1, 1, 1)
+grow_begin = 0.0
+grow_end = 0.0
+thickness = 3
+vertical = true
 
 [node name="ScorePanel" type="TextureRect"]
 anchors_preset = -1
@@ -25,6 +32,19 @@ anchor_right = 1.01685
 anchor_bottom = 0.346667
 theme_override_constants/separation = 50
 alignment = 1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="VBoxContainer"]
+layer = 0
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/CanvasLayer"]
+visible = false
+z_index = 1
+anchors_preset = -1
+anchor_left = 0.506771
+anchor_top = 0.2
+anchor_right = 0.511458
+anchor_bottom = 0.698148
+theme_override_styles/separator = SubResource("StyleBoxLine_6q65s")
 metadata/_edit_use_anchors_ = true
 
 [node name="FinalScoreLabel" type="Label" parent="VBoxContainer"]
@@ -40,6 +60,7 @@ theme_override_constants/margin_left = 100
 theme_override_constants/margin_right = 100
 
 [node name="BeatSlidersVbox" type="VBoxContainer" parent="VBoxContainer/MarginContainer2"]
+z_index = 2
 layout_mode = 2
 theme = ExtResource("2_ibnba")
 theme_override_constants/separation = 10

@@ -1,8 +1,19 @@
-[gd_resource type="AudioBusLayout" load_steps=2 format=3 uid="uid://b3n203ni8fixx"]
+[gd_resource type="AudioBusLayout" load_steps=3 format=3 uid="uid://b3n203ni8fixx"]
 
 [sub_resource type="AudioEffectSpectrumAnalyzer" id="AudioEffectSpectrumAnalyzer_vte7b"]
+resource_name = "SpectrumAnalyzer"
+
+[sub_resource type="AudioEffectSpectrumAnalyzer" id="AudioEffectSpectrumAnalyzer_xdulo"]
 resource_name = "SpectrumAnalyzer"
 
 [resource]
 bus/0/effect/0/effect = SubResource("AudioEffectSpectrumAnalyzer_vte7b")
 bus/0/effect/0/enabled = true
+bus/1/name = &"VisualizedAudio"
+bus/1/solo = false
+bus/1/mute = false
+bus/1/bypass_fx = false
+bus/1/volume_db = 0.0
+bus/1/send = &"Master"
+bus/1/effect/0/effect = SubResource("AudioEffectSpectrumAnalyzer_xdulo")
+bus/1/effect/0/enabled = true

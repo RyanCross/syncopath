@@ -1,26 +1,19 @@
-[gd_scene load_steps=13 format=3 uid="uid://dns3vic506tdf"]
+[gd_scene load_steps=12 format=3 uid="uid://dns3vic506tdf"]
 
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_df0y5"]
 [ext_resource type="Shader" path="res://Shaders/analyzer.gdshader" id="2_glvls"]
 [ext_resource type="Script" path="res://Scripts/analyzer.gd" id="2_ids38"]
+[ext_resource type="Script" path="res://Scripts/ActiveTrack.gd" id="3_romnm"]
 [ext_resource type="FontFile" uid="uid://drmbltel11xaa" path="res://Fonts/glitch-goblin-font/GlitchGoblin-2O87v.ttf" id="4_n04ua"]
 [ext_resource type="Texture2D" uid="uid://cg55xdtkd1td2" path="res://Fonts/T_Space_Key_Dark.png" id="5_yh7ir"]
 [ext_resource type="Texture2D" uid="uid://csl1q3hv1e5cv" path="res://Fonts/T_Mouse_Left_Key_Dark.png" id="6_ga2p0"]
 [ext_resource type="AudioStream" uid="uid://i552n3q2hc0l" path="res://Sounds/Beats/fpc3beat120bpm.wav" id="7_a3l7o"]
 [ext_resource type="AudioStream" uid="uid://bekv3f7fogliq" path="res://Sounds/SFX/snareclap9.wav" id="8_hgqmf"]
 [ext_resource type="PackedScene" uid="uid://dmbxfskpuaso4" path="res://Scenes/ScorePanel.tscn" id="9_0hlc4"]
-[ext_resource type="Shader" path="res://signal.gdshader" id="11_x1txl"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ankj7"]
 shader = ExtResource("2_glvls")
 shader_parameter/freq_data = null
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_fviuc"]
-shader = ExtResource("11_x1txl")
-shader_parameter/color_signal = null
-shader_parameter/size = 0.2
-shader_parameter/zoom = 8.0
-shader_parameter/speed = 6.0
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -34,11 +27,12 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_df0y5")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+[node name="ActiveTrack" type="AudioStreamPlayer2D" parent="."]
 position = Vector2(-1.67026, -0.438817)
 scale = Vector2(1.56211, 1.85774)
 stream = ExtResource("7_a3l7o")
-volume_db = 7.658
+volume_db = 6.902
+script = ExtResource("3_romnm")
 
 [node name="equalizer" type="Control" parent="."]
 anchors_preset = 0
@@ -182,22 +176,13 @@ stream = ExtResource("8_hgqmf")
 [node name="ScorePanel" parent="." instance=ExtResource("9_0hlc4")]
 visible = false
 layout_mode = 1
-anchor_left = 0.274622
-anchor_top = 0.0483721
-anchor_right = 0.800143
-anchor_bottom = 0.881705
+anchor_left = 0.241271
+anchor_top = 0.0381395
+anchor_right = 0.766793
+anchor_bottom = 0.871472
+offset_right = 0.0
 grow_horizontal = 1
 grow_vertical = 1
-
-[node name="ColorRect" type="ColorRect" parent="."]
-visible = false
-material = SubResource("ShaderMaterial_fviuc")
-layout_mode = 0
-offset_left = 496.0
-offset_top = 44.0
-offset_right = 1384.0
-offset_bottom = 754.0
-color = Color(0.803922, 0.803922, 0.803922, 1)
 
 [node name="DebugModeViewport" type="SubViewportContainer" parent="."]
 visible = false
@@ -254,3 +239,4 @@ layout_mode = 2
 [connection signal="game_over" from="." to="." method="_on_game_over"]
 [connection signal="game_over" from="." to="ScorePanel" method="_on_menu_game_over"]
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="time_to_fade_track_audio" from="." to="ActiveTrack" method="_on_time_to_fade_track_audio" flags=6]

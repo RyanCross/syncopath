@@ -3,7 +3,8 @@ extends TextureRect
 @onready var finalScoreLabel : Label = $VBoxContainer/FinalScoreLabel
 @onready var beatSlidersParent : VBoxContainer = $VBoxContainer/MarginContainer2/BeatSlidersVbox
 @onready var sliderToCopy : HSlider = $VBoxContainer/MarginContainer2/BeatSlidersVbox/SliderToCopy
-@onready var pointValues :HBoxContainer = $VBoxContainer/MarginContainer2/BeatSlidersVbox/PointValuesToCopy
+@onready var pointValues : HBoxContainer = $VBoxContainer/MarginContainer2/BeatSlidersVbox/PointValuesToCopy
+@onready var verticalLine : VSeparator = $VBoxContainer/CanvasLayer/VSeparator
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -23,6 +24,7 @@ func _on_menu_game_over(finalScore, beatDistances):
 	finalScoreLabel.set_text("Final Score: " + String.num_int64(finalScore))
 	
 	fadeInAndMakeVisible(self)
+	fadeInAndMakeVisible(verticalLine, 1)
 	
 	for i in beatDistances.size():
 		var beatScoreSlider : HSlider = sliderToCopy.duplicate()

@@ -5,6 +5,11 @@ signal beat_tracking_has_started
 signal game_over
 signal game_ending
 
+#region One Shot Signals
+# configured as one shot by signal pane
+signal time_to_fade_track_audio
+#endregion 
+
 const MAX_BEAT_SCORE = 50
 const MAX_TOTAL_SCORE = 1000
 
@@ -14,7 +19,7 @@ const MAX_TOTAL_SCORE = 1000
 @onready var prompt3 := $VBoxContainer/Prompt3
 @onready var prompt4 := $VBoxContainer/Prompt4
 
-@onready var audioPlayer = $AudioStreamPlayer2D
+@onready var trackPlayer = $ActiveTrack
 @onready var clapFx = $Clap
 
 ### DebuggerInformation
@@ -25,26 +30,32 @@ const MAX_TOTAL_SCORE = 1000
 @onready var debugTimeSinceGameStart := $DebugModeViewport/DebugContents/TimeInformation/TimeSinceGameStarted
 @onready var debugPlayerBeatTracking : VBoxContainer = $DebugModeViewport/DebugContents/PlayerBeatTracking
 
-@onready var beatsPerMinute := 120
+@onready var beatsPerMinute := 120 #TODO store each track in it's own audioplayer, get BPM from metadata of Selected Track
 @onready var beatsPerSecond := beatsPerMinute / 60 
-@onready var beatDurationMs : int = ceil(1000 / beatsPerSecond)
+@onready var beatDurationMs : int = ceil(1000 / beatsPerSecond) # duration of a single beat
+# the alotted time for instruction prompts and for player to get feel for the beat once they hit play
 @onready var introDurationMs : int = 10000 
+# the alotted time for beats to be tracked for a score, the "true" game duration
 @onready var beatTrackingDurationMs : int = 10000 + beatWindowBufferMs
 # a buffer in case player is early/late on first or last beat, respectively
 @onready var beatWindowBufferMs : int = beatDurationMs # the window for beat input is before the next beat or after the previous
 @onready var gameDurationMs = introDurationMs + beatTrackingDurationMs 
 @onready var beatsToTrack = beatTrackingDurationMs / 1000 * beatsPerSecond
-@onready var timeSinceGameStartMs = 0;
 
+# TODO can remove some of these globals by using one shot signals (from panel)
+var timeSinceGameStartMs = 0;
 var gameStarted := false
+var beatTrackingStarted := false
 var gameIsEnding := false
 var gameOver := false
-var beatTrackingStarted := false
+
 var perfectBeatTimings = Array()
 var playerBeatTimings = Array()
 var beatScores = Array()
 var endingCountdownFadeInTime = .5
 var beatDistances = Array()
+var fadeTrackBufferMs = 3000
+
 
 func calculateFinalScore():
 	var finalScore := 0;  
@@ -126,7 +137,7 @@ func _process(delta):
 	if Input.is_action_just_pressed("toggle_debug_mode"): # F2
 		debugModeViewport.set_visible(!debugModeViewport.is_visible())
 	if !gameOver:
-		if Input.is_action_just_pressed("ui_accept"):
+		if Input.is_action_just_pressed("primary_action"):
 			clapFx.play()
 			
 			if gameStarted == false:
@@ -144,22 +155,25 @@ func _process(delta):
 			else:
 				$VBoxContainer/Prompt4/GameEndingCountdownLabel.set_text("0")
 		if !beatTrackingStarted:
+			if(introDurationMs - fadeTrackBufferMs - timeSinceGameStartMs <= 0):
+					emit_signal("time_to_fade_track_audio", fadeTrackBufferMs)
+
 			if (introDurationMs - timeSinceGameStartMs >= 0):
 				debugTimeTillTrackingStart.set_text("Time till tracking start: " + String.num(introDurationMs - timeSinceGameStartMs))
 			else: 
 				debugTimeTillTrackingStart.set_text("Tracking Started")
 				emit_signal("beat_tracking_has_started")
 					
-		if timeSinceGameStartMs >= introDurationMs - round(beatWindowBufferMs / 4): #subtract beat buffer length here in case player inputs early
+		if timeSinceGameStartMs >= introDurationMs - round(beatWindowBufferMs / 3): #subtract a fraction of beat buffer length in case player inputs early
 			# pad missed beats
 			# if worst score already made, then 
 			if (playerBeatTimings.size() < beatsToTrack):
 				if timeSinceGameStartMs >= perfectBeatTimings[playerBeatTimings.size()] + beatDurationMs:
-					#player has missed a beat, pad the array so they can still recover 
+					# player has missed a beat, pad the array so subsequent beats are still compared in the proper order
 					debug_capture_beat_info(String.num(perfectBeatTimings[playerBeatTimings.size()] + beatDurationMs))
 					playerBeatTimings.append(perfectBeatTimings[playerBeatTimings.size()] + beatDurationMs)
 	
-			if Input.is_action_just_pressed("ui_accept"):
+			if Input.is_action_just_pressed("primary_action"):
 				if playerBeatTimings.size() < beatsToTrack: 
 					var captureTimeMs : String = String.num(timeSinceGameStartMs, 5)
 					debug_capture_beat_info(captureTimeMs)
@@ -181,30 +195,24 @@ func _on_game_has_started():
 	
 	# timers are for juice, creatings small delays in visual/audio changes
 	await get_tree().create_timer(.5).timeout
-	audioPlayer.play() # Play the track 
+	trackPlayer.play() # Play the track 
 	await get_tree().create_timer(2).timeout
 	fadeInAndMakeVisible(prompt2)
 	await get_tree().create_timer(2).timeout
 	fadeInAndMakeVisible(prompt3)
 	
+func _on_beat_tracking_has_started(): 
+	fadeOutAndDestroy(prompt2)
+	fadeOutAndDestroy(prompt3)
+	beatTrackingStarted = true
+	
 func _on_game_over(_finalScore, _beatDistances):	
 	fadeOutAndDestroy(prompt4, .5)
 	gameOver = true;
 
-
-func _on_beat_tracking_has_started(): 
-	audioPlayer.stop();
-	fadeOutAndDestroy(prompt2)
-	fadeOutAndDestroy(prompt3)
-	beatTrackingStarted = true
-
-
 func _on_game_ending():
 	fadeInAndMakeVisible(prompt4, endingCountdownFadeInTime)
 	gameIsEnding = true;
-	
-	
-	pass # Replace with function body.
 
 func debug_capture_beat_info(captureTimeMs : String):
 	var beatCaptureInfo: Label = Label.new()
