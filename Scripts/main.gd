@@ -43,12 +43,14 @@ var beatTrackingStarted := false
 var perfectBeatTimings = Array()
 var playerBeatTimings = Array()
 var beatScores = Array()
-var endingCountdownFadeInTime = 500
+var endingCountdownFadeInTime = .5
+var beatDistances = Array()
 
 func calculateFinalScore():
 	var finalScore := 0;  
 	for i in playerBeatTimings.size():
 		var offBeatDistanceMs = abs(playerBeatTimings[i] - perfectBeatTimings[i])
+		beatDistances.append(playerBeatTimings[i] - perfectBeatTimings[i]) # TODO sideEffect
 		
 		var maxDistance = 1000 / beatsPerSecond
 		if (offBeatDistanceMs > maxDistance):
@@ -148,7 +150,7 @@ func _process(delta):
 				debugTimeTillTrackingStart.set_text("Tracking Started")
 				emit_signal("beat_tracking_has_started")
 					
-		if timeSinceGameStartMs >= introDurationMs - beatWindowBufferMs: #subtract beat buffer length here in case player inputs early
+		if timeSinceGameStartMs >= introDurationMs - round(beatWindowBufferMs / 4): #subtract beat buffer length here in case player inputs early
 			# pad missed beats
 			# if worst score already made, then 
 			if (playerBeatTimings.size() < beatsToTrack):
@@ -168,7 +170,8 @@ func _process(delta):
 			
 		if timeSinceGameStartMs > gameDurationMs:
 			# todo, could add a buffer so that user doesn't have to be frame perfect on last beat... which probably a good idea
-			emit_signal("game_over")
+			var finalScore = calculateFinalScore()
+			emit_signal("game_over", finalScore, beatDistances)
 		
 func _on_game_has_started():
 	print("Game Start")
@@ -184,13 +187,8 @@ func _on_game_has_started():
 	await get_tree().create_timer(2).timeout
 	fadeInAndMakeVisible(prompt3)
 	
-func _on_game_over():
+func _on_game_over(_finalScore, _beatDistances):	
 	fadeOutAndDestroy(prompt4, .5)
-	var finalScore = calculateFinalScore()
-	var gameOverText = "Final Score: " + String.num_int64(finalScore)
-	title.set_text(gameOverText)
-	fadeInAndMakeVisible(title, 1)
-	
 	gameOver = true;
 
 

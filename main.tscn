@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dns3vic506tdf"]
+[gd_scene load_steps=13 format=3 uid="uid://dns3vic506tdf"]
 
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_df0y5"]
 [ext_resource type="Shader" path="res://Shaders/analyzer.gdshader" id="2_glvls"]
@@ -6,8 +6,9 @@
 [ext_resource type="FontFile" uid="uid://drmbltel11xaa" path="res://Fonts/glitch-goblin-font/GlitchGoblin-2O87v.ttf" id="4_n04ua"]
 [ext_resource type="Texture2D" uid="uid://cg55xdtkd1td2" path="res://Fonts/T_Space_Key_Dark.png" id="5_yh7ir"]
 [ext_resource type="Texture2D" uid="uid://csl1q3hv1e5cv" path="res://Fonts/T_Mouse_Left_Key_Dark.png" id="6_ga2p0"]
-[ext_resource type="AudioStream" uid="uid://i552n3q2hc0l" path="res://Sounds/Music/fpc3beat120bpm.wav" id="7_a3l7o"]
-[ext_resource type="AudioStream" uid="uid://bbvq43sk07fbw" path="res://Sounds/SFX/snareclp10.wav" id="8_oijp6"]
+[ext_resource type="AudioStream" uid="uid://i552n3q2hc0l" path="res://Sounds/Beats/fpc3beat120bpm.wav" id="7_a3l7o"]
+[ext_resource type="AudioStream" uid="uid://bekv3f7fogliq" path="res://Sounds/SFX/snareclap9.wav" id="8_hgqmf"]
+[ext_resource type="PackedScene" uid="uid://dmbxfskpuaso4" path="res://Scenes/ScorePanel.tscn" id="9_0hlc4"]
 [ext_resource type="Shader" path="res://signal.gdshader" id="11_x1txl"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ankj7"]
@@ -39,7 +40,7 @@ scale = Vector2(1.56211, 1.85774)
 stream = ExtResource("7_a3l7o")
 volume_db = 7.658
 
-[node name="Control" type="Control" parent="."]
+[node name="equalizer" type="Control" parent="."]
 anchors_preset = 0
 anchor_right = 1.00052
 anchor_bottom = 1.00465
@@ -48,7 +49,7 @@ offset_bottom = 0.0012207
 script = ExtResource("2_ids38")
 metadata/_edit_use_anchors_ = true
 
-[node name="Background" type="ColorRect" parent="Control"]
+[node name="Background" type="ColorRect" parent="equalizer"]
 material = SubResource("ShaderMaterial_ankj7")
 layout_mode = 1
 anchors_preset = -1
@@ -63,7 +64,7 @@ offset_bottom = 3.00024
 color = Color(0.341176, 0.341176, 0.341176, 1)
 metadata/_edit_use_anchors_ = true
 
-[node name="PaperControl" type="Control" parent="Control/Background"]
+[node name="PaperControl" type="Control" parent="equalizer/Background"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -176,7 +177,17 @@ theme_override_constants/separation = 25
 alignment = 1
 
 [node name="Clap" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("8_oijp6")
+stream = ExtResource("8_hgqmf")
+
+[node name="ScorePanel" parent="." instance=ExtResource("9_0hlc4")]
+visible = false
+layout_mode = 1
+anchor_left = 0.274622
+anchor_top = 0.0483721
+anchor_right = 0.800143
+anchor_bottom = 0.881705
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false
@@ -241,4 +252,5 @@ layout_mode = 2
 [connection signal="game_ending" from="." to="." method="_on_game_ending"]
 [connection signal="game_has_started" from="." to="." method="_on_game_has_started"]
 [connection signal="game_over" from="." to="." method="_on_game_over"]
+[connection signal="game_over" from="." to="ScorePanel" method="_on_menu_game_over"]
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/analyzer.gd" id="1_otkdm"]
 [ext_resource type="Shader" path="res://Shaders/analyzer.gdshader" id="2_y2x1e"]
-[ext_resource type="AudioStream" uid="uid://i552n3q2hc0l" path="res://Sounds/Music/fpc3beat120bpm.wav" id="3_2uh6f"]
+[ext_resource type="AudioStream" uid="uid://i552n3q2hc0l" path="res://Sounds/Beats/fpc3beat120bpm.wav" id="3_2uh6f"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lch42"]
 shader = ExtResource("2_y2x1e")

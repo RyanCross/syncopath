@@ -1,0 +1,35 @@
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://bbk4lpdcigx8v"]
+
+[ext_resource type="Texture2D" uid="uid://bnjo7uueaiq8u" path="res://Images/ux/green_tick.png" id="1_yjoa4"]
+[ext_resource type="Texture2D" uid="uid://bh74ub8cfln6m" path="res://Images/ux/blue_tick.png" id="2_km4cv"]
+[ext_resource type="FontFile" uid="uid://drmbltel11xaa" path="res://Fonts/glitch-goblin-font/GlitchGoblin-2O87v.ttf" id="3_4kv1k"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vh0u3"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jn2hv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5ambc"]
+content_margin_left = 20.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.792157, 0.792157, 0.792157, 0.6)
+border_color = Color(0.8, 0.8, 0.8, 0)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 6
+
+[resource]
+default_font = ExtResource("3_4kv1k")
+default_font_size = 16
+HSlider/constants/center_grabber = 0
+HSlider/constants/grabber_offset = 0
+HSlider/icons/grabber = ExtResource("1_yjoa4")
+HSlider/icons/grabber_disabled = ExtResource("2_km4cv")
+HSlider/icons/grabber_highlight = null
+HSlider/icons/tick = null
+HSlider/styles/grabber_area = SubResource("StyleBoxTexture_vh0u3")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxTexture_jn2hv")
+HSlider/styles/slider = SubResource("StyleBoxFlat_5ambc")

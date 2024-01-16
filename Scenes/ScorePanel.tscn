@@ -1,0 +1,120 @@
+[gd_scene load_steps=5 format=3 uid="uid://dmbxfskpuaso4"]
+
+[ext_resource type="FontFile" uid="uid://drmbltel11xaa" path="res://Fonts/glitch-goblin-font/GlitchGoblin-2O87v.ttf" id="1_23iis"]
+[ext_resource type="Texture2D" uid="uid://dv0oxssbilfq1" path="res://Images/ux/UI Hologram Interface - Wenrexa/Card X1/Card X2.png" id="1_vcg05"]
+[ext_resource type="Script" path="res://Scripts/score_panel.gd" id="2_d1pxp"]
+[ext_resource type="Theme" uid="uid://bbk4lpdcigx8v" path="res://theme.tres" id="2_ibnba"]
+
+[node name="ScorePanel" type="TextureRect"]
+anchors_preset = -1
+anchor_right = 0.525521
+anchor_bottom = 0.833333
+offset_right = 6.10352e-05
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_vcg05")
+script = ExtResource("2_d1pxp")
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.00099108
+anchor_top = 0.02
+anchor_right = 1.01685
+anchor_bottom = 0.346667
+theme_override_constants/separation = 50
+alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="FinalScoreLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_ibnba")
+theme_override_font_sizes/font_size = 64
+text = "Final Score: 100"
+horizontal_alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_right = 100
+
+[node name="BeatSlidersVbox" type="VBoxContainer" parent="VBoxContainer/MarginContainer2"]
+layout_mode = 2
+theme = ExtResource("2_ibnba")
+theme_override_constants/separation = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer2/BeatSlidersVbox"]
+layout_mode = 2
+theme_override_constants/separation = 290
+alignment = 1
+
+[node name="Early" type="Label" parent="VBoxContainer/MarginContainer2/BeatSlidersVbox/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_23iis")
+theme_override_font_sizes/font_size = 24
+text = "Early
+"
+
+[node name="Perfect" type="Label" parent="VBoxContainer/MarginContainer2/BeatSlidersVbox/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_ibnba")
+theme_override_font_sizes/font_size = 24
+text = "Perfect
+"
+horizontal_alignment = 1
+
+[node name="Late" type="Label" parent="VBoxContainer/MarginContainer2/BeatSlidersVbox/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_ibnba")
+theme_override_font_sizes/font_size = 24
+text = "Late
+"
+horizontal_alignment = 2
+
+[node name="PointValuesToCopy" type="HBoxContainer" parent="VBoxContainer/MarginContainer2/BeatSlidersVbox"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 250
+alignment = 1
+
+[node name="EarlyPts" type="Label" parent="VBoxContainer/MarginContainer2/BeatSlidersVbox/PointValuesToCopy"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_23iis")
+theme_override_font_sizes/font_size = 24
+text = "0 Points
+"
+
+[node name="PerfectPts" type="Label" parent="VBoxContainer/MarginContainer2/BeatSlidersVbox/PointValuesToCopy"]
+layout_mode = 2
+theme = ExtResource("2_ibnba")
+theme_override_font_sizes/font_size = 24
+text = "50 points
+"
+horizontal_alignment = 1
+
+[node name="LatePts" type="Label" parent="VBoxContainer/MarginContainer2/BeatSlidersVbox/PointValuesToCopy"]
+layout_mode = 2
+theme = ExtResource("2_ibnba")
+theme_override_font_sizes/font_size = 24
+text = "0 Points
+"
+horizontal_alignment = 2
+
+[node name="SliderToCopy" type="HSlider" parent="VBoxContainer/MarginContainer2/BeatSlidersVbox"]
+visible = false
+z_index = 2
+layout_mode = 2
+theme_override_constants/grabber_offset = 0
+min_value = -500.0
+max_value = 500.0
+editable = false
+scrollable = false
+
+[node name="HSlider" type="HSlider" parent="VBoxContainer/MarginContainer2/BeatSlidersVbox"]
+visible = false
+layout_mode = 2
+min_value = -50.0
+max_value = 50.0
+value = 1.0
+editable = false
