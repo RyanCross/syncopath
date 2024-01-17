@@ -20,6 +20,11 @@ config/icon="res://Images/logo.png"
 buses/default_bus_layout="res://rhythmia/default_bus_layout.tres"
 driver/output_latency=10
 
+[autoload]
+
+TweenUtils="*res://Scripts/Autoloads/tween_utils.gd"
+TimeUtils="*res://Scripts/Autoloads/time_utils.gd"
+
 [display]
 
 window/size/viewport_width=1920

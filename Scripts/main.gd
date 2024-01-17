@@ -10,27 +10,24 @@ signal game_ending
 signal time_to_fade_track_audio
 #endregion 
 
-const MAX_BEAT_SCORE = 50
-const MAX_TOTAL_SCORE = 1000
-
-@onready var title := $Title
-@onready var prompt := $VBoxContainer/Prompt
-@onready var prompt2 := $VBoxContainer/Prompt2
-@onready var prompt3 := $VBoxContainer/Prompt3
-@onready var prompt4 := $VBoxContainer/Prompt4
-
-@onready var trackPlayer = $ActiveTrack
-@onready var clapFx = $Clap
-
-### DebuggerInformation
+#region Debug Variable Init
 @onready var debugModeViewport = $DebugModeViewport
 @onready var debugTimeTillTrackingStart := $DebugModeViewport/DebugContents/TimeInformation/TimeTillAudioFades
 @onready var debugBeatsCaptured = $DebugModeViewport/DebugContents/PlayerBeatTracking/BeatsCaptured
 @onready var debugMissedBeats = $DebugModeViewport/DebugContents/PlayerBeatTracking/MissedBeats
 @onready var debugTimeSinceGameStart := $DebugModeViewport/DebugContents/TimeInformation/TimeSinceGameStarted
 @onready var debugPlayerBeatTracking : VBoxContainer = $DebugModeViewport/DebugContents/PlayerBeatTracking
+#endregion
 
-@onready var beatsPerMinute := 120 #TODO store each track in it's own audioplayer, get BPM from metadata of Selected Track
+@onready var title := $Title
+@onready var prompt := $VBoxContainer/Prompt
+@onready var prompt2 := $VBoxContainer/Prompt2
+@onready var prompt3 := $VBoxContainer/Prompt3
+@onready var prompt4 := $VBoxContainer/Prompt4
+@onready var trackPlayer = $ActiveTrack
+@onready var clapFx = $Clap
+
+@onready var beatsPerMinute := 120 #TODO store each track in it's own audioplayer, store BPM as metadata on the track node
 @onready var beatsPerSecond := beatsPerMinute / 60 
 @onready var beatDurationMs : int = ceil(1000 / beatsPerSecond) # duration of a single beat
 # the alotted time for instruction prompts and for player to get feel for the beat once they hit play
@@ -41,6 +38,9 @@ const MAX_TOTAL_SCORE = 1000
 @onready var beatWindowBufferMs : int = beatDurationMs # the window for beat input is before the next beat or after the previous
 @onready var gameDurationMs = introDurationMs + beatTrackingDurationMs 
 @onready var beatsToTrack = beatTrackingDurationMs / 1000 * beatsPerSecond
+
+const MAX_BEAT_SCORE = 50
+const MAX_TOTAL_SCORE = 1000
 
 # TODO can remove some of these globals by using one shot signals (from panel)
 var timeSinceGameStartMs = 0;
@@ -55,7 +55,6 @@ var beatScores = Array()
 var endingCountdownFadeInTime = .5
 var beatDistances = Array()
 var fadeTrackBufferMs = 3000
-
 
 func calculateFinalScore():
 	var finalScore := 0;  
@@ -79,10 +78,7 @@ func calculateBeatScore(distanceFromPerfect : int):
 	# technically our MAX (best) distance is 0, our min is 1s / beatsPerSecond ( a new beat has already occured), but we can't divide by zero in the linear conversion formula which will be the case if newMin is also 0, which it is, so we must swap our oldMin and max to get the inverse value. 
 	# eg if our score should be 26, the formula will give us 24, if newMAx is 50 then 50-24 = 26. So our formula is
 	# newMax - newScore = score, i'm not sure what the math reason for this is.\
-	
-	
-	# TODO realizing a bug with filling playerBeatTimings, we may need to fill missed beats, past a certain threshold of time
-	
+		
 	var oldValue = distanceFromPerfect
 	var oldMin = 0
 	var oldMax = MAX_TOTAL_SCORE / beatsPerSecond
@@ -94,22 +90,6 @@ func calculateBeatScore(distanceFromPerfect : int):
 	var score = newMax - round(((oldValue - oldMin) * newRange / oldRange) + newMin)
 	return score
 
-func fadeInAndMakeVisible(nodeToTween: Node, fadeTime := .5):
-	nodeToTween.set_visible(1)
-	var tween: Tween = nodeToTween.create_tween()
-	tween.tween_property(nodeToTween, "modulate", Color(1,1,1,1), fadeTime)
-
-func fadeOutAndDestroy(nodeToTween: Node, fadeTime := .5):
-	var tween: Tween = nodeToTween.create_tween()
-	tween.tween_property(nodeToTween, "modulate", Color(1,1,1,0), fadeTime)
-	tween.tween_callback(nodeToTween.queue_free)
-	
-func fadeOut(nodeToTween: Node, fadeTime := .5):
-	var tween: Tween = nodeToTween.create_tween()
-	tween.tween_property(nodeToTween, "modulate", Color(1,1,1,0), fadeTime)
-	tween.tween_callback(func(): nodeToTween.set_visible(false))
-	return tween
-
 func generatePerfectBeatTimings():
 	for i in range(0,beatsToTrack):
 		if i > 0:
@@ -120,15 +100,7 @@ func generatePerfectBeatTimings():
 	print("perfect beats array size")
 	print(perfectBeatTimings.size())
 		
-func secondsToMs(timeInSeconds : int):
-	return timeInSeconds * 1000
 
-func msToSeconds(timeInMs : int):
-	return timeInMs / 1000
-
-func resetGame():
-	pass
-	
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	generatePerfectBeatTimings()
@@ -166,7 +138,6 @@ func _process(delta):
 					
 		if timeSinceGameStartMs >= introDurationMs - round(beatWindowBufferMs / 3): #subtract a fraction of beat buffer length in case player inputs early
 			# pad missed beats
-			# if worst score already made, then 
 			if (playerBeatTimings.size() < beatsToTrack):
 				if timeSinceGameStartMs >= perfectBeatTimings[playerBeatTimings.size()] + beatDurationMs:
 					# player has missed a beat, pad the array so subsequent beats are still compared in the proper order
@@ -183,35 +154,34 @@ func _process(delta):
 			emit_signal("game_ending")
 			
 		if timeSinceGameStartMs > gameDurationMs:
-			# todo, could add a buffer so that user doesn't have to be frame perfect on last beat... which probably a good idea
 			var finalScore = calculateFinalScore()
 			emit_signal("game_over", finalScore, beatDistances)
 		
 func _on_game_has_started():
 	print("Game Start")
-	fadeOutAndDestroy(prompt) 
-	fadeOut(title)
+	TweenUtils.fadeOutAndDestroy(prompt) 
+	TweenUtils.fadeOutAndDestroy(title)
 	gameStarted = true
 	
 	# timers are for juice, creatings small delays in visual/audio changes
 	await get_tree().create_timer(.5).timeout
-	trackPlayer.play() # Play the track 
+	trackPlayer.play() 
 	await get_tree().create_timer(2).timeout
-	fadeInAndMakeVisible(prompt2)
+	TweenUtils.fadeInAndMakeVisible(prompt2)
 	await get_tree().create_timer(2).timeout
-	fadeInAndMakeVisible(prompt3)
+	TweenUtils.fadeInAndMakeVisible(prompt3)
 	
 func _on_beat_tracking_has_started(): 
-	fadeOutAndDestroy(prompt2)
-	fadeOutAndDestroy(prompt3)
+	TweenUtils.fadeOutAndDestroy(prompt2)
+	TweenUtils.fadeOutAndDestroy(prompt3)
 	beatTrackingStarted = true
 	
 func _on_game_over(_finalScore, _beatDistances):	
-	fadeOutAndDestroy(prompt4, .5)
+	TweenUtils.fadeOutAndDestroy(prompt4, .5)
 	gameOver = true;
 
 func _on_game_ending():
-	fadeInAndMakeVisible(prompt4, endingCountdownFadeInTime)
+	TweenUtils.fadeInAndMakeVisible(prompt4, endingCountdownFadeInTime)
 	gameIsEnding = true;
 
 func debug_capture_beat_info(captureTimeMs : String):
