@@ -18,6 +18,7 @@ config/icon="res://Images/logo.png"
 [audio]
 
 buses/default_bus_layout="res://rhythmia/default_bus_layout.tres"
+driver/output_latency=10
 
 [display]
 
