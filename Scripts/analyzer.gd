@@ -2,7 +2,7 @@ extends Control
 
 const VU_COUNT = 30
 const FREQ_MAX = 11050.0
-const MIN_DB = 60 #minimum decibel value
+const MIN_DB = 60  #minimum decibel value
 
 ##### for animating lights smoother, not necessary for basic input sending, might need to remove this for grayscale texture creation
 const ANIMATION_SPEED = 0.1

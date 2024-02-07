@@ -42,7 +42,7 @@ signal time_to_fade_track_audio
 const MAX_BEAT_SCORE = 50
 const MAX_TOTAL_SCORE = 1000
 
-# TODO can remove some of these globals by using one shot signals (from panel)
+var timeElapsedBeforeGameStart
 var timeSinceGameStartMs = 0;
 var gameStarted := false
 var beatTrackingStarted := false
@@ -90,12 +90,12 @@ func calculateBeatScore(distanceFromPerfect : int):
 	var score = newMax - round(((oldValue - oldMin) * newRange / oldRange) + newMin)
 	return score
 
-func generatePerfectBeatTimings():
+func generatePerfectBeatTimings(audioOutputDelayMs):
 	for i in range(0,beatsToTrack):
 		if i > 0:
-			perfectBeatTimings.append(introDurationMs + (i * beatDurationMs))
+			perfectBeatTimings.append(introDurationMs + (i * beatDurationMs) + audioOutputDelayMs)
 		else:
-			perfectBeatTimings.append(introDurationMs) 
+			perfectBeatTimings.append(introDurationMs + audioOutputDelayMs) 
 	
 	print("perfect beats array size")
 	print(perfectBeatTimings.size())
@@ -103,7 +103,7 @@ func generatePerfectBeatTimings():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	generatePerfectBeatTimings()
+	pass
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if Input.is_action_just_pressed("toggle_debug_mode"): # F2
@@ -115,7 +115,7 @@ func _process(delta):
 			if gameStarted == false:
 				emit_signal("game_has_started")
 		if gameStarted:
-			timeSinceGameStartMs += roundi(delta * 1000)
+			timeSinceGameStartMs = Time.get_ticks_msec() - timeElapsedBeforeGameStart
 			debugTimeSinceGameStart.set_text("Game Time: " +  String.num(roundi(timeSinceGameStartMs)) + " | ")
 			
 			var timeTillGameOver = gameDurationMs - timeSinceGameStartMs
@@ -160,16 +160,22 @@ func _process(delta):
 func _on_game_has_started():
 	print("Game Start")
 	TweenUtils.fadeOutAndDestroy(prompt) 
-	TweenUtils.fadeOutAndDestroy(title)
+	TweenUtils.fadeOutAndDestroy(title)	
+	
+	timeElapsedBeforeGameStart = Time.get_ticks_msec()
 	gameStarted = true
 	
+	var audioOutputDelayMs = ceil(( AudioServer.get_time_to_next_mix() + AudioServer.get_output_latency() ) * 1000)
+	trackPlayer.play()
+	generatePerfectBeatTimings(audioOutputDelayMs)
 	# timers are for juice, creatings small delays in visual/audio changes
 	await get_tree().create_timer(.5).timeout
-	trackPlayer.play() 
 	await get_tree().create_timer(2).timeout
 	TweenUtils.fadeInAndMakeVisible(prompt2)
 	await get_tree().create_timer(2).timeout
 	TweenUtils.fadeInAndMakeVisible(prompt3)
+	
+
 	
 func _on_beat_tracking_has_started(): 
 	TweenUtils.fadeOutAndDestroy(prompt2)
