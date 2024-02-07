@@ -175,8 +175,6 @@ func _on_game_has_started():
 	await get_tree().create_timer(2).timeout
 	TweenUtils.fadeInAndMakeVisible(prompt3)
 	
-
-	
 func _on_beat_tracking_has_started(): 
 	TweenUtils.fadeOutAndDestroy(prompt2)
 	TweenUtils.fadeOutAndDestroy(prompt3)
