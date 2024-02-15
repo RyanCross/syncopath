@@ -8,6 +8,8 @@ signal game_ending
 #region One Shot Signals
 # configured as one shot by signal pane
 signal time_to_fade_track_audio
+signal display_intro_additional_prompt
+signal display_beat_tracking_additional_prompt
 #endregion 
 
 #region Debug Variable Init
@@ -31,7 +33,7 @@ signal time_to_fade_track_audio
 @onready var beatsPerSecond := beatsPerMinute / 60 
 @onready var beatDurationMs : int = ceil(1000 / beatsPerSecond) # duration of a single beat
 # the alotted time for instruction prompts and for player to get feel for the beat once they hit play
-@onready var introDurationMs : int = 10000 
+@onready var introDurationMs : int = 12000 
 # the alotted time for beats to be tracked for a score, the "true" game duration
 @onready var beatTrackingDurationMs : int = 10000 + beatWindowBufferMs
 # a buffer in case player is early/late on first or last beat, respectively
@@ -110,8 +112,6 @@ func _process(delta):
 		debugModeViewport.set_visible(!debugModeViewport.is_visible())
 	if !gameOver:
 		if Input.is_action_just_pressed("primary_action"):
-			clapFx.play()
-			
 			if gameStarted == false:
 				emit_signal("game_has_started")
 		if gameStarted:
@@ -161,6 +161,10 @@ func _on_game_has_started():
 	print("Game Start")
 	TweenUtils.fadeOutAndDestroy(prompt) 
 	TweenUtils.fadeOutAndDestroy(title)	
+	$CassetteHum.stop()
+	$CassettePlay.play()
+	await $CassettePlay.finished
+	await get_tree().create_timer(1).timeout
 	
 	timeElapsedBeforeGameStart = Time.get_ticks_msec()
 	gameStarted = true
@@ -173,7 +177,7 @@ func _on_game_has_started():
 	await get_tree().create_timer(2).timeout
 	TweenUtils.fadeInAndMakeVisible(prompt2)
 	await get_tree().create_timer(2).timeout
-	TweenUtils.fadeInAndMakeVisible(prompt3)
+	#TweenUtils.fadeInAndMakeVisible(prompt3)
 	
 func _on_beat_tracking_has_started(): 
 	TweenUtils.fadeOutAndDestroy(prompt2)

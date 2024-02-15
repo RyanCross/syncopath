@@ -1007,28 +1007,27 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(35.1999, -72.2201)
 mode = 1
 flags/light_only = false
-nodes/fragment/0/position = Vector2(580, 40)
+nodes/fragment/0/position = Vector2(500, 0)
 nodes/fragment/3/node = SubResource("9")
-nodes/fragment/3/position = Vector2(-320, -200)
+nodes/fragment/3/position = Vector2(-400, -240)
 nodes/fragment/5/node = SubResource("10")
-nodes/fragment/5/position = Vector2(320, -20)
+nodes/fragment/5/position = Vector2(240, -60)
 nodes/fragment/24/node = SubResource("65")
-nodes/fragment/24/position = Vector2(60, -20)
+nodes/fragment/24/position = Vector2(-20, -60)
 nodes/fragment/25/node = SubResource("66")
-nodes/fragment/25/position = Vector2(-300, 300)
+nodes/fragment/25/position = Vector2(-380, 260)
 nodes/fragment/26/node = SubResource("67")
-nodes/fragment/26/position = Vector2(-180, -120)
+nodes/fragment/26/position = Vector2(-260, -160)
 nodes/fragment/27/node = SubResource("68")
-nodes/fragment/27/position = Vector2(-180, 40)
+nodes/fragment/27/position = Vector2(-260, 0)
 nodes/fragment/28/node = SubResource("69")
-nodes/fragment/28/position = Vector2(-180, 120)
+nodes/fragment/28/position = Vector2(-260, 80)
 nodes/fragment/29/node = SubResource("70")
-nodes/fragment/29/position = Vector2(-180, 200)
+nodes/fragment/29/position = Vector2(-260, 160)
 nodes/fragment/30/node = SubResource("71")
-nodes/fragment/30/position = Vector2(-180, -40)
+nodes/fragment/30/position = Vector2(-260, -80)
 nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 3, 0, 24, 0, 25, 0, 24, 6, 26, 0, 24, 1, 29, 0, 24, 5, 28, 0, 24, 4, 27, 0, 24, 3, 30, 0, 24, 2, 24, 0, 5, 0, 5, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="73"]
