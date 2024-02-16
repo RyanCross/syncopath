@@ -105,11 +105,10 @@ metadata/_edit_use_anchors_ = true
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.255341
-anchor_top = 0.387907
-anchor_right = 0.752475
-anchor_bottom = 0.715349
-offset_left = 3.05176e-05
+anchor_left = 0.210526
+anchor_top = 0.390698
+anchor_right = 0.786868
+anchor_bottom = 0.87907
 theme_override_constants/separation = 20
 metadata/_edit_use_anchors_ = true
 
@@ -157,8 +156,8 @@ alignment = 1
 [node name="Label" type="Label" parent="VBoxContainer/Prompt3"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_n04ua")
-theme_override_font_sizes/font_size = 56
-text = "Keep tapping
+theme_override_font_sizes/font_size = 70
+text = "Keep Tapping.
 The audio is going to fade out"
 horizontal_alignment = 1
 
@@ -172,7 +171,7 @@ alignment = 1
 [node name="Label" type="Label" parent="VBoxContainer/Prompt4"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_n04ua")
-theme_override_font_sizes/font_size = 64
+theme_override_font_sizes/font_size = 72
 text = "Almost There! "
 horizontal_alignment = 1
 
@@ -248,6 +247,7 @@ layout_mode = 2
 layout_mode = 2
 
 [connection signal="beat_tracking_has_started" from="." to="." method="_on_beat_tracking_has_started"]
+[connection signal="display_intro_additional_prompt" from="." to="." method="_on_display_intro_additional_prompt" flags=6]
 [connection signal="game_ending" from="." to="." method="_on_game_ending"]
 [connection signal="game_has_started" from="." to="." method="_on_game_has_started"]
 [connection signal="game_over" from="." to="." method="_on_game_over"]

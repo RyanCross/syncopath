@@ -126,6 +126,8 @@ func _process(delta):
 				$VBoxContainer/Prompt4/GameEndingCountdownLabel.set_text(String.num(round(displayTime / 1000)))
 			else:
 				$VBoxContainer/Prompt4/GameEndingCountdownLabel.set_text("0")
+		if timeSinceGameStartMs >= introDurationMs / 2:
+			emit_signal("display_intro_additional_prompt")
 		if !beatTrackingStarted:
 			if(introDurationMs - fadeTrackBufferMs - timeSinceGameStartMs <= 0):
 					emit_signal("time_to_fade_track_audio", fadeTrackBufferMs)
@@ -176,11 +178,9 @@ func _on_game_has_started():
 	await get_tree().create_timer(.5).timeout
 	await get_tree().create_timer(2).timeout
 	TweenUtils.fadeInAndMakeVisible(prompt2)
-	await get_tree().create_timer(2).timeout
-	#TweenUtils.fadeInAndMakeVisible(prompt3)
+
 	
 func _on_beat_tracking_has_started(): 
-	TweenUtils.fadeOutAndDestroy(prompt2)
 	TweenUtils.fadeOutAndDestroy(prompt3)
 	beatTrackingStarted = true
 	
@@ -199,3 +199,7 @@ func debug_capture_beat_info(captureTimeMs : String):
 	beatCaptureInfo.set_text(beatNumber + " | " + captureTimeMs + " ms | " + "Perfect: " + String.num(perfectBeatTimings[playerBeatTimings.size()]))
 	debugPlayerBeatTracking.add_child(beatCaptureInfo)
 	
+func _on_display_intro_additional_prompt():
+	TweenUtils.fadeOutAndDestroy(prompt2)
+	await get_tree().create_timer(1).timeout
+	TweenUtils.fadeInAndMakeVisible(prompt3)
