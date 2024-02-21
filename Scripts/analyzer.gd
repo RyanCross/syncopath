@@ -13,6 +13,7 @@ const HEIGHT_SCALE = 8.0
 var spectrum
 var min_values = []
 var max_values = []
+var visualizeAudio = true;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -25,14 +26,14 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-		var prez_hz = 0
+		var prev_hz = 0
 		var data = []
 		for i in range(1, VU_COUNT + 1):
 			var hz = i * FREQ_MAX / VU_COUNT
-			var f  = spectrum.get_magnitude_for_frequency_range(prez_hz, hz)
+			var f  = spectrum.get_magnitude_for_frequency_range(prev_hz, hz)
 			var energy = clamp((MIN_DB + linear_to_db(f.length())) / MIN_DB, 0.0, 1.0)
 			data.append(energy * HEIGHT_SCALE)
-			prez_hz = hz
+			prev_hz = hz
 		for i in range(VU_COUNT):
 			if data[i] > max_values[i]:
 				max_values[i] = data[i]
@@ -43,5 +44,11 @@ func _process(_delta):
 		var fft = []
 		for i in range(VU_COUNT):
 			fft.append(lerp(min_values[i], max_values[i], ANIMATION_SPEED))	
-		color_rect.get_material().set_shader_parameter("freq_data", fft)
-		
+		if visualizeAudio:
+			color_rect.get_material().set_shader_parameter("freq_data", fft)
+
+
+func _on_menu_beat_tracking_has_started():
+	# hacky solution to stop the audio feed "echoes" bug after beat tracking starts.
+	await get_tree().create_timer(.5).timeout
+	visualizeAudio = false # Replace with function body.

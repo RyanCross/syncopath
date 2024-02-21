@@ -9,7 +9,6 @@ signal game_ending
 # configured as one shot by signal pane
 signal time_to_fade_track_audio
 signal display_intro_additional_prompt
-signal display_beat_tracking_additional_prompt
 #endregion 
 
 #region Debug Variable Init
@@ -27,7 +26,6 @@ signal display_beat_tracking_additional_prompt
 @onready var prompt3 := $VBoxContainer/Prompt3
 @onready var prompt4 := $VBoxContainer/Prompt4
 @onready var trackPlayer = $ActiveTrack
-@onready var clapFx = $Clap
 
 @onready var beatsPerMinute := 120 #TODO store each track in it's own audioplayer, store BPM as metadata on the track node
 @onready var beatsPerSecond := beatsPerMinute / 60 

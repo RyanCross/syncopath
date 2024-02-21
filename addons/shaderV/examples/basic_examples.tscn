@@ -1,4 +1,4 @@
-[gd_scene load_steps=708 format=3 uid="uid://c0y4dh3a6qrur"]
+[gd_scene load_steps=704 format=3 uid="uid://c0y4dh3a6qrur"]
 
 [ext_resource type="Texture2D" uid="uid://dukgbairam5vc" path="res://addons/shaderV/shaderV_icon.png" id="1"]
 [ext_resource type="Script" path="res://addons/shaderV/uv/tilingNoffset.gd" id="2"]
@@ -120,36 +120,11 @@ render_mode blend_mix;
 
 
 
-// DistortionUV
-#include \"res://addons/shaderV/uv/distortionUV.gdshaderinc\"
 
 void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-// FloatConstant:5
-	float n_out5p0 = 3.025000;
-
-
-// FloatConstant:7
-	float n_out7p0 = 5.000000;
-
-
-// FloatConstant:6
-	float n_out6p0 = 0.100000;
-
-
-	vec3 n_out2p0;
-// DistortionUV:2
-	{
-		n_out2p0.xy = _distortionUV(vec3(n_out3p0, 0.0).xy, vec2(n_out6p0, n_out6p0), vec2(n_out5p0, n_out7p0));
-	}
-
-
 	vec4 n_out4p0;
 // Texture2D:4
-	n_out4p0 = texture(TEXTURE, vec2(n_out2p0.xy));
+	n_out4p0 = texture(TEXTURE, UV);
 	float n_out4p4 = n_out4p0.a;
 
 
@@ -175,7 +150,7 @@ nodes/fragment/6/node = SubResource("5")
 nodes/fragment/6/position = Vector2(-180, 280)
 nodes/fragment/7/node = SubResource("6")
 nodes/fragment/7/position = Vector2(-180, 220)
-nodes/fragment/connections = PackedInt32Array(3, 0, 2, 0, 5, 0, 2, 1, 6, 0, 2, 3, 7, 0, 2, 2, 6, 0, 2, 4, 2, 0, 4, 0, 4, 4, 0, 1, 4, 0, 0, 0)
+nodes/fragment/connections = PackedInt32Array(4, 4, 0, 1, 4, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="8"]
 shader = SubResource("7")
@@ -205,31 +180,10 @@ render_mode blend_mix;
 uniform sampler2D tex_frg_5;
 
 
-// FlipUV
-#include \"res://addons/shaderV/uv/flipUV.gdshaderinc\"
 
 void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-// BooleanConstant:8
-	bool n_out8p0 = true;
-
-
-// BooleanConstant:9
-	bool n_out9p0 = true;
-
-
-	vec3 n_out7p0;
-// FlipUV:7
-	{
-		n_out7p0.xy = _flipUV(vec3(n_out3p0, 0.0).xy, vec2(float(n_out8p0), float(n_out9p0)));
-	}
-
-
 // Texture2D:5
-	vec4 n_out5p0 = texture(tex_frg_5, vec2(n_out7p0.xy));
+	vec4 n_out5p0 = texture(tex_frg_5, UV);
 	float n_out5p4 = n_out5p0.a;
 
 
@@ -253,7 +207,7 @@ nodes/fragment/8/node = SubResource("12")
 nodes/fragment/8/position = Vector2(-120, 40)
 nodes/fragment/9/node = SubResource("13")
 nodes/fragment/9/position = Vector2(-120, 120)
-nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 3, 0, 7, 0, 8, 0, 7, 1, 9, 0, 7, 2, 7, 0, 5, 0, 5, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 5, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="15"]
 shader = SubResource("14")
@@ -273,27 +227,10 @@ render_mode blend_mix;
 uniform sampler2D tex_frg_5;
 
 
-// LensDistortionUV
-#include \"res://addons/shaderV/uv/lensDistortion.gdshaderinc\"
 
 void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-// FloatConstant:8
-	float n_out8p0 = 1.300000;
-
-
-	vec3 n_out7p0;
-// LensDistortionUV:7
-	{
-		n_out7p0.xy = _lensDistortionUV(vec3(n_out3p0, 0.0).xy, n_out8p0);
-	}
-
-
 // Texture2D:5
-	vec4 n_out5p0 = texture(tex_frg_5, vec2(n_out7p0.xy));
+	vec4 n_out5p0 = texture(tex_frg_5, UV);
 	float n_out5p4 = n_out5p0.a;
 
 
@@ -316,7 +253,7 @@ nodes/fragment/7/node = SubResource("16")
 nodes/fragment/7/position = Vector2(200, 40)
 nodes/fragment/8/node = SubResource("17")
 nodes/fragment/8/position = Vector2(0, 80)
-nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 3, 0, 7, 0, 8, 0, 7, 1, 7, 0, 5, 0, 5, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 5, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="19"]
 shader = SubResource("18")
@@ -338,31 +275,14 @@ render_mode blend_mix;
 uniform sampler2D tex_frg_5;
 
 
-// PixelateUV
-#include \"res://addons/shaderV/uv/pixelate.gdshaderinc\"
 
 void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-// Vector3Constant:8
-	vec3 n_out8p0 = vec3(16.000000, 16.000000, 0.000000);
-
-
-	vec3 n_out7p0;
-// PixelateUV:7
-	{
-		n_out7p0.xy = _pixelateUV(vec3(n_out3p0, 0.0).xy, n_out8p0.xy);
-	}
-
-
 // FloatConstant:9
 	float n_out9p0 = 0.000000;
 
 
 // Texture2D:5
-	vec4 n_out5p0 = textureLod(tex_frg_5, vec2(n_out7p0.xy), n_out9p0);
+	vec4 n_out5p0 = textureLod(tex_frg_5, UV, n_out9p0);
 	float n_out5p4 = n_out5p0.a;
 
 
@@ -387,7 +307,7 @@ nodes/fragment/8/node = SubResource("21")
 nodes/fragment/8/position = Vector2(-240, 20)
 nodes/fragment/9/node = SubResource("22")
 nodes/fragment/9/position = Vector2(120, 100)
-nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 8, 0, 7, 1, 3, 0, 7, 0, 9, 0, 5, 1, 7, 0, 5, 0, 5, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 9, 0, 5, 1, 5, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="24"]
 shader = SubResource("23")
@@ -410,31 +330,10 @@ render_mode blend_mix;
 uniform sampler2D tex_frg_5;
 
 
-// RotateUV
-#include \"res://addons/shaderV/uv/rotate.gdshaderinc\"
 
 void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-// FloatConstant:8
-	float n_out8p0 = 0.400000;
-
-
-// Vector3Constant:9
-	vec3 n_out9p0 = vec3(0.500000, 0.500000, 0.000000);
-
-
-	vec3 n_out7p0;
-// RotateUV:7
-	{
-		n_out7p0 = _rotateUV(vec3(n_out3p0, 0.0), n_out9p0.xy, n_out8p0);
-	}
-
-
 // Texture2D:5
-	vec4 n_out5p0 = texture(tex_frg_5, vec2(n_out7p0.xy));
+	vec4 n_out5p0 = texture(tex_frg_5, UV);
 	float n_out5p4 = n_out5p0.a;
 
 
@@ -459,7 +358,7 @@ nodes/fragment/8/node = SubResource("26")
 nodes/fragment/8/position = Vector2(-40, 40)
 nodes/fragment/9/node = SubResource("27")
 nodes/fragment/9/position = Vector2(-200, 120)
-nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 3, 0, 7, 0, 8, 0, 7, 1, 9, 0, 7, 2, 7, 0, 5, 0, 5, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 5, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="29"]
 shader = SubResource("28")
@@ -482,27 +381,10 @@ render_mode blend_mix;
 uniform sampler2D tex_frg_5;
 
 
-// ScaleUV
-#include \"res://addons/shaderV/uv/scaleUV.gdshaderinc\"
 
 void fragment() {
-// Vector3Constant:10
-	vec3 n_out10p0 = vec3(2.000000, 3.000000, 0.000000);
-
-
-// Vector3Constant:11
-	vec3 n_out11p0 = vec3(0.500000, 0.500000, 0.000000);
-
-
-	vec3 n_out9p0;
-// ScaleUV:9
-	{
-		n_out9p0.xy = _scaleUV(UV.xy, n_out10p0.xy, n_out11p0.xy);
-	}
-
-
 // Texture2D:5
-	vec4 n_out5p0 = texture(tex_frg_5, vec2(n_out9p0.xy));
+	vec4 n_out5p0 = texture(tex_frg_5, UV);
 	float n_out5p4 = n_out5p0.a;
 
 
@@ -525,7 +407,7 @@ nodes/fragment/10/node = SubResource("30")
 nodes/fragment/10/position = Vector2(-220, 20)
 nodes/fragment/11/node = SubResource("31")
 nodes/fragment/11/position = Vector2(-220, 140)
-nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 10, 0, 9, 1, 11, 0, 9, 2, 9, 0, 5, 0, 5, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 5, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="34"]
 shader = SubResource("33")
@@ -552,35 +434,10 @@ render_mode blend_mix;
 uniform sampler2D tex_frg_5;
 
 
-// SphericalUV
-#include \"res://addons/shaderV/uv/sphericalUV.gdshaderinc\"
 
 void fragment() {
-// Vector3Constant:13
-	vec3 n_out13p0 = vec3(1.000000, 1.000000, 0.000000);
-
-
-// Vector3Constant:14
-	vec3 n_out14p0 = vec3(0.000000, 0.000000, 0.000000);
-
-
-// Vector3Constant:15
-	vec3 n_out15p0 = vec3(0.500000, 0.500000, 0.000000);
-
-
-// Vector3Constant:16
-	vec3 n_out16p0 = vec3(0.000000, 0.000000, 0.000000);
-
-
-	vec3 n_out12p0;
-// SphericalUV:12
-	{
-		n_out12p0.xy = _sphericalUV(UV.xy, n_out15p0.xy, n_out13p0.xy, n_out14p0.xy, n_out16p0.xy);
-	}
-
-
 // Texture2D:5
-	vec4 n_out5p0 = texture(tex_frg_5, vec2(n_out12p0.xy));
+	vec4 n_out5p0 = texture(tex_frg_5, UV);
 	float n_out5p4 = n_out5p0.a;
 
 
@@ -607,7 +464,7 @@ nodes/fragment/15/node = SubResource("38")
 nodes/fragment/15/position = Vector2(-200, 100)
 nodes/fragment/16/node = SubResource("39")
 nodes/fragment/16/position = Vector2(-200, 200)
-nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 13, 0, 12, 1, 14, 0, 12, 2, 15, 0, 12, 3, 16, 0, 12, 4, 12, 0, 5, 0, 5, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 5, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="41"]
 shader = SubResource("40")
@@ -632,35 +489,10 @@ render_mode blend_mix;
 uniform sampler2D tex_frg_5;
 
 
-// TileUV
-#include \"res://addons/shaderV/uv/tileUV.gdshaderinc\"
 
 void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-// FloatConstant:15
-	float n_out15p0 = 2.000000;
-
-
-// FloatConstant:16
-	float n_out16p0 = 2.000000;
-
-
-// FloatConstant:14
-	float n_out14p0 = 0.000000;
-
-
-	vec3 n_out13p0;
-// TileUV:13
-	{
-		n_out13p0.xy = _tileMapUV(vec3(n_out3p0, 0.0).xy, n_out15p0, n_out16p0, n_out14p0);
-	}
-
-
 // Texture2D:5
-	vec4 n_out5p0 = texture(tex_frg_5, vec2(n_out13p0.xy));
+	vec4 n_out5p0 = texture(tex_frg_5, UV);
 	float n_out5p4 = n_out5p0.a;
 
 
@@ -687,7 +519,7 @@ nodes/fragment/15/node = SubResource("44")
 nodes/fragment/15/position = Vector2(-40, 0)
 nodes/fragment/16/node = SubResource("45")
 nodes/fragment/16/position = Vector2(-40, 80)
-nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 3, 0, 13, 0, 14, 0, 13, 3, 15, 0, 13, 1, 16, 0, 13, 2, 13, 0, 5, 0, 5, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 5, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="47"]
 shader = SubResource("46")
@@ -707,27 +539,10 @@ render_mode blend_mix;
 uniform sampler2D tex_frg_5;
 
 
-// TilingAndOffsetUV
-#include \"res://addons/shaderV/uv/tilingNoffset.gdshaderinc\"
 
 void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-// FloatConstant:18
-	float n_out18p0 = 0.200000;
-
-
-	vec3 n_out17p0;
-// TilingAndOffsetUV:17
-	{
-		n_out17p0 = vec3(_tiling_and_offset(vec3(n_out3p0, 0.0).xy, vec3(n_out18p0).xy), 0);
-	}
-
-
 // Texture2D:5
-	vec4 n_out5p0 = texture(tex_frg_5, vec2(n_out17p0.xy));
+	vec4 n_out5p0 = texture(tex_frg_5, UV);
 	float n_out5p4 = n_out5p0.a;
 
 
@@ -750,7 +565,7 @@ nodes/fragment/17/node = SubResource("48")
 nodes/fragment/17/position = Vector2(180, 0)
 nodes/fragment/18/node = SubResource("49")
 nodes/fragment/18/position = Vector2(-40, 80)
-nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 18, 0, 17, 1, 3, 0, 17, 0, 17, 0, 5, 0, 5, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 5, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="51"]
 shader = SubResource("50")
@@ -782,43 +597,10 @@ render_mode blend_mix;
 uniform sampler2D tex_frg_5;
 
 
-// TransformUV
-#include \"res://addons/shaderV/uv/transformUV.gdshaderinc\"
 
 void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-// Vector3Constant:19
-	vec3 n_out19p0 = vec3(0.100000, 0.100000, 0.000000);
-
-
-// Vector3Constant:20
-	vec3 n_out20p0 = vec3(2.000000, 2.000000, 0.000000);
-
-
-// Vector3Constant:22
-	vec3 n_out22p0 = vec3(0.500000, 0.500000, 0.000000);
-
-
-// FloatConstant:15
-	float n_out15p0 = 0.200000;
-
-
-// Vector3Constant:21
-	vec3 n_out21p0 = vec3(0.500000, 0.500000, 0.000000);
-
-
-	vec3 n_out18p0;
-// TransformUV:18
-	{
-		n_out18p0.xy = _transformUV(vec3(n_out3p0, 0.0).xy, n_out20p0.xy, n_out22p0.xy, n_out19p0.xy, n_out15p0, n_out21p0.xy);
-	}
-
-
 // Texture2D:5
-	vec4 n_out5p0 = texture(tex_frg_5, vec2(n_out18p0.xy));
+	vec4 n_out5p0 = texture(tex_frg_5, UV);
 	float n_out5p4 = n_out5p0.a;
 
 
@@ -849,7 +631,7 @@ nodes/fragment/21/node = SubResource("56")
 nodes/fragment/21/position = Vector2(-300, 220)
 nodes/fragment/22/node = SubResource("57")
 nodes/fragment/22/position = Vector2(-300, 40)
-nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 3, 0, 18, 0, 19, 0, 18, 1, 20, 0, 18, 2, 22, 0, 18, 3, 15, 0, 18, 4, 21, 0, 18, 5, 18, 0, 5, 0, 5, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 5, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="59"]
 shader = SubResource("58")
@@ -872,31 +654,10 @@ render_mode blend_mix;
 uniform sampler2D tex_frg_5;
 
 
-// TwirlUV
-#include \"res://addons/shaderV/uv/twirl.gdshaderinc\"
 
 void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-// FloatConstant:25
-	float n_out25p0 = 1.000000;
-
-
-// Vector3Constant:24
-	vec3 n_out24p0 = vec3(0.500000, 0.500000, 0.000000);
-
-
-	vec3 n_out23p0;
-// TwirlUV:23
-	{
-		n_out23p0 = _twirlUVFunc(vec3(n_out3p0, 0.0).xy, n_out24p0.xy, n_out25p0);
-	}
-
-
 // Texture2D:5
-	vec4 n_out5p0 = texture(tex_frg_5, vec2(n_out23p0.xy));
+	vec4 n_out5p0 = texture(tex_frg_5, UV);
 	float n_out5p4 = n_out5p0.a;
 
 
@@ -921,7 +682,7 @@ nodes/fragment/24/node = SubResource("61")
 nodes/fragment/24/position = Vector2(-260, 60)
 nodes/fragment/25/node = SubResource("62")
 nodes/fragment/25/position = Vector2(-120, -20)
-nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 3, 0, 23, 0, 24, 0, 23, 2, 25, 0, 23, 1, 23, 0, 5, 0, 5, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 5, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="64"]
 shader = SubResource("63")
@@ -956,47 +717,10 @@ render_mode blend_mix;
 uniform sampler2D tex_frg_5;
 
 
-// DistortionUVAnimated
-#include \"res://addons/shaderV/uv/animated/distortionUVAnimated.gdshaderinc\"
 
 void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-// FloatConstant:26
-	float n_out26p0 = 5.000000;
-
-
-// FloatConstant:30
-	float n_out30p0 = 5.000000;
-
-
-// FloatConstant:27
-	float n_out27p0 = -0.200000;
-
-
-// FloatConstant:28
-	float n_out28p0 = 0.010000;
-
-
-// FloatConstant:29
-	float n_out29p0 = 1.000000;
-
-
-// Input:25
-	float n_out25p0 = TIME;
-
-
-	vec3 n_out24p0;
-// DistortionUVAnimated:24
-	{
-		n_out24p0.xy = _distortionUVAnimatedFunc(vec3(n_out3p0, 0.0).xy, n_out27p0, n_out28p0, n_out26p0, n_out30p0, n_out29p0, n_out25p0);
-	}
-
-
 // Texture2D:5
-	vec4 n_out5p0 = texture(tex_frg_5, vec2(n_out24p0.xy));
+	vec4 n_out5p0 = texture(tex_frg_5, UV);
 	float n_out5p4 = n_out5p0.a;
 
 
@@ -1028,7 +752,7 @@ nodes/fragment/29/node = SubResource("70")
 nodes/fragment/29/position = Vector2(-260, 160)
 nodes/fragment/30/node = SubResource("71")
 nodes/fragment/30/position = Vector2(-260, -80)
-nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 3, 0, 24, 0, 25, 0, 24, 6, 26, 0, 24, 1, 29, 0, 24, 5, 28, 0, 24, 4, 27, 0, 24, 3, 30, 0, 24, 2, 24, 0, 5, 0, 5, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 5, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="73"]
 shader = SubResource("72")
@@ -1060,43 +784,10 @@ render_mode blend_mix;
 uniform sampler2D tex_frg_5;
 
 
-// DoodleUV
-#include \"res://addons/shaderV/uv/animated/doodleUV.gdshaderinc\"
 
 void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-// FloatConstant:8
-	float n_out8p0 = 0.500000;
-
-
-// FloatConstant:9
-	float n_out9p0 = 4.000000;
-
-
-// FloatConstant:10
-	float n_out10p0 = 0.700000;
-
-
-// FloatConstant:11
-	float n_out11p0 = 0.065000;
-
-
-// Input:7
-	float n_out7p0 = TIME;
-
-
-	vec3 n_out12p0;
-// DoodleUV:12
-	{
-		n_out12p0.xy = _doodleUVFunc(vec3(n_out3p0, 0.0).xy, n_out11p0, n_out7p0, n_out8p0, int(n_out9p0), n_out10p0);
-	}
-
-
 // Texture2D:5
-	vec4 n_out5p0 = texture(tex_frg_5, vec2(n_out12p0.xy));
+	vec4 n_out5p0 = texture(tex_frg_5, UV);
 	float n_out5p4 = n_out5p0.a;
 
 
@@ -1127,7 +818,7 @@ nodes/fragment/11/node = SubResource("75")
 nodes/fragment/11/position = Vector2(-120, 160)
 nodes/fragment/12/node = SubResource("76")
 nodes/fragment/12/position = Vector2(160, 0)
-nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 3, 0, 12, 0, 8, 0, 12, 1, 9, 0, 12, 2, 10, 0, 12, 3, 11, 0, 12, 4, 7, 0, 12, 5, 12, 0, 5, 0, 5, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 5, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="81"]
 shader = SubResource("80")
@@ -1150,35 +841,10 @@ render_mode blend_mix;
 uniform sampler2D tex_frg_5;
 
 
-// RotateUVAnimated
-#include \"res://addons/shaderV/uv/animated/rotateAnimated.gdshaderinc\"
 
 void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-// FloatConstant:9
-	float n_out9p0 = 0.500000;
-
-
-// Vector3Constant:10
-	vec3 n_out10p0 = vec3(0.500000, 0.500000, 0.000000);
-
-
-// Input:7
-	float n_out7p0 = TIME;
-
-
-	vec3 n_out8p0;
-// RotateUVAnimated:8
-	{
-		n_out8p0 = vec3(_rotateUVAnimatedFunc(vec3(n_out3p0, 0.0).xy, n_out10p0.xy, 0.0, n_out9p0, n_out7p0), 0);
-	}
-
-
 // Texture2D:5
-	vec4 n_out5p0 = texture(tex_frg_5, vec2(n_out8p0.xy));
+	vec4 n_out5p0 = texture(tex_frg_5, UV);
 	float n_out5p4 = n_out5p0.a;
 
 
@@ -1205,7 +871,7 @@ nodes/fragment/9/node = SubResource("84")
 nodes/fragment/9/position = Vector2(-120, -20)
 nodes/fragment/10/node = SubResource("82")
 nodes/fragment/10/position = Vector2(-260, 60)
-nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 3, 0, 8, 0, 7, 0, 8, 3, 9, 0, 8, 1, 10, 0, 8, 2, 8, 0, 5, 0, 5, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 5, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="86"]
 shader = SubResource("85")
@@ -1236,43 +902,10 @@ render_mode blend_mix;
 uniform sampler2D tex_frg_5;
 
 
-// SwirlUV
-#include \"res://addons/shaderV/uv/animated/swirlUV.gdshaderinc\"
 
 void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-// Vector3Constant:13
-	vec3 n_out13p0 = vec3(0.500000, 0.500000, 0.000000);
-
-
-// FloatConstant:10
-	float n_out10p0 = 1.000000;
-
-
-// FloatConstant:12
-	float n_out12p0 = 10.000000;
-
-
-	float n_out11p0;
-// SinTIME:11
-	float n_in11p0 = 1.00000;
-	{
-		n_out11p0 = n_out12p0 * sin(n_in11p0 * TIME);
-	}
-
-
-	vec3 n_out9p0;
-// SwirlUV:9
-	{
-		n_out9p0.xy = _swirlUVFunc(vec3(n_out3p0, 0.0).xy, n_out11p0, n_out13p0.xy, n_out10p0);
-	}
-
-
 // Texture2D:5
-	vec4 n_out5p0 = texture(tex_frg_5, vec2(n_out9p0.xy));
+	vec4 n_out5p0 = texture(tex_frg_5, UV);
 	float n_out5p4 = n_out5p0.a;
 
 
@@ -1300,7 +933,7 @@ nodes/fragment/12/node = SubResource("89")
 nodes/fragment/12/position = Vector2(-280, 180)
 nodes/fragment/13/node = SubResource("90")
 nodes/fragment/13/position = Vector2(-220, -40)
-nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 3, 0, 9, 0, 10, 0, 9, 2, 11, 0, 9, 3, 12, 0, 11, 1, 13, 0, 9, 1, 9, 0, 5, 0, 5, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 5, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="93"]
 shader = SubResource("92")
@@ -1332,32 +965,11 @@ render_mode blend_mix;
 
 
 
-// TilingAndOffsetUVAnimated
-#include \"res://addons/shaderV/uv/animated/tilingNoffsetAnimated.gdshaderinc\"
 
 void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-// FloatConstant:15
-	float n_out15p0 = 0.500000;
-
-
-// Input:14
-	float n_out14p0 = TIME;
-
-
-	vec2 n_out13p0;
-// TilingAndOffsetUVAnimated:13
-	{
-		n_out13p0.xy = _tilingNoffsetAnimatedFunc(vec3(n_out3p0, 0.0).xy, n_out14p0, vec3(n_out15p0).xy);
-	}
-
-
 	vec4 n_out16p0;
 // Texture2D:16
-	n_out16p0 = textureLod(TEXTURE, n_out13p0, n_out13p0.x);
+	n_out16p0 = texture(TEXTURE, UV);
 	float n_out16p4 = n_out16p0.a;
 
 
@@ -1384,7 +996,7 @@ nodes/fragment/16/node = SubResource("VisualShaderNodeTexture_n3ifg")
 nodes/fragment/16/position = Vector2(360, 20)
 nodes/fragment/17/node = SubResource("VisualShaderNodeInput_sghnd")
 nodes/fragment/17/position = Vector2(40, 200)
-nodes/fragment/connections = PackedInt32Array(15, 0, 13, 1, 14, 0, 13, 2, 16, 4, 0, 1, 17, 0, 16, 2, 16, 0, 0, 0, 3, 0, 13, 0, 13, 0, 16, 1, 13, 0, 16, 0)
+nodes/fragment/connections = PackedInt32Array(16, 4, 0, 1, 17, 0, 16, 2, 16, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="98"]
 shader = SubResource("97")
@@ -1399,24 +1011,6 @@ render_mode blend_mix;
 
 
 
-
-void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-	float n_out17p0;
-// HashRandom1d:17
-	{
-		n_out17p0 = fract(sin(n_out3p0.x) * 1e4);
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out17p0);
-
-
-}
 "
 mode = 1
 flags/light_only = false
@@ -1425,7 +1019,6 @@ nodes/fragment/3/node = SubResource("9")
 nodes/fragment/3/position = Vector2(20, 0)
 nodes/fragment/17/node = SubResource("99")
 nodes/fragment/17/position = Vector2(360, 0)
-nodes/fragment/connections = PackedInt32Array(3, 0, 17, 0, 17, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="101"]
 shader = SubResource("100")
@@ -1445,19 +1038,11 @@ render_mode blend_mix;
 
 
 void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-	float n_out18p0;
-// HashRandom2d:18
-	{
-		n_out18p0 = fract(1e4 * sin(17.0 * vec3(n_out3p0, 0.0).x + vec3(n_out3p0, 0.0).y * 0.1) * (0.1 + abs(sin(vec3(n_out3p0, 0.0).y * 13.0 + vec3(n_out3p0, 0.0).x))));
-	}
-
-
 // VectorCompose:20
-	vec3 n_out20p0 = vec3(n_out18p0, n_out18p0, n_out18p0);
+	float n_in20p0 = 0.00000;
+	float n_in20p1 = 0.00000;
+	float n_in20p2 = 1.00000;
+	vec3 n_out20p0 = vec3(n_in20p0, n_in20p1, n_in20p2);
 
 
 // Output:0
@@ -1476,7 +1061,7 @@ nodes/fragment/18/node = SubResource("102")
 nodes/fragment/18/position = Vector2(240, 20)
 nodes/fragment/20/node = SubResource("VisualShaderNodeVectorCompose_7v744")
 nodes/fragment/20/position = Vector2(440, -20)
-nodes/fragment/connections = PackedInt32Array(3, 0, 18, 0, 20, 0, 0, 0, 18, 0, 20, 0, 18, 0, 20, 1, 18, 0, 20, 2)
+nodes/fragment/connections = PackedInt32Array(20, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="104"]
 shader = SubResource("103")
@@ -1498,24 +1083,12 @@ render_mode blend_mix;
 
 
 
-// HashRandom2dVec
-#include \"res://addons/shaderV/tools/random/hash2dvector.gdshaderinc\"
 
 void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-	vec3 n_out19p0;
-// HashRandom2dVec:19
-	{
-		n_out19p0 = vec3(_hash2v(vec3(n_out3p0, 0.0).xy), 0.0);
-	}
-
-
 // VectorDecompose:20
-	float n_out20p0 = vec2(n_out19p0.xy).x;
-	float n_out20p1 = vec2(n_out19p0.xy).y;
+	vec2 n_in20p0 = vec2(0.00000, 0.00000);
+	float n_out20p0 = n_in20p0.x;
+	float n_out20p1 = n_in20p0.y;
 
 
 // VectorCompose:21
@@ -1541,7 +1114,7 @@ nodes/fragment/20/node = SubResource("VisualShaderNodeVectorDecompose_gortp")
 nodes/fragment/20/position = Vector2(440, 0)
 nodes/fragment/21/node = SubResource("VisualShaderNodeVectorCompose_c6k4f")
 nodes/fragment/21/position = Vector2(660, 20)
-nodes/fragment/connections = PackedInt32Array(3, 0, 19, 0, 19, 0, 20, 0, 21, 0, 0, 0, 20, 0, 21, 0, 20, 1, 21, 1)
+nodes/fragment/connections = PackedInt32Array(21, 0, 0, 0, 20, 0, 21, 0, 20, 1, 21, 1)
 
 [sub_resource type="ShaderMaterial" id="107"]
 shader = SubResource("106")
@@ -1556,20 +1129,6 @@ render_mode blend_mix;
 
 
 
-
-void fragment() {
-	float n_out2p0;
-// RandomFloat:2
-	{
-		n_out2p0 = fract(sin(dot(UV.xy, vec2(12.9898, 78.233))) * 43758.5453123);
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out2p0);
-
-
-}
 "
 graph_offset = Vector2(-104, -62)
 mode = 1
@@ -1577,7 +1136,6 @@ flags/light_only = false
 nodes/fragment/0/position = Vector2(400, 0)
 nodes/fragment/2/node = SubResource("609")
 nodes/fragment/2/position = Vector2(200, 0)
-nodes/fragment/connections = PackedInt32Array(2, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="110"]
 shader = SubResource("109")
@@ -1601,34 +1159,6 @@ render_mode blend_mix;
 
 
 
-// RandomGoldRatio
-#include \"res://addons/shaderV/tools/random/randomGoldNoiseFloat.gdshaderinc\"
-
-void fragment() {
-// Input:21
-	vec2 n_out21p0 = UV;
-
-
-// Vector3Constant:24
-	vec3 n_out24p0 = vec3(0.000000, 0.000000, 0.000000);
-
-
-// FloatConstant:25
-	float n_out25p0 = 0.000000;
-
-
-	float n_out26p0;
-// RandomGoldRatio:26
-	{
-		n_out26p0 = _randomGoldRatioFunc(vec3(n_out21p0, 0.0).xy, n_out24p0.xy, n_out25p0);
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out26p0);
-
-
-}
 "
 graph_offset = Vector2(-68, -29)
 mode = 1
@@ -1642,7 +1172,6 @@ nodes/fragment/25/node = SubResource("116")
 nodes/fragment/25/position = Vector2(-40, 120)
 nodes/fragment/26/node = SubResource("117")
 nodes/fragment/26/position = Vector2(200, 0)
-nodes/fragment/connections = PackedInt32Array(21, 0, 26, 0, 24, 0, 26, 1, 25, 0, 26, 2, 26, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="119"]
 shader = SubResource("118")
@@ -1673,40 +1202,11 @@ render_mode blend_mix;
 
 
 
-// Remap
-#include \"res://addons/shaderV/tools/remap.gdshaderinc\"
 
 void fragment() {
-// Input:21
-	vec2 n_out21p0 = UV;
-
-
-// FloatConstant:26
-	float n_out26p0 = 0.000000;
-
-
-// FloatConstant:27
-	float n_out27p0 = 1.000000;
-
-
-// FloatConstant:29
-	float n_out29p0 = -1.000000;
-
-
-// FloatConstant:28
-	float n_out28p0 = 1.000000;
-
-
-	vec3 n_out24p0;
-// Remap:24
-	{
-		n_out24p0 = _remapFunc(vec3(n_out21p0, 0.0), vec2(n_out26p0, n_out27p0), vec2(n_out29p0, n_out28p0));
-	}
-
-
 	vec4 n_out25p0;
 // Texture2D:25
-	n_out25p0 = texture(TEXTURE, vec2(n_out24p0.xy));
+	n_out25p0 = texture(TEXTURE, UV);
 	float n_out25p4 = n_out25p0.a;
 
 
@@ -1735,7 +1235,7 @@ nodes/fragment/28/node = SubResource("124")
 nodes/fragment/28/position = Vector2(-20, 220)
 nodes/fragment/29/node = SubResource("125")
 nodes/fragment/29/position = Vector2(-20, 140)
-nodes/fragment/connections = PackedInt32Array(25, 0, 0, 0, 24, 0, 25, 0, 21, 0, 24, 0, 26, 0, 24, 1, 27, 0, 24, 2, 29, 0, 24, 3, 28, 0, 24, 4, 25, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(25, 0, 0, 0, 25, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="127"]
 shader = SubResource("126")
@@ -1755,28 +1255,6 @@ render_mode blend_mix;
 
 
 
-
-void fragment() {
-// FloatConstant:2
-	float n_out2p0 = 0.000000;
-
-
-// FloatConstant:3
-	float n_out3p0 = 0.000000;
-
-
-	float n_out4p0;
-// SinTIME:4
-	{
-		n_out4p0 = n_out3p0 * sin(n_out2p0 * TIME);
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out4p0);
-
-
-}
 "
 graph_offset = Vector2(-65.6183, 45.7513)
 mode = 1
@@ -1788,7 +1266,6 @@ nodes/fragment/3/node = SubResource("VisualShaderNodeFloatConstant_gg36w")
 nodes/fragment/3/position = Vector2(0, 260)
 nodes/fragment/4/node = SubResource("VisualShaderNodeCustom_6oew3")
 nodes/fragment/4/position = Vector2(220, 200)
-nodes/fragment/connections = PackedInt32Array(4, 0, 0, 0, 3, 0, 4, 1, 2, 0, 4, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bvkyk"]
 shader = SubResource("VisualShader_gq6wd")
@@ -1810,28 +1287,6 @@ render_mode blend_mix;
 
 
 
-
-void fragment() {
-// FloatConstant:27
-	float n_out27p0 = 1.000000;
-
-
-// FloatConstant:28
-	float n_out28p0 = 1.000000;
-
-
-	float n_out26p0;
-// SinTIME:26
-	{
-		n_out26p0 = n_out28p0 * sin(n_out27p0 * TIME);
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out26p0);
-
-
-}
 "
 graph_offset = Vector2(198, -64)
 mode = 1
@@ -1843,7 +1298,6 @@ nodes/fragment/27/node = SubResource("129")
 nodes/fragment/27/position = Vector2(100, -40)
 nodes/fragment/28/node = SubResource("130")
 nodes/fragment/28/position = Vector2(100, 60)
-nodes/fragment/connections = PackedInt32Array(26, 0, 0, 0, 28, 0, 26, 1, 27, 0, 26, 0)
 
 [sub_resource type="ShaderMaterial" id="132"]
 shader = SubResource("131")
@@ -1872,29 +1326,13 @@ render_mode blend_mix;
 
 
 
-// vec2Compose
-#include \"res://addons/shaderV/tools/vec2Compose.gdshaderinc\"
 
 void fragment() {
-// FloatConstant:3
-	float n_out3p0 = 1.000000;
-
-
-// Input:4
-	float n_out4p0 = TIME;
-
-
-	vec3 n_out2p0;
-// vec2Compose:2
-	{
-		n_out2p0.xy = _vec2ComposeFunc(n_out3p0, n_out4p0);
-	}
-
-
 // VectorDecompose:7
-	float n_out7p0 = n_out2p0.x;
-	float n_out7p1 = n_out2p0.y;
-	float n_out7p2 = n_out2p0.z;
+	vec3 n_in7p0 = vec3(0.00000, 0.00000, 0.00000);
+	float n_out7p0 = n_in7p0.x;
+	float n_out7p1 = n_in7p0.y;
+	float n_out7p2 = n_in7p0.z;
 
 
 // VectorCompose:6
@@ -1922,7 +1360,7 @@ nodes/fragment/6/node = SubResource("VisualShaderNodeVectorCompose_wkq5u")
 nodes/fragment/6/position = Vector2(880, 100)
 nodes/fragment/7/node = SubResource("VisualShaderNodeVectorDecompose_b8o5j")
 nodes/fragment/7/position = Vector2(640, 100)
-nodes/fragment/connections = PackedInt32Array(4, 0, 2, 1, 3, 0, 2, 0, 2, 0, 7, 0, 7, 0, 6, 0, 7, 1, 6, 1, 6, 0, 0, 0)
+nodes/fragment/connections = PackedInt32Array(7, 0, 6, 0, 7, 1, 6, 1, 6, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="137"]
 shader = SubResource("136")
@@ -1950,38 +1388,6 @@ render_mode blend_mix;
 
 
 
-// BlurBasic
-#include \"res://addons/shaderV/rgba/blur/blur9sample.gdshaderinc\"
-
-void fragment() {
-// Input:6
-	vec2 n_out6p0 = UV;
-
-
-// FloatConstant:8
-	float n_out8p0 = -1.000000;
-
-
-// FloatConstant:9
-	float n_out9p0 = 1.000000;
-
-
-	vec3 n_out5p0;
-	float n_out5p1;
-// BlurBasic:5
-	{
-		vec4 n_out5p0n_out5p1 = _blur9sampleFunc(TEXTURE, vec3(n_out6p0, 0.0).xy, n_out8p0, n_out9p0);
-		n_out5p0 = n_out5p0n_out5p1.rgb;
-		n_out5p1 = n_out5p0n_out5p1.a;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out5p0;
-	COLOR.a = n_out5p1;
-
-
-}
 "
 graph_offset = Vector2(-115, -78)
 mode = 1
@@ -1997,7 +1403,6 @@ nodes/fragment/8/node = SubResource("141")
 nodes/fragment/8/position = Vector2(-220, 40)
 nodes/fragment/9/node = SubResource("142")
 nodes/fragment/9/position = Vector2(-220, 120)
-nodes/fragment/connections = PackedInt32Array(6, 0, 5, 1, 7, 0, 5, 0, 5, 1, 0, 1, 8, 0, 5, 2, 9, 0, 5, 3, 5, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="144"]
 shader = SubResource("143")
@@ -2022,42 +1427,6 @@ render_mode blend_mix;
 
 
 
-// BlurCustom
-#include \"res://addons/shaderV/rgba/blur/blurCustom.gdshaderinc\"
-
-void fragment() {
-// Input:6
-	vec2 n_out6p0 = UV;
-
-
-// FloatConstant:12
-	float n_out12p0 = -1.000000;
-
-
-// FloatConstant:10
-	float n_out10p0 = 5.000000;
-
-
-// FloatConstant:11
-	float n_out11p0 = 0.003000;
-
-
-	vec3 n_out8p0;
-	float n_out8p1;
-// BlurCustom:8
-	{
-		vec4 n_out8p0n_out8p1 = _blurWithAmountFunc(TEXTURE, vec3(n_out6p0, 0.0).xy, n_out12p0, int(n_out10p0), n_out11p0);
-		n_out8p0 = n_out8p0n_out8p1.rgb;
-		n_out8p1 = n_out8p0n_out8p1.a;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out8p0;
-	COLOR.a = n_out8p1;
-
-
-}
 "
 graph_offset = Vector2(-299.913, -345)
 mode = 1
@@ -2075,7 +1444,6 @@ nodes/fragment/11/node = SubResource("146")
 nodes/fragment/11/position = Vector2(-240, -20)
 nodes/fragment/12/node = SubResource("147")
 nodes/fragment/12/position = Vector2(-240, -180)
-nodes/fragment/connections = PackedInt32Array(8, 1, 0, 1, 7, 0, 8, 0, 6, 0, 8, 1, 12, 0, 8, 2, 10, 0, 8, 3, 11, 0, 8, 4, 8, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="150"]
 shader = SubResource("149")
@@ -2108,54 +1476,6 @@ render_mode blend_mix;
 
 
 
-// ZoomBlur
-#include \"res://addons/shaderV/rgba/blur/zoomBlur.gdshaderinc\"
-
-void fragment() {
-// Input:6
-	vec2 n_out6p0 = UV;
-
-
-// FloatConstant:13
-	float n_out13p0 = -1.000000;
-
-
-// Vector3Constant:15
-	vec3 n_out15p0 = vec3(0.500000, 0.500000, 0.000000);
-
-
-// FloatConstant:14
-	float n_out14p0 = 20.000000;
-
-
-// FloatConstant:12
-	float n_out12p0 = 0.100000;
-
-
-	float n_out9p0;
-// SinTIME:9
-	float n_in9p0 = 1.00000;
-	{
-		n_out9p0 = n_out12p0 * sin(n_in9p0 * TIME);
-	}
-
-
-	vec3 n_out11p0;
-	float n_out11p1;
-// ZoomBlur:11
-	{
-		vec4 n_out11p0n_out11p1 = _zoomBlurFunc(TEXTURE, vec3(n_out6p0, 0.0).xy, int(n_out14p0), n_out15p0.xy, n_out9p0, n_out13p0);
-		n_out11p0 = n_out11p0n_out11p1.rgb;
-		n_out11p1 = n_out11p0n_out11p1.a;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out11p0;
-	COLOR.a = n_out11p1;
-
-
-}
 "
 mode = 1
 flags/light_only = false
@@ -2176,7 +1496,6 @@ nodes/fragment/14/node = SubResource("154")
 nodes/fragment/14/position = Vector2(-260, 160)
 nodes/fragment/15/node = SubResource("155")
 nodes/fragment/15/position = Vector2(-400, 60)
-nodes/fragment/connections = PackedInt32Array(6, 0, 11, 1, 12, 0, 9, 1, 9, 0, 11, 5, 13, 0, 11, 2, 14, 0, 11, 4, 7, 0, 11, 0, 11, 1, 0, 1, 15, 0, 11, 3, 11, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="158"]
 shader = SubResource("157")
@@ -2207,51 +1526,6 @@ render_mode blend_mix;
 
 
 
-// GlowEmpty
-#include \"res://addons/shaderV/rgba/glow/glowEmpty.gdshaderinc\"
-
-void fragment() {
-// Input:6
-	vec2 n_out6p0 = UV;
-
-
-// FloatConstant:15
-	float n_out15p0 = -1.000000;
-
-
-// FloatConstant:16
-	float n_out16p0 = 1.000000;
-
-
-// FloatConstant:17
-	float n_out17p0 = 1.000000;
-
-
-// FloatConstant:18
-	float n_out18p0 = 1.000000;
-
-
-// ColorConstant:14
-	vec4 n_out14p0 = vec4(1.000000, 0.000000, 0.000000, 1.000000);
-
-
-	vec3 n_out13p0;
-	float n_out13p1;
-// GlowEmpty:13
-	float n_in13p7 = 1.00000;
-	{
-		vec4 n_out13p0n_out13p1 = _inoutGlowEmptyFunc(TEXTURE, vec3(n_out6p0, 0.0).xy, n_out15p0, n_out16p0, n_out17p0, n_out18p0, vec4(vec3(n_out14p0.xyz), n_in13p7));
-		n_out13p0 = n_out13p0n_out13p1.rgb;
-		n_out13p1 = n_out13p0n_out13p1.a;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out13p0;
-	COLOR.a = n_out13p1;
-
-
-}
 "
 mode = 1
 flags/light_only = false
@@ -2272,7 +1546,6 @@ nodes/fragment/17/node = SubResource("163")
 nodes/fragment/17/position = Vector2(-280, 140)
 nodes/fragment/18/node = SubResource("164")
 nodes/fragment/18/position = Vector2(-280, 220)
-nodes/fragment/connections = PackedInt32Array(13, 1, 0, 1, 7, 0, 13, 0, 6, 0, 13, 1, 14, 0, 13, 6, 15, 0, 13, 2, 16, 0, 13, 3, 17, 0, 13, 4, 18, 0, 13, 5, 13, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="166"]
 shader = SubResource("165")
@@ -2297,47 +1570,6 @@ render_mode blend_mix;
 
 
 
-// InnerGlow
-#include \"res://addons/shaderV/rgba/glow/innerGlow.gdshaderinc\"
-
-void fragment() {
-// Input:6
-	vec2 n_out6p0 = UV;
-
-
-// FloatConstant:16
-	float n_out16p0 = -1.000000;
-
-
-// FloatConstant:17
-	float n_out17p0 = 1.000000;
-
-
-// FloatConstant:18
-	float n_out18p0 = 1.000000;
-
-
-// ColorConstant:14
-	vec4 n_out14p0 = vec4(1.000000, 0.000000, 0.000000, 1.000000);
-
-
-	vec3 n_out15p0;
-	float n_out15p1;
-// InnerGlow:15
-	float n_in15p6 = 1.00000;
-	{
-		vec4 n_out15p0n_out15p1 = _innerGlowFunc(TEXTURE, vec3(n_out6p0, 0.0).xy, n_out16p0, n_out17p0, n_out18p0, vec4(vec3(n_out14p0.xyz), n_in15p6));
-		n_out15p0 = n_out15p0n_out15p1.rgb;
-		n_out15p1 = n_out15p0n_out15p1.a;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out15p0;
-	COLOR.a = n_out15p1;
-
-
-}
 "
 graph_offset = Vector2(-56, -47)
 mode = 1
@@ -2357,7 +1589,6 @@ nodes/fragment/17/node = SubResource("169")
 nodes/fragment/17/position = Vector2(-280, 80)
 nodes/fragment/18/node = SubResource("170")
 nodes/fragment/18/position = Vector2(-280, 160)
-nodes/fragment/connections = PackedInt32Array(7, 0, 15, 0, 6, 0, 15, 1, 14, 0, 15, 5, 16, 0, 15, 2, 17, 0, 15, 3, 18, 0, 15, 4, 15, 0, 0, 0, 15, 1, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="172"]
 shader = SubResource("171")
@@ -2391,47 +1622,6 @@ render_mode blend_mix;
 
 
 
-// InnerGlowEmpty
-#include \"res://addons/shaderV/rgba/glow/innerGlowEmpty.gdshaderinc\"
-
-void fragment() {
-// Input:4
-	vec2 n_out4p0 = UV;
-
-
-// FloatConstant:6
-	float n_out6p0 = -1.000000;
-
-
-// FloatConstant:7
-	float n_out7p0 = 1.000000;
-
-
-// FloatConstant:8
-	float n_out8p0 = 1.000000;
-
-
-// ColorConstant:5
-	vec4 n_out5p0 = vec4(1.000000, 0.000000, 0.000000, 1.000000);
-
-
-	vec3 n_out2p0;
-	float n_out2p1;
-// InnerGlowEmpty:2
-	float n_in2p6 = 1.00000;
-	{
-		vec4 n_out2p0n_out2p1 = _innerGlowEmptyFunc(TEXTURE, vec3(n_out4p0, 0.0).xy, n_out6p0, n_out7p0, n_out8p0, vec4(vec3(n_out5p0.xyz), n_in2p6));
-		n_out2p0 = n_out2p0n_out2p1.rgb;
-		n_out2p1 = n_out2p0n_out2p1.a;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out2p0;
-	COLOR.a = n_out2p1;
-
-
-}
 "
 graph_offset = Vector2(-54, 27)
 mode = 1
@@ -2451,7 +1641,6 @@ nodes/fragment/7/node = SubResource("178")
 nodes/fragment/7/position = Vector2(-60, 300)
 nodes/fragment/8/node = SubResource("179")
 nodes/fragment/8/position = Vector2(-60, 380)
-nodes/fragment/connections = PackedInt32Array(2, 1, 0, 1, 4, 0, 2, 1, 3, 0, 2, 0, 5, 0, 2, 5, 6, 0, 2, 2, 8, 0, 2, 4, 7, 0, 2, 3, 2, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="181"]
 shader = SubResource("180")
@@ -2479,47 +1668,6 @@ render_mode blend_mix;
 
 
 
-// OuterGlow
-#include \"res://addons/shaderV/rgba/glow/outerGlow.gdshaderinc\"
-
-void fragment() {
-// Input:4
-	vec2 n_out4p0 = UV;
-
-
-// FloatConstant:8
-	float n_out8p0 = -1.000000;
-
-
-// FloatConstant:9
-	float n_out9p0 = 1.000000;
-
-
-// FloatConstant:10
-	float n_out10p0 = 1.000000;
-
-
-// ColorConstant:7
-	vec4 n_out7p0 = vec4(1.000000, 0.000000, 0.000000, 1.000000);
-
-
-	vec3 n_out6p0;
-	float n_out6p1;
-// OuterGlow:6
-	float n_in6p6 = 1.00000;
-	{
-		vec4 n_out6p0n_out6p1 = _outerGlowFunc(TEXTURE, vec3(n_out4p0, 0.0).xy, n_out8p0, n_out9p0, n_out10p0, vec4(vec3(n_out7p0.xyz), n_in6p6));
-		n_out6p0 = n_out6p0n_out6p1.rgb;
-		n_out6p1 = n_out6p0n_out6p1.a;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out6p0;
-	COLOR.a = n_out6p1;
-
-
-}
 "
 graph_offset = Vector2(-422, 18)
 mode = 1
@@ -2539,7 +1687,6 @@ nodes/fragment/9/node = SubResource("186")
 nodes/fragment/9/position = Vector2(-80, 300)
 nodes/fragment/10/node = SubResource("182")
 nodes/fragment/10/position = Vector2(-80, 380)
-nodes/fragment/connections = PackedInt32Array(6, 1, 0, 1, 3, 0, 6, 0, 4, 0, 6, 1, 7, 0, 6, 5, 8, 0, 6, 2, 9, 0, 6, 3, 10, 0, 6, 4, 6, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="188"]
 shader = SubResource("187")
@@ -2567,47 +1714,6 @@ render_mode blend_mix;
 
 
 
-// OuterGlowEmpty
-#include \"res://addons/shaderV/rgba/glow/outerGlowEmpty.gdshaderinc\"
-
-void fragment() {
-// Input:4
-	vec2 n_out4p0 = UV;
-
-
-// FloatConstant:10
-	float n_out10p0 = -1.000000;
-
-
-// FloatConstant:11
-	float n_out11p0 = 1.000000;
-
-
-// FloatConstant:12
-	float n_out12p0 = 1.000000;
-
-
-// ColorConstant:9
-	vec4 n_out9p0 = vec4(1.000000, 0.000000, 0.000000, 1.000000);
-
-
-	vec3 n_out7p0;
-	float n_out7p1;
-// OuterGlowEmpty:7
-	float n_in7p6 = 1.00000;
-	{
-		vec4 n_out7p0n_out7p1 = _outerGlowEmptyFunc(TEXTURE, vec3(n_out4p0, 0.0).xy, n_out10p0, n_out11p0, n_out12p0, vec4(vec3(n_out9p0.xyz), n_in7p6));
-		n_out7p0 = n_out7p0n_out7p1.rgb;
-		n_out7p1 = n_out7p0n_out7p1.a;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out7p0;
-	COLOR.a = n_out7p1;
-
-
-}
 "
 graph_offset = Vector2(-220.103, 147.328)
 mode = 1
@@ -2627,7 +1733,6 @@ nodes/fragment/11/node = SubResource("190")
 nodes/fragment/11/position = Vector2(-60, 280)
 nodes/fragment/12/node = SubResource("191")
 nodes/fragment/12/position = Vector2(-60, 360)
-nodes/fragment/connections = PackedInt32Array(7, 1, 0, 1, 3, 0, 7, 0, 4, 0, 7, 1, 9, 0, 7, 5, 10, 0, 7, 2, 11, 0, 7, 3, 12, 0, 7, 4, 7, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="195"]
 shader = SubResource("194")
@@ -2650,38 +1755,6 @@ render_mode blend_mix;
 
 
 
-// CheckerboardShape
-#include \"res://addons/shaderV/rgba/generate_shapes/chekerboardPattern.gdshaderinc\"
-
-void fragment() {
-// Input:4
-	vec2 n_out4p0 = UV;
-
-
-// Vector3Constant:10
-	vec3 n_out10p0 = vec3(8.000000, 8.000000, 0.000000);
-
-
-// ColorConstant:8
-	vec4 n_out8p0 = vec4(0.000000, 1.000000, 0.500000, 1.000000);
-	float n_out8p4 = n_out8p0.a;
-
-
-	vec3 n_out9p0;
-	float n_out9p1;
-// CheckerboardShape:9
-	{
-		n_out9p0 = vec3(n_out8p0.xyz);
-		n_out9p1 = _checkerboardPatternFunc(vec3(n_out4p0, 0.0).xy, n_out10p0.xy) * n_out8p4;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out9p0;
-	COLOR.a = n_out9p1;
-
-
-}
 "
 graph_offset = Vector2(-151, 179)
 mode = 1
@@ -2695,7 +1768,6 @@ nodes/fragment/9/node = SubResource("198")
 nodes/fragment/9/position = Vector2(180, 220)
 nodes/fragment/10/node = SubResource("196")
 nodes/fragment/10/position = Vector2(-220, 220)
-nodes/fragment/connections = PackedInt32Array(9, 0, 0, 0, 9, 1, 0, 1, 8, 0, 9, 2, 10, 0, 9, 1, 4, 0, 9, 0, 8, 4, 9, 3)
 
 [sub_resource type="ShaderMaterial" id="200"]
 shader = SubResource("199")
@@ -2729,54 +1801,6 @@ render_mode blend_mix;
 
 
 
-// CircleShape
-#include \"res://addons/shaderV/rgba/generate_shapes/generateCircle.gdshaderinc\"
-
-void fragment() {
-// Input:4
-	vec2 n_out4p0 = UV;
-
-
-// Vector3Constant:23
-	vec3 n_out23p0 = vec3(0.500000, 0.500000, 0.000000);
-
-
-// Vector3Constant:24
-	vec3 n_out24p0 = vec3(1.000000, 1.000000, 0.000000);
-
-
-// FloatConstant:19
-	float n_out19p0 = -0.500000;
-
-
-// FloatConstant:20
-	float n_out20p0 = 0.500000;
-
-
-// FloatConstant:21
-	float n_out21p0 = 1.000000;
-
-
-// ColorConstant:22
-	vec4 n_out22p0 = vec4(1.000000, 0.000000, 0.000000, 1.000000);
-
-
-	vec3 n_out18p0;
-	float n_out18p1;
-// CircleShape:18
-	float n_in18p7 = 1.00000;
-	{
-		n_out18p0 = vec3(n_out22p0.xyz);
-		n_out18p1 = _generateCircleFunc(vec3(n_out4p0, 0.0).xy, n_out23p0.xy, n_out24p0.xy, n_out19p0, n_out20p0, n_out21p0).a * n_in18p7;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out18p0;
-	COLOR.a = n_out18p1;
-
-
-}
 "
 graph_offset = Vector2(-157, 124)
 mode = 1
@@ -2798,7 +1822,6 @@ nodes/fragment/23/node = SubResource("215")
 nodes/fragment/23/position = Vector2(-120, 80)
 nodes/fragment/24/node = SubResource("216")
 nodes/fragment/24/position = Vector2(-120, 180)
-nodes/fragment/connections = PackedInt32Array(4, 0, 18, 0, 19, 0, 18, 3, 20, 0, 18, 4, 21, 0, 18, 5, 22, 0, 18, 6, 23, 0, 18, 1, 24, 0, 18, 2, 18, 1, 0, 1, 18, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="218"]
 shader = SubResource("217")
@@ -2831,55 +1854,6 @@ render_mode blend_mix;
 
 
 
-// CircleShape2
-#include \"res://addons/shaderV/rgba/generate_shapes/generateCircle2.gdshaderinc\"
-
-void fragment() {
-// Input:4
-	vec2 n_out4p0 = UV;
-
-
-// Vector3Constant:18
-	vec3 n_out18p0 = vec3(0.500000, 0.500000, 0.000000);
-
-
-// Vector3Constant:14
-	vec3 n_out14p0 = vec3(1.000000, 1.000000, 0.000000);
-
-
-// FloatConstant:15
-	float n_out15p0 = 0.000000;
-
-
-// FloatConstant:16
-	float n_out16p0 = 0.500000;
-
-
-// FloatConstant:17
-	float n_out17p0 = 0.500000;
-
-
-// ColorConstant:12
-	vec4 n_out12p0 = vec4(0.593750, 0.000000, 1.000000, 1.000000);
-
-
-	vec3 n_out11p0;
-	float n_out11p1;
-// CircleShape2:11
-	float n_in11p7 = 1.00000;
-	{
-		vec4 n_out11p0n_out11p1 = _generateCircle2Func(vec3(n_out4p0, 0.0).xy, n_out18p0.xy, n_out14p0.xy, n_out15p0, n_out16p0, n_out17p0, vec4(vec3(n_out12p0.xyz), n_in11p7));
-		n_out11p0 = n_out11p0n_out11p1.rgb;
-		n_out11p1 = n_out11p0n_out11p1.a;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out11p0;
-	COLOR.a = n_out11p1;
-
-
-}
 "
 graph_offset = Vector2(-94.2341, 77.3223)
 mode = 1
@@ -2901,7 +1875,6 @@ nodes/fragment/17/node = SubResource("206")
 nodes/fragment/17/position = Vector2(40, 440)
 nodes/fragment/18/node = SubResource("207")
 nodes/fragment/18/position = Vector2(-120, 80)
-nodes/fragment/connections = PackedInt32Array(11, 1, 0, 1, 12, 0, 11, 6, 4, 0, 11, 0, 16, 0, 11, 4, 17, 0, 11, 5, 14, 0, 11, 2, 18, 0, 11, 1, 15, 0, 11, 3, 11, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="209"]
 shader = SubResource("208")
@@ -2935,54 +1908,6 @@ render_mode blend_mix;
 
 
 
-// RegularPolygonShape
-#include \"res://addons/shaderV/rgba/generate_shapes/generateRegularNgon.gdshaderinc\"
-
-void fragment() {
-// Input:4
-	vec2 n_out4p0 = UV;
-
-
-// Vector3Constant:28
-	vec3 n_out28p0 = vec3(0.500000, 0.600000, 0.000000);
-
-
-// FloatConstant:31
-	float n_out31p0 = 3.000000;
-
-
-// Vector3Constant:29
-	vec3 n_out29p0 = vec3(1.000000, 1.000000, 0.000000);
-
-
-// FloatConstant:32
-	float n_out32p0 = 0.064000;
-
-
-// FloatConstant:33
-	float n_out33p0 = 0.050000;
-
-
-// ColorConstant:26
-	vec4 n_out26p0 = vec4(1.000000, 0.867188, 0.000000, 1.000000);
-
-
-	vec3 n_out27p0;
-	float n_out27p1;
-// RegularPolygonShape:27
-	float n_in27p7 = 1.00000;
-	{
-		n_out27p0 = vec3(n_out26p0.xyz);
-		n_out27p1 = _polygonFunc(vec3(n_out4p0, 0.0).xy, n_out28p0.xy, n_out29p0.xy, n_out31p0, n_out32p0, n_out33p0) * n_in27p7;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out27p0;
-	COLOR.a = n_out27p1;
-
-
-}
 "
 graph_offset = Vector2(-310.568, -28.3627)
 mode = 1
@@ -3004,7 +1929,6 @@ nodes/fragment/32/node = SubResource("230")
 nodes/fragment/32/position = Vector2(0, 280)
 nodes/fragment/33/node = SubResource("231")
 nodes/fragment/33/position = Vector2(0, 360)
-nodes/fragment/connections = PackedInt32Array(27, 1, 0, 1, 4, 0, 27, 0, 28, 0, 27, 1, 31, 0, 27, 2, 29, 0, 27, 3, 32, 0, 27, 4, 33, 0, 27, 5, 26, 0, 27, 6, 27, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="233"]
 shader = SubResource("232")
@@ -3041,59 +1965,6 @@ render_mode blend_mix;
 
 
 
-// SpiralShape
-#include \"res://addons/shaderV/rgba/generate_shapes/generateSpiral.gdshaderinc\"
-
-void fragment() {
-// Input:4
-	vec2 n_out4p0 = UV;
-
-
-// Vector3Constant:38
-	vec3 n_out38p0 = vec3(0.500000, 0.500000, 0.000000);
-
-
-// FloatConstant:41
-	float n_out41p0 = 70.000000;
-
-
-// FloatConstant:42
-	float n_out42p0 = 10.000000;
-
-
-// FloatConstant:43
-	float n_out43p0 = 1.200000;
-
-
-// FloatConstant:44
-	float n_out44p0 = -2.000000;
-
-
-// Input:45
-	float n_out45p0 = TIME;
-
-
-// ColorConstant:37
-	vec4 n_out37p0 = vec4(0.000000, 0.552138, 1.000000, 1.000000);
-
-
-	vec3 n_out40p0;
-	float n_out40p1;
-// SpiralShape:40
-	float n_in40p8 = 1.00000;
-	{
-		vec4 n_out40p0n_out40p1 = _generateSpiralFunc(vec3(n_out4p0, 0.0).xy, n_out38p0.xy, n_out41p0, n_out42p0, n_out44p0, n_out43p0, n_out45p0, vec4(vec3(n_out37p0.xyz), n_in40p8));
-		n_out40p0 = n_out40p0n_out40p1.rgb;
-		n_out40p1 = n_out40p0n_out40p1.a;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out40p0;
-	COLOR.a = n_out40p1;
-
-
-}
 "
 graph_offset = Vector2(-271.496, -54.4786)
 mode = 1
@@ -3117,7 +1988,6 @@ nodes/fragment/44/node = SubResource("240")
 nodes/fragment/44/position = Vector2(0, 380)
 nodes/fragment/45/node = SubResource("241")
 nodes/fragment/45/position = Vector2(-120, 460)
-nodes/fragment/connections = PackedInt32Array(4, 0, 40, 0, 38, 0, 40, 1, 41, 0, 40, 2, 42, 0, 40, 3, 43, 0, 40, 4, 44, 0, 40, 5, 45, 0, 40, 6, 37, 0, 40, 7, 40, 1, 0, 1, 40, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="243"]
 shader = SubResource("242")
@@ -3151,50 +2021,6 @@ render_mode blend_mix;
 
 
 
-// ScanLinesSharpShape
-#include \"res://addons/shaderV/rgba/generate_shapes/scanLinesSharp.gdshaderinc\"
-
-void fragment() {
-// Input:47
-	vec2 n_out47p0 = UV;
-
-
-// FloatConstant:48
-	float n_out48p0 = 21.000000;
-
-
-// FloatConstant:49
-	float n_out49p0 = 0.300000;
-
-
-// FloatConstant:50
-	float n_out50p0 = 0.200000;
-
-
-// Input:51
-	float n_out51p0 = TIME;
-
-
-// ColorConstant:52
-	vec4 n_out52p0 = vec4(0.000000, 1.000000, 0.557237, 1.000000);
-
-
-	vec3 n_out53p0;
-	float n_out53p1;
-// ScanLinesSharpShape:53
-	float n_in53p6 = 1.00000;
-	{
-		n_out53p0 = vec3(n_out52p0.xyz);
-		n_out53p1 = _scanLinesSharpFunc(vec3(n_out47p0, 0.0).xy, n_out48p0, n_out49p0, n_out50p0, n_out51p0) * float(n_in53p6);
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out53p0;
-	COLOR.a = n_out53p1;
-
-
-}
 "
 mode = 1
 flags/light_only = false
@@ -3213,7 +2039,6 @@ nodes/fragment/52/node = SubResource("250")
 nodes/fragment/52/position = Vector2(100, 400)
 nodes/fragment/53/node = SubResource("611")
 nodes/fragment/53/position = Vector2(380, 220)
-nodes/fragment/connections = PackedInt32Array(53, 1, 0, 1, 48, 0, 53, 1, 49, 0, 53, 2, 50, 0, 53, 3, 51, 0, 53, 4, 52, 0, 53, 5, 53, 0, 0, 0, 47, 0, 53, 0)
 
 [sub_resource type="ShaderMaterial" id="252"]
 shader = SubResource("251")
@@ -3238,42 +2063,6 @@ render_mode blend_mix;
 
 
 
-// RandomStripesShape
-#include \"res://addons/shaderV/rgba/generate_shapes/stripesRandom.gdshaderinc\"
-
-void fragment() {
-// Input:47
-	vec2 n_out47p0 = UV;
-
-
-// FloatConstant:55
-	float n_out55p0 = 0.300000;
-
-
-// FloatConstant:56
-	float n_out56p0 = 15.000000;
-
-
-// ColorConstant:53
-	vec4 n_out53p0 = vec4(0.623529, 0.439216, 1.000000, 1.000000);
-
-
-	vec3 n_out54p0;
-	float n_out54p1;
-// RandomStripesShape:54
-	float n_in54p4 = 1.00000;
-	{
-		n_out54p0 = vec3(n_out53p0.xyz);
-		n_out54p1 = _generateRandomStripesFunc(vec3(n_out47p0, 0.0).xy, n_out55p0, n_out56p0) * float(n_in54p4);
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out54p0;
-	COLOR.a = n_out54p1;
-
-
-}
 "
 graph_offset = Vector2(237.627, 299.737)
 mode = 1
@@ -3289,7 +2078,6 @@ nodes/fragment/55/node = SubResource("255")
 nodes/fragment/55/position = Vector2(140, 220)
 nodes/fragment/56/node = SubResource("256")
 nodes/fragment/56/position = Vector2(140, 300)
-nodes/fragment/connections = PackedInt32Array(47, 0, 54, 0, 53, 0, 54, 3, 55, 0, 54, 1, 56, 0, 54, 2, 54, 0, 0, 0, 54, 1, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="258"]
 shader = SubResource("257")
@@ -3311,34 +2099,6 @@ render_mode blend_mix;
 
 
 
-// GenericNoise2D
-#include \"res://addons/shaderV/rgba/noise/generic2d.gdshaderinc\"
-
-void fragment() {
-// Input:47
-	vec2 n_out47p0 = UV;
-
-
-// Vector3Constant:56
-	vec3 n_out56p0 = vec3(0.000000, 0.000000, 0.000000);
-
-
-// FloatConstant:57
-	float n_out57p0 = 10.000000;
-
-
-	float n_out55p0;
-// GenericNoise2D:55
-	{
-		n_out55p0 = _genericNoise2D((vec3(n_out47p0, 0.0).xy + n_out56p0.xy) * n_out57p0);
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out55p0);
-
-
-}
 "
 graph_offset = Vector2(41.1867, 31.5944)
 mode = 1
@@ -3352,7 +2112,6 @@ nodes/fragment/56/node = SubResource("260")
 nodes/fragment/56/position = Vector2(60, 220)
 nodes/fragment/57/node = SubResource("261")
 nodes/fragment/57/position = Vector2(200, 320)
-nodes/fragment/connections = PackedInt32Array(47, 0, 55, 0, 56, 0, 55, 1, 57, 0, 55, 2, 55, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="263"]
 shader = SubResource("262")
@@ -3375,38 +2134,6 @@ render_mode blend_mix;
 
 
 
-// PerlinNoise2D
-#include \"res://addons/shaderV/rgba/noise/perlin2d.gdshaderinc\"
-
-void fragment() {
-// Input:47
-	vec2 n_out47p0 = UV;
-
-
-// Vector3Constant:68
-	vec3 n_out68p0 = vec3(0.000000, 0.000000, 0.000000);
-
-
-// FloatConstant:67
-	float n_out67p0 = 10.000000;
-
-
-// Vector3Constant:69
-	vec3 n_out69p0 = vec3(0.000000, 0.000000, 0.000000);
-
-
-	float n_out66p0;
-// PerlinNoise2D:66
-	{
-		n_out66p0 = _perlin2dNoiseFunc((vec3(n_out47p0, 0.0).xy+n_out68p0.xy)*n_out67p0, n_out69p0.xy);
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out66p0);
-
-
-}
 "
 graph_offset = Vector2(237, 169)
 mode = 1
@@ -3422,7 +2149,6 @@ nodes/fragment/68/node = SubResource("266")
 nodes/fragment/68/position = Vector2(60, 200)
 nodes/fragment/69/node = SubResource("267")
 nodes/fragment/69/position = Vector2(60, 380)
-nodes/fragment/connections = PackedInt32Array(47, 0, 66, 0, 67, 0, 66, 2, 69, 0, 66, 3, 68, 0, 66, 1, 66, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="269"]
 shader = SubResource("268")
@@ -3446,38 +2172,6 @@ render_mode blend_mix;
 
 
 
-// PerlinNoise3D
-#include \"res://addons/shaderV/rgba/noise/perlin3d.gdshaderinc\"
-
-void fragment() {
-// Input:47
-	vec2 n_out47p0 = UV;
-
-
-// Vector3Constant:64
-	vec3 n_out64p0 = vec3(0.000000, 0.000000, 0.000000);
-
-
-// FloatConstant:63
-	float n_out63p0 = 10.000000;
-
-
-// Input:65
-	float n_out65p0 = TIME;
-
-
-	float n_out62p0;
-// PerlinNoise3D:62
-	{
-		n_out62p0 = _perlin3dNoiseFunc(vec3((vec3(n_out47p0, 0.0).xy+n_out64p0.xy) * n_out63p0, n_out65p0));
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out62p0);
-
-
-}
 "
 graph_offset = Vector2(59.0211, 97.2226)
 mode = 1
@@ -3493,7 +2187,6 @@ nodes/fragment/64/node = SubResource("272")
 nodes/fragment/64/position = Vector2(80, 260)
 nodes/fragment/65/node = SubResource("273")
 nodes/fragment/65/position = Vector2(100, 440)
-nodes/fragment/connections = PackedInt32Array(47, 0, 62, 0, 63, 0, 62, 2, 64, 0, 62, 1, 65, 0, 62, 3, 62, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="275"]
 shader = SubResource("274")
@@ -3517,42 +2210,6 @@ render_mode blend_mix;
 
 
 
-// PerlinPeriodicNoise3D
-#include \"res://addons/shaderV/rgba/noise/perlinPeriodic3d.gdshaderinc\"
-
-void fragment() {
-// Input:47
-	vec2 n_out47p0 = UV;
-
-
-// Vector3Constant:68
-	vec3 n_out68p0 = vec3(0.000000, 0.000000, 0.000000);
-
-
-// FloatConstant:67
-	float n_out67p0 = 10.000000;
-
-
-// Vector3Constant:69
-	vec3 n_out69p0 = vec3(1.000000, 10.000000, 0.000000);
-
-
-// Input:65
-	float n_out65p0 = TIME;
-
-
-	float n_out66p0;
-// PerlinPeriodicNoise3D:66
-	{
-		n_out66p0 = _perlin3dPeriodicNoiseFunc(vec3((vec3(n_out47p0, 0.0).xy + n_out68p0.xy) * n_out67p0, n_out65p0), n_out69p0);
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out66p0);
-
-
-}
 "
 graph_offset = Vector2(278, 221)
 mode = 1
@@ -3570,7 +2227,6 @@ nodes/fragment/68/node = SubResource("278")
 nodes/fragment/68/position = Vector2(80, 240)
 nodes/fragment/69/node = SubResource("279")
 nodes/fragment/69/position = Vector2(80, 420)
-nodes/fragment/connections = PackedInt32Array(47, 0, 66, 0, 67, 0, 66, 2, 68, 0, 66, 1, 69, 0, 66, 3, 65, 0, 66, 4, 66, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="281"]
 shader = SubResource("280")
@@ -3594,42 +2250,6 @@ render_mode blend_mix;
 
 
 
-// PerlinNoise4D
-#include \"res://addons/shaderV/rgba/noise/perlin4d.gdshaderinc\"
-
-void fragment() {
-// Input:47
-	vec2 n_out47p0 = UV;
-
-
-// Vector3Constant:72
-	vec3 n_out72p0 = vec3(0.000000, 0.000000, 0.000000);
-
-
-// FloatConstant:71
-	float n_out71p0 = 10.000000;
-
-
-// FloatConstant:73
-	float n_out73p0 = 1.000000;
-
-
-// Input:65
-	float n_out65p0 = TIME;
-
-
-	float n_out70p0;
-// PerlinNoise4D:70
-	{
-		n_out70p0 = _perlin4dNoiseFunc(vec4((vec3(n_out47p0, 0.0).xy + n_out72p0.xy) * n_out71p0, n_out73p0, n_out65p0));
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out70p0);
-
-
-}
 "
 graph_offset = Vector2(-42.9457, 76.4218)
 mode = 1
@@ -3647,7 +2267,6 @@ nodes/fragment/72/node = SubResource("284")
 nodes/fragment/72/position = Vector2(80, 260)
 nodes/fragment/73/node = SubResource("285")
 nodes/fragment/73/position = Vector2(220, 440)
-nodes/fragment/connections = PackedInt32Array(47, 0, 70, 0, 71, 0, 70, 2, 65, 0, 70, 4, 73, 0, 70, 3, 70, 0, 0, 0, 72, 0, 70, 1)
 
 [sub_resource type="ShaderMaterial" id="287"]
 shader = SubResource("286")
@@ -3671,34 +2290,6 @@ render_mode blend_mix;
 
 
 
-// SimplexNoise2D
-#include \"res://addons/shaderV/rgba/noise/simplex2d.gdshaderinc\"
-
-void fragment() {
-// Input:47
-	vec2 n_out47p0 = UV;
-
-
-// Vector3Constant:72
-	vec3 n_out72p0 = vec3(0.000000, 0.000000, 0.000000);
-
-
-// FloatConstant:71
-	float n_out71p0 = 10.000000;
-
-
-	float n_out74p0;
-// SimplexNoise2D:74
-	{
-		n_out74p0 = _simplex2dNoiseFunc((vec3(n_out47p0, 0.0).xy+n_out72p0.xy)*n_out71p0);
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out74p0);
-
-
-}
 "
 graph_offset = Vector2(304, 210)
 mode = 1
@@ -3712,7 +2303,6 @@ nodes/fragment/72/node = SubResource("290")
 nodes/fragment/72/position = Vector2(100, 280)
 nodes/fragment/74/node = SubResource("291")
 nodes/fragment/74/position = Vector2(500, 280)
-nodes/fragment/connections = PackedInt32Array(47, 0, 74, 0, 72, 0, 74, 1, 71, 0, 74, 2, 74, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="293"]
 shader = SubResource("292")
@@ -3736,38 +2326,6 @@ render_mode blend_mix;
 
 
 
-// SimplexNoise3D
-#include \"res://addons/shaderV/rgba/noise/simplex3d.gdshaderinc\"
-
-void fragment() {
-// Input:47
-	vec2 n_out47p0 = UV;
-
-
-// Vector3Constant:76
-	vec3 n_out76p0 = vec3(0.000000, 0.000000, 0.000000);
-
-
-// FloatConstant:75
-	float n_out75p0 = 10.000000;
-
-
-// Input:78
-	float n_out78p0 = TIME;
-
-
-	float n_out77p0;
-// SimplexNoise3D:77
-	{
-		n_out77p0 = _simplex3dNoiseFunc(vec3((vec3(n_out47p0, 0.0).xy + n_out76p0.xy) * n_out75p0, n_out78p0));
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out77p0);
-
-
-}
 "
 graph_offset = Vector2(244, 228)
 mode = 1
@@ -3783,7 +2341,6 @@ nodes/fragment/77/node = SubResource("296")
 nodes/fragment/77/position = Vector2(500, 280)
 nodes/fragment/78/node = SubResource("297")
 nodes/fragment/78/position = Vector2(100, 440)
-nodes/fragment/connections = PackedInt32Array(47, 0, 77, 0, 76, 0, 77, 1, 75, 0, 77, 2, 78, 0, 77, 3, 77, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="299"]
 shader = SubResource("298")
@@ -3807,42 +2364,6 @@ render_mode blend_mix;
 
 
 
-// SimplexNoise4D
-#include \"res://addons/shaderV/rgba/noise/simplex4d.gdshaderinc\"
-
-void fragment() {
-// Input:47
-	vec2 n_out47p0 = UV;
-
-
-// Vector3Constant:80
-	vec3 n_out80p0 = vec3(0.000000, 0.000000, 0.000000);
-
-
-// FloatConstant:82
-	float n_out82p0 = 10.000000;
-
-
-// FloatConstant:83
-	float n_out83p0 = 1.000000;
-
-
-// Input:78
-	float n_out78p0 = TIME;
-
-
-	float n_out81p0;
-// SimplexNoise4D:81
-	{
-		n_out81p0 = _simplex4dNoiseFunc(vec4((vec3(n_out47p0, 0.0).xy + n_out80p0.xy) * n_out82p0, n_out83p0, n_out78p0));
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out81p0);
-
-
-}
 "
 graph_offset = Vector2(394, 329)
 mode = 1
@@ -3860,7 +2381,6 @@ nodes/fragment/82/node = SubResource("302")
 nodes/fragment/82/position = Vector2(300, 440)
 nodes/fragment/83/node = SubResource("303")
 nodes/fragment/83/position = Vector2(300, 520)
-nodes/fragment/connections = PackedInt32Array(47, 0, 81, 0, 80, 0, 81, 1, 82, 0, 81, 2, 83, 0, 81, 3, 78, 0, 81, 4, 81, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="305"]
 shader = SubResource("304")
@@ -3884,41 +2404,6 @@ render_mode blend_mix;
 
 
 
-// WorleyNoise2D
-#include \"res://addons/shaderV/rgba/noise/worley2d.gdshaderinc\"
-
-void fragment() {
-// Input:47
-	vec2 n_out47p0 = UV;
-
-
-// Vector3Constant:85
-	vec3 n_out85p0 = vec3(0.000000, 0.000000, 0.000000);
-
-
-// FloatConstant:86
-	float n_out86p0 = 10.000000;
-
-
-// FloatConstant:87
-	float n_out87p0 = 1.000000;
-
-
-	float n_out84p0;
-	float n_out84p1;
-// WorleyNoise2D:84
-	{
-		vec2 n_out84p0n_out84p1 = _cellular2dNoiseFunc((vec3(n_out47p0, 0.0).xy+n_out85p0.xy)*n_out86p0, min(max(n_out87p0, 0.0), 1.0));
-		n_out84p0 = n_out84p0n_out84p1.x;
-		n_out84p1 = n_out84p0n_out84p1.y;
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out84p0);
-
-
-}
 "
 graph_offset = Vector2(3.74271, 11.8198)
 mode = 1
@@ -3934,7 +2419,6 @@ nodes/fragment/86/node = SubResource("308")
 nodes/fragment/86/position = Vector2(230, 330)
 nodes/fragment/87/node = SubResource("309")
 nodes/fragment/87/position = Vector2(230, 410)
-nodes/fragment/connections = PackedInt32Array(85, 0, 84, 1, 86, 0, 84, 2, 87, 0, 84, 3, 47, 0, 84, 0, 84, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="311"]
 shader = SubResource("310")
@@ -3958,38 +2442,6 @@ render_mode blend_mix;
 
 
 
-// WorleyNoise2x2
-#include \"res://addons/shaderV/rgba/noise/worley2x2.gdshaderinc\"
-
-void fragment() {
-// Input:47
-	vec2 n_out47p0 = UV;
-
-
-// Vector3Constant:89
-	vec3 n_out89p0 = vec3(0.000000, 0.000000, 0.000000);
-
-
-// FloatConstant:90
-	float n_out90p0 = 10.000000;
-
-
-// FloatConstant:91
-	float n_out91p0 = 1.000000;
-
-
-	float n_out88p0;
-// WorleyNoise2x2:88
-	{
-		n_out88p0 = _cellular2x2NoiseFunc((vec3(n_out47p0, 0.0).xy+n_out89p0.xy)*n_out90p0, min(max(n_out91p0, 0.0), 1.0));
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out88p0);
-
-
-}
 "
 graph_offset = Vector2(240, 220)
 mode = 1
@@ -4005,7 +2457,6 @@ nodes/fragment/90/node = SubResource("314")
 nodes/fragment/90/position = Vector2(240, 340)
 nodes/fragment/91/node = SubResource("315")
 nodes/fragment/91/position = Vector2(240, 420)
-nodes/fragment/connections = PackedInt32Array(47, 0, 88, 0, 89, 0, 88, 1, 90, 0, 88, 2, 91, 0, 88, 3, 88, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="317"]
 shader = SubResource("316")
@@ -4032,42 +2483,6 @@ render_mode blend_mix;
 
 
 
-// WorleyNoise2x2x2
-#include \"res://addons/shaderV/rgba/noise/worley2x2x2.gdshaderinc\"
-
-void fragment() {
-// Input:47
-	vec2 n_out47p0 = UV;
-
-
-// Vector3Constant:93
-	vec3 n_out93p0 = vec3(0.000000, 0.000000, 0.000000);
-
-
-// FloatConstant:94
-	float n_out94p0 = 10.000000;
-
-
-// FloatConstant:95
-	float n_out95p0 = 1.000000;
-
-
-// Input:96
-	float n_out96p0 = TIME;
-
-
-	float n_out92p0;
-// WorleyNoise2x2x2:92
-	{
-		n_out92p0 = _cellular2x2x2NoiseFunc(vec3((vec3(n_out47p0, 0.0).xy + n_out93p0.xy) * n_out94p0, n_out96p0), min(max(n_out95p0, 0.0), 1.0));
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out92p0);
-
-
-}
 "
 graph_offset = Vector2(-10.3489, 46.022)
 mode = 1
@@ -4085,7 +2500,6 @@ nodes/fragment/95/node = SubResource("321")
 nodes/fragment/95/position = Vector2(260, 400)
 nodes/fragment/96/node = SubResource("322")
 nodes/fragment/96/position = Vector2(140, 480)
-nodes/fragment/connections = PackedInt32Array(47, 0, 92, 0, 93, 0, 92, 1, 94, 0, 92, 2, 95, 0, 92, 3, 96, 0, 92, 4, 92, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="324"]
 shader = SubResource("323")
@@ -4109,45 +2523,6 @@ render_mode blend_mix;
 
 
 
-// WorleyNoise3D
-#include \"res://addons/shaderV/rgba/noise/worley3d.gdshaderinc\"
-
-void fragment() {
-// Input:47
-	vec2 n_out47p0 = UV;
-
-
-// Vector3Constant:98
-	vec3 n_out98p0 = vec3(0.000000, 0.000000, 0.000000);
-
-
-// FloatConstant:99
-	float n_out99p0 = 10.000000;
-
-
-// FloatConstant:100
-	float n_out100p0 = 1.000000;
-
-
-// Input:96
-	float n_out96p0 = TIME;
-
-
-	float n_out97p0;
-	float n_out97p1;
-// WorleyNoise3D:97
-	{
-		vec2 n_out97p0n_out97p1 = _cellular3dNoiseFunc(vec3((vec3(n_out47p0, 0.0).xy+n_out98p0.xy)*n_out99p0, n_out96p0), min(max(n_out100p0, 0.0), 1.0));
-		n_out97p0 = n_out97p0n_out97p1.x;
-		n_out97p1 = n_out97p0n_out97p1.y;
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out97p0);
-
-
-}
 "
 graph_offset = Vector2(285, 205)
 mode = 1
@@ -4165,7 +2540,6 @@ nodes/fragment/99/node = SubResource("328")
 nodes/fragment/99/position = Vector2(260, 320)
 nodes/fragment/100/node = SubResource("325")
 nodes/fragment/100/position = Vector2(260, 400)
-nodes/fragment/connections = PackedInt32Array(47, 0, 97, 0, 98, 0, 97, 1, 99, 0, 97, 2, 100, 0, 97, 3, 96, 0, 97, 4, 97, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="330"]
 shader = SubResource("329")
@@ -4194,8 +2568,6 @@ render_mode blend_mix;
 
 
 
-// BCSAdjustment
-#include \"res://addons/shaderV/rgba/BCSAdjustment.gdshaderinc\"
 
 void fragment() {
 	vec4 n_out3p0;
@@ -4204,27 +2576,7 @@ void fragment() {
 	float n_out3p4 = n_out3p0.a;
 
 
-// FloatConstant:4
-	float n_out4p0 = 0.500000;
-
-
-// FloatConstant:5
-	float n_out5p0 = 2.000000;
-
-
-// FloatConstant:6
-	float n_out6p0 = 10.000000;
-
-
-	vec3 n_out7p0;
-// BCSAdjustment:7
-	{
-		n_out7p0 = _applyBCS(vec3(n_out3p0.xyz), vec3(n_out4p0, n_out5p0, n_out6p0));
-	}
-
-
 // Output:0
-	COLOR.rgb = n_out7p0;
 	COLOR.a = n_out3p4;
 
 
@@ -4244,7 +2596,7 @@ nodes/fragment/6/node = SubResource("335")
 nodes/fragment/6/position = Vector2(-140, 60)
 nodes/fragment/7/node = SubResource("610")
 nodes/fragment/7/position = Vector2(140, -60)
-nodes/fragment/connections = PackedInt32Array(3, 0, 7, 0, 4, 0, 7, 1, 5, 0, 7, 2, 6, 0, 7, 3, 7, 0, 0, 0, 3, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(3, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="337"]
 shader = SubResource("336")
@@ -4263,8 +2615,6 @@ render_mode blend_mix;
 
 
 
-// BlackAndWhite
-#include \"res://addons/shaderV/rgba/blackNwhite.gdshaderinc\"
 
 void fragment() {
 	vec4 n_out3p0;
@@ -4273,19 +2623,7 @@ void fragment() {
 	float n_out3p4 = n_out3p0.a;
 
 
-// FloatConstant:8
-	float n_out8p0 = 0.500000;
-
-
-	vec3 n_out7p0;
-// BlackAndWhite:7
-	{
-		n_out7p0 = blackNwhite(vec3(n_out3p0.xyz), n_out8p0);
-	}
-
-
 // Output:0
-	COLOR.rgb = n_out7p0;
 	COLOR.a = n_out3p4;
 
 
@@ -4301,7 +2639,7 @@ nodes/fragment/7/node = SubResource("338")
 nodes/fragment/7/position = Vector2(140, 60)
 nodes/fragment/8/node = SubResource("339")
 nodes/fragment/8/position = Vector2(-160, 80)
-nodes/fragment/connections = PackedInt32Array(3, 0, 7, 0, 8, 0, 7, 1, 7, 0, 0, 0, 3, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(3, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="341"]
 shader = SubResource("340")
@@ -4321,45 +2659,8 @@ script = ExtResource("58")
 code = "shader_type canvas_item;
 render_mode blend_mix;
 
-uniform sampler2D tex_frg_10;
 
 
-// BlendAwithB
-#include \"res://addons/shaderV/rgba/blendAwithB.gdshaderinc\"
-
-void fragment() {
-	vec4 n_out3p0;
-// Texture2D:3
-	n_out3p0 = texture(TEXTURE, UV);
-	float n_out3p4 = n_out3p0.a;
-
-
-// Texture2D:10
-	vec4 n_out10p0 = texture(tex_frg_10, UV);
-
-
-// FloatConstant:11
-	float n_out11p0 = 0.700000;
-
-
-	vec3 n_out9p0;
-	float n_out9p1;
-// BlendAwithB:9
-	float n_in9p1 = 1.00000;
-	float n_in9p3 = 1.00000;
-	{
-		vec4 n_out9p0n_out9p1 = _blendAwithBFunc(vec4(vec3(n_out3p0.xyz), n_in9p1), vec4(vec3(n_out10p0.xyz), n_in9p3), n_out11p0);
-		n_out9p0 = n_out9p0n_out9p1.rgb;
-		n_out9p1 = n_out9p0n_out9p1.a;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out9p0;
-	COLOR.a = n_out9p1;
-
-
-}
 "
 graph_offset = Vector2(-204.802, -46.8099)
 mode = 1
@@ -4373,7 +2674,6 @@ nodes/fragment/10/node = SubResource("342")
 nodes/fragment/10/position = Vector2(-440, 0)
 nodes/fragment/11/node = SubResource("343")
 nodes/fragment/11/position = Vector2(-120, 200)
-nodes/fragment/connections = PackedInt32Array(3, 0, 9, 0, 9, 1, 0, 1, 10, 0, 9, 2, 11, 0, 9, 4, 9, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="346"]
 shader = SubResource("345")
@@ -4392,36 +2692,6 @@ render_mode blend_mix;
 
 
 
-// Bloom
-#include \"res://addons/shaderV/rgba/bloom.gdshaderinc\"
-
-void fragment() {
-	vec4 n_out3p0;
-// Texture2D:3
-	n_out3p0 = texture(TEXTURE, UV);
-	float n_out3p4 = n_out3p0.a;
-
-
-// FloatConstant:13
-	float n_out13p0 = 0.500000;
-
-
-	vec3 n_out12p0;
-	float n_out12p1;
-// Bloom:12
-	{
-		vec4 n_out12p0n_out12p1 = _bloomFunc(vec4(vec3(n_out3p0.xyz), n_out3p4), n_out13p0);
-		n_out12p0 = n_out12p0n_out12p1.rgb;
-		n_out12p1 = n_out12p0n_out12p1.a;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out12p0;
-	COLOR.a = n_out12p1;
-
-
-}
 "
 graph_offset = Vector2(-256.704, -93.2689)
 mode = 1
@@ -4433,7 +2703,6 @@ nodes/fragment/12/node = SubResource("347")
 nodes/fragment/12/position = Vector2(200, 0)
 nodes/fragment/13/node = SubResource("348")
 nodes/fragment/13/position = Vector2(0, 160)
-nodes/fragment/connections = PackedInt32Array(12, 1, 0, 1, 3, 0, 12, 0, 13, 0, 12, 2, 12, 0, 0, 0, 3, 4, 12, 1)
 
 [sub_resource type="ShaderMaterial" id="350"]
 shader = SubResource("349")
@@ -4463,42 +2732,6 @@ render_mode blend_mix;
 
 
 
-// ChromaticAberration
-#include \"res://addons/shaderV/rgba/chromaticAberration.gdshaderinc\"
-
-void fragment() {
-// Input:18
-	vec2 n_out18p0 = UV;
-
-
-// FloatConstant:19
-	float n_out19p0 = -1.000000;
-
-
-// FloatConstant:15
-	float n_out15p0 = 0.020000;
-
-
-// FloatConstant:20
-	float n_out20p0 = 0.000000;
-
-
-	vec3 n_out14p0;
-	float n_out14p1;
-// ChromaticAberration:14
-	{
-		vec4 n_out14p0n_out14p1 = _chromaticAberrationFunc(TEXTURE, vec3(n_out18p0, 0.0).xy, vec3(n_out15p0, n_out20p0, n_out19p0));
-		n_out14p0 = n_out14p0n_out14p1.rgb;
-		n_out14p1 = n_out14p0n_out14p1.a;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out14p0;
-	COLOR.a = n_out14p1;
-
-
-}
 "
 graph_offset = Vector2(-244, -169)
 mode = 1
@@ -4516,7 +2749,6 @@ nodes/fragment/19/node = SubResource("355")
 nodes/fragment/19/position = Vector2(-60, 60)
 nodes/fragment/20/node = SubResource("356")
 nodes/fragment/20/position = Vector2(-60, 220)
-nodes/fragment/connections = PackedInt32Array(14, 1, 0, 1, 15, 0, 14, 3, 17, 0, 14, 0, 18, 0, 14, 1, 20, 0, 14, 4, 19, 0, 14, 2, 14, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="358"]
 shader = SubResource("357")
@@ -4557,48 +2789,19 @@ render_mode blend_mix;
 
 
 
-// ScaleUV
-#include \"res://addons/shaderV/uv/scaleUV.gdshaderinc\"
-// ClampAlphaBorder
-#include \"res://addons/shaderV/rgba/clamp.gdshaderinc\"
 
 void fragment() {
-// Input:25
-	vec2 n_out25p0 = UV;
-
-
-// FloatConstant:26
-	float n_out26p0 = 2.000000;
-
-
-	vec3 n_out24p0;
-// ScaleUV:24
-	vec3 n_in24p2 = vec3(0.50000, 0.50000, 0.00000);
-	{
-		n_out24p0.xy = _scaleUV(vec3(n_out25p0, 0.0).xy, vec3(n_out26p0).xy, n_in24p2.xy);
-	}
-
-
 // FloatConstant:22
 	float n_out22p0 = 2.000000;
 
 
 	vec4 n_out23p0;
 // Texture2D:23
-	n_out23p0 = textureLod(TEXTURE, vec2(n_out24p0.xy), n_out22p0);
-	float n_out23p4 = n_out23p0.a;
-
-
-	float n_out21p0;
-// ClampAlphaBorder:21
-	{
-		n_out21p0 = _clampAlphaBorderFunc(n_out23p4, (n_out24p0).xy);
-	}
+	n_out23p0 = textureLod(TEXTURE, UV, n_out22p0);
 
 
 // Output:0
 	COLOR.rgb = vec3(n_out23p0.xyz);
-	COLOR.a = n_out21p0;
 
 
 }
@@ -4629,7 +2832,7 @@ nodes/fragment/27/expression = "Sometimes texture may show out of its true borde
 To fix it, use ClampAlphaBorder node.
 Set 'alpha' port from \"Texture2D\" node to 'Alpha' port of \"Output\"
 node to see the difference."
-nodes/fragment/connections = PackedInt32Array(22, 0, 23, 1, 25, 0, 24, 0, 24, 0, 23, 0, 26, 0, 24, 1, 24, 0, 21, 1, 21, 0, 0, 1, 23, 0, 0, 0, 23, 4, 21, 0)
+nodes/fragment/connections = PackedInt32Array(22, 0, 23, 1, 23, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="367"]
 shader = SubResource("366")
@@ -4649,30 +2852,8 @@ parameter_name = "Texture2DParameter"
 code = "shader_type canvas_item;
 render_mode blend_mix;
 
-uniform sampler2D Texture2DParameter;
 
 
-// ColorCorrectionAdjustment
-#include \"res://addons/shaderV/rgba/colorCorrectionAdjustment.gdshaderinc\"
-
-void fragment() {
-	vec4 n_out3p0;
-// Texture2D:3
-	n_out3p0 = texture(TEXTURE, UV);
-
-
-	vec3 n_out2p0;
-// ColorCorrectionAdjustment:2
-	{
-		n_out2p0 = _applyColorCorrectionFunc(vec3(n_out3p0.xyz), Texture2DParameter);
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out2p0;
-
-
-}
 "
 graph_offset = Vector2(-274.167, 34.9918)
 mode = 1
@@ -4684,18 +2865,9 @@ nodes/fragment/3/node = SubResource("369")
 nodes/fragment/3/position = Vector2(-200, 140)
 nodes/fragment/5/node = SubResource("VisualShaderNodeTexture2DParameter_khtr3")
 nodes/fragment/5/position = Vector2(-280, 300)
-nodes/fragment/connections = PackedInt32Array(3, 0, 2, 0, 2, 0, 0, 0, 5, 0, 2, 1)
-
-[sub_resource type="Gradient" id="Gradient_g5r4v"]
-colors = PackedColorArray(0, 0.183333, 1, 1, 1, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_147bn"]
-gradient = SubResource("Gradient_g5r4v")
-fill_from = Vector2(0, 1)
 
 [sub_resource type="ShaderMaterial" id="372"]
 shader = SubResource("371")
-shader_parameter/Texture2DParameter = SubResource("GradientTexture2D_147bn")
 
 [sub_resource type="VisualShaderNodeInput" id="370"]
 input_name = "texture"
@@ -4723,42 +2895,6 @@ render_mode blend_mix;
 
 
 
-// Emboss
-#include \"res://addons/shaderV/rgba/emboss.gdshaderinc\"
-
-void fragment() {
-// Input:6
-	vec2 n_out6p0 = UV;
-
-
-// FloatConstant:7
-	float n_out7p0 = -1.000000;
-
-
-// FloatConstant:8
-	float n_out8p0 = 0.005000;
-
-
-// FloatConstant:9
-	float n_out9p0 = 1.000000;
-
-
-	vec3 n_out5p0;
-	float n_out5p1;
-// Emboss:5
-	{
-		vec4 n_out5p0n_out5p1 = _embossFunc(TEXTURE, vec3(n_out6p0, 0.0).xy, n_out7p0, vec2(n_out8p0), n_out9p0);
-		n_out5p0 = n_out5p0n_out5p1.rgb;
-		n_out5p1 = n_out5p0n_out5p1.a;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out5p0;
-	COLOR.a = n_out5p1;
-
-
-}
 "
 graph_offset = Vector2(-222, 203)
 mode = 1
@@ -4776,7 +2912,6 @@ nodes/fragment/8/node = SubResource("376")
 nodes/fragment/8/position = Vector2(-40, 320)
 nodes/fragment/9/node = SubResource("377")
 nodes/fragment/9/position = Vector2(-40, 400)
-nodes/fragment/connections = PackedInt32Array(4, 0, 5, 0, 5, 1, 0, 1, 6, 0, 5, 1, 7, 0, 5, 2, 9, 0, 5, 4, 8, 0, 5, 3, 5, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="379"]
 shader = SubResource("378")
@@ -4826,82 +2961,6 @@ render_mode blend_mix;
 
 
 
-// vec2Compose
-#include \"res://addons/shaderV/tools/vec2Compose.gdshaderinc\"
-// FireFX
-#include \"res://addons/shaderV/rgba/fireFX.gdshaderinc\"
-
-void fragment() {
-// Input:6
-	vec2 n_out6p0 = UV;
-
-
-// FloatConstant:12
-	float n_out12p0 = 1.000000;
-
-
-// FloatConstant:13
-	float n_out13p0 = 1.960000;
-
-
-	vec3 n_out11p0;
-// vec2Compose:11
-	{
-		n_out11p0.xy = _vec2ComposeFunc(n_out12p0, n_out13p0);
-	}
-
-
-// FloatConstant:14
-	float n_out14p0 = 0.300000;
-
-
-// ColorConstant:16
-	vec4 n_out16p0 = vec4(1.000000, 1.000000, 0.000000, 1.000000);
-
-
-// ColorConstant:17
-	vec4 n_out17p0 = vec4(1.000000, 0.501961, 0.000000, 1.000000);
-
-
-// ColorConstant:18
-	vec4 n_out18p0 = vec4(1.000000, 0.000000, 0.000000, 1.000000);
-
-
-// FloatConstant:19
-	float n_out19p0 = 0.000000;
-
-
-// FloatConstant:20
-	float n_out20p0 = 0.400000;
-
-
-// FloatConstant:21
-	float n_out21p0 = 0.200000;
-
-
-// Input:15
-	float n_out15p0 = TIME;
-
-
-	vec3 n_out10p0;
-	float n_out10p1;
-// FireFX:10
-	float n_in10p4 = 1.00000;
-	float n_in10p6 = 1.00000;
-	float n_in10p8 = 1.00000;
-	{
-		vec4 n_out10p0n_out10p1 = _fireFXFunc(vec3(n_out6p0, 0.0).xy, n_out11p0.xy, n_out14p0, n_out15p0, vec4(vec3(n_out16p0.xyz), n_in10p4), vec4(vec3(n_out17p0.xyz), n_in10p6), vec4(vec3(n_out18p0.xyz), n_in10p8), n_out19p0, n_out20p0, n_out21p0);
-		n_out10p0 = n_out10p0n_out10p1.rgb;
-		n_out10p1 = n_out10p0n_out10p1.a;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out10p0;
-	COLOR.a = n_out10p1;
-
-
-}
 "
 graph_offset = Vector2(-252.507, 83.2718)
 mode = 1
@@ -4933,7 +2992,6 @@ nodes/fragment/20/node = SubResource("390")
 nodes/fragment/20/position = Vector2(-20, 800)
 nodes/fragment/21/node = SubResource("391")
 nodes/fragment/21/position = Vector2(-20, 880)
-nodes/fragment/connections = PackedInt32Array(6, 0, 10, 0, 10, 1, 0, 1, 14, 0, 10, 2, 15, 0, 10, 12, 18, 0, 10, 7, 19, 0, 10, 9, 20, 0, 10, 10, 21, 0, 10, 11, 16, 0, 10, 3, 17, 0, 10, 5, 10, 0, 0, 0, 11, 0, 10, 1, 13, 0, 11, 1, 12, 0, 11, 0)
 
 [sub_resource type="ShaderMaterial" id="393"]
 shader = SubResource("392")
@@ -4965,50 +3023,6 @@ render_mode blend_mix;
 
 
 
-// Gradient4Corners
-#include \"res://addons/shaderV/rgba/gradient4corners.gdshaderinc\"
-
-void fragment() {
-// Input:6
-	vec2 n_out6p0 = UV;
-
-
-// ColorConstant:23
-	vec4 n_out23p0 = vec4(1.000000, 1.000000, 0.000000, 1.000000);
-	float n_out23p4 = n_out23p0.a;
-
-
-// ColorConstant:24
-	vec4 n_out24p0 = vec4(0.000000, 0.000000, 1.000000, 1.000000);
-	float n_out24p4 = n_out24p0.a;
-
-
-// ColorConstant:25
-	vec4 n_out25p0 = vec4(1.000000, 0.000000, 0.000000, 1.000000);
-	float n_out25p4 = n_out25p0.a;
-
-
-// ColorConstant:26
-	vec4 n_out26p0 = vec4(0.099013, 1.000000, 0.000000, 1.000000);
-	float n_out26p4 = n_out26p0.a;
-
-
-	vec3 n_out22p0;
-	float n_out22p1;
-// Gradient4Corners:22
-	{
-		vec4 n_out22p0n_out22p1 = _gradient4cornersFunc(vec3(n_out6p0, 0.0).xy, vec4(vec3(n_out23p0.xyz), n_out23p4), vec4(vec3(n_out24p0.xyz), n_out24p4), vec4(vec3(n_out25p0.xyz), n_out25p4), vec4(vec3(n_out26p0.xyz), n_out26p4));
-		n_out22p0 = n_out22p0n_out22p1.rgb;
-		n_out22p1 = n_out22p0n_out22p1.a;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out22p0;
-	COLOR.a = n_out22p1;
-
-
-}
 "
 graph_offset = Vector2(256.859, 118.584)
 mode = 1
@@ -5026,7 +3040,6 @@ nodes/fragment/25/node = SubResource("397")
 nodes/fragment/25/position = Vector2(500, 720)
 nodes/fragment/26/node = SubResource("398")
 nodes/fragment/26/position = Vector2(500, 900)
-nodes/fragment/connections = PackedInt32Array(22, 1, 0, 1, 6, 0, 22, 0, 23, 0, 22, 1, 24, 0, 22, 3, 25, 0, 22, 5, 26, 0, 22, 7, 22, 0, 0, 0, 26, 4, 22, 8, 25, 4, 22, 6, 24, 4, 22, 4, 23, 4, 22, 2)
 
 [sub_resource type="ShaderMaterial" id="400"]
 shader = SubResource("399")
@@ -5058,50 +3071,8 @@ constant = 0.3
 code = "shader_type canvas_item;
 render_mode blend_mix;
 
-uniform sampler2D gradient;
 
 
-// GradientMapping
-#include \"res://addons/shaderV/rgba/gradientMapping.gdshaderinc\"
-
-void fragment() {
-	vec4 n_out28p0;
-// Texture2D:28
-	n_out28p0 = texture(TEXTURE, UV);
-	float n_out28p4 = n_out28p0.a;
-
-
-// FloatConstant:33
-	float n_out33p0 = 0.300000;
-
-
-	float n_out32p0;
-// ScaledTIME:32
-	{
-		n_out32p0 = n_out33p0 * TIME;
-	}
-
-
-// BooleanConstant:30
-	bool n_out30p0 = true;
-
-
-	vec3 n_out27p0;
-	float n_out27p1;
-// GradientMapping:27
-	{
-		vec4 n_out27p0n_out27p1 = _gradientMappingFunc(vec3(n_out28p0.xyz), n_out32p0, gradient, n_out30p0);
-		n_out27p0 = n_out27p0n_out27p1.rgb;
-		n_out27p1 = n_out27p0n_out27p1.a * n_out28p4;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out27p0;
-	COLOR.a = n_out27p1;
-
-
-}
 "
 graph_offset = Vector2(-69.8232, 113.43)
 mode = 1
@@ -5119,18 +3090,9 @@ nodes/fragment/32/node = SubResource("405")
 nodes/fragment/32/position = Vector2(540, 460)
 nodes/fragment/33/node = SubResource("406")
 nodes/fragment/33/position = Vector2(260, 420)
-nodes/fragment/connections = PackedInt32Array(28, 0, 27, 0, 30, 0, 27, 3, 27, 1, 0, 1, 27, 0, 0, 0, 28, 4, 27, 1, 31, 0, 27, 4, 33, 0, 32, 0, 32, 0, 27, 2)
-
-[sub_resource type="Gradient" id="408"]
-offsets = PackedFloat32Array(0, 0.174242, 0.336134, 0.504202, 0.705882, 0.865546, 1)
-colors = PackedColorArray(1, 0, 0, 1, 1, 0.726563, 0, 1, 0.640625, 1, 0, 1, 0, 1, 1, 1, 0, 0.132813, 1, 1, 1, 0, 0.984375, 1, 1, 1, 1, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_y2syp"]
-gradient = SubResource("408")
 
 [sub_resource type="ShaderMaterial" id="410"]
 shader = SubResource("407")
-shader_parameter/gradient = SubResource("GradientTexture1D_y2syp")
 
 [sub_resource type="VisualShaderNodeCustom" id="411"]
 default_input_values = [1, 1.0]
@@ -5151,8 +3113,6 @@ render_mode blend_mix;
 
 
 
-// GrayscalePlus
-#include \"res://addons/shaderV/rgba/grayscale.gdshaderinc\"
 
 void fragment() {
 	vec4 n_out3p0;
@@ -5161,19 +3121,7 @@ void fragment() {
 	float n_out3p4 = n_out3p0.a;
 
 
-// FloatConstant:4
-	float n_out4p0 = 1.000000;
-
-
-	vec3 n_out2p0;
-// GrayscalePlus:2
-	{
-		n_out2p0 = _grayscaleFunc(vec3(n_out3p0.xyz), n_out4p0);
-	}
-
-
 // Output:0
-	COLOR.rgb = n_out2p0;
 	COLOR.a = n_out3p4;
 
 
@@ -5189,7 +3137,7 @@ nodes/fragment/3/node = SubResource("412")
 nodes/fragment/3/position = Vector2(0, 220)
 nodes/fragment/4/node = SubResource("413")
 nodes/fragment/4/position = Vector2(60, 140)
-nodes/fragment/connections = PackedInt32Array(3, 0, 2, 0, 2, 0, 0, 0, 4, 0, 2, 1, 3, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(3, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="415"]
 shader = SubResource("414")
@@ -5204,8 +3152,6 @@ render_mode blend_mix;
 
 
 
-// Hue
-#include \"res://addons/shaderV/rgba/hue.gdshaderinc\"
 
 void fragment() {
 	vec4 n_out3p0;
@@ -5214,15 +3160,7 @@ void fragment() {
 	float n_out3p4 = n_out3p0.a;
 
 
-	vec3 n_out5p0;
-// Hue:5
-	{
-		n_out5p0 = _hueFunc(n_out3p0.x);
-	}
-
-
 // Output:0
-	COLOR.rgb = n_out5p0;
 	COLOR.a = n_out3p4;
 
 
@@ -5236,7 +3174,7 @@ nodes/fragment/3/node = SubResource("412")
 nodes/fragment/3/position = Vector2(0, 200)
 nodes/fragment/5/node = SubResource("416")
 nodes/fragment/5/position = Vector2(320, 180)
-nodes/fragment/connections = PackedInt32Array(3, 0, 5, 0, 5, 0, 0, 0, 3, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(3, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="418"]
 shader = SubResource("417")
@@ -5255,35 +3193,6 @@ render_mode blend_mix;
 
 
 
-// InverseColor
-#include \"res://addons/shaderV/rgba/inverseColor.gdshaderinc\"
-
-void fragment() {
-	vec4 n_out3p0;
-// Texture2D:3
-	n_out3p0 = texture(TEXTURE, UV);
-	float n_out3p4 = n_out3p0.a;
-
-
-// FloatConstant:7
-	float n_out7p0 = 1.000000;
-
-
-	vec3 n_out6p0;
-	float n_out6p1;
-// InverseColor:6
-	{
-		n_out6p0 = _inverseColorFunc(vec3(n_out3p0.xyz), n_out7p0);
-		n_out6p1 = n_out3p4;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out6p0;
-	COLOR.a = n_out6p1;
-
-
-}
 "
 graph_offset = Vector2(-162.479, 72.6859)
 mode = 1
@@ -5295,7 +3204,6 @@ nodes/fragment/6/node = SubResource("419")
 nodes/fragment/6/position = Vector2(380, 200)
 nodes/fragment/7/node = SubResource("420")
 nodes/fragment/7/position = Vector2(140, 380)
-nodes/fragment/connections = PackedInt32Array(3, 0, 6, 0, 6, 1, 0, 1, 7, 0, 6, 2, 6, 0, 0, 0, 3, 4, 6, 1)
 
 [sub_resource type="ShaderMaterial" id="422"]
 shader = SubResource("421")
@@ -5313,39 +3221,8 @@ texture = ExtResource("57")
 code = "shader_type canvas_item;
 render_mode blend_mix;
 
-uniform sampler2D tex_frg_9;
 
 
-// MaskAlpha
-#include \"res://addons/shaderV/rgba/maskAlpha.gdshaderinc\"
-
-void fragment() {
-	vec4 n_out3p0;
-// Texture2D:3
-	n_out3p0 = texture(TEXTURE, UV);
-	float n_out3p4 = n_out3p0.a;
-
-
-// Texture2D:9
-	vec4 n_out9p0 = texture(tex_frg_9, UV);
-	float n_out9p4 = n_out9p0.a;
-
-
-	vec3 n_out8p0;
-	float n_out8p1;
-// MaskAlpha:8
-	{
-		n_out8p0 = _maskAlphaFunc(vec4(vec3(n_out3p0.xyz), n_out3p4), n_out9p4).rgb;
-		n_out8p1 = _maskAlphaFunc(vec4(vec3(n_out3p0.xyz), n_out3p4), n_out9p4).a;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out8p0;
-	COLOR.a = n_out8p1;
-
-
-}
 "
 graph_offset = Vector2(-307.936, -137.162)
 mode = 1
@@ -5357,7 +3234,6 @@ nodes/fragment/8/node = SubResource("423")
 nodes/fragment/8/position = Vector2(400, 0)
 nodes/fragment/9/node = SubResource("424")
 nodes/fragment/9/position = Vector2(100, 60)
-nodes/fragment/connections = PackedInt32Array(3, 0, 8, 0, 8, 1, 0, 1, 8, 0, 0, 0, 9, 4, 8, 2, 3, 4, 8, 1)
 
 [sub_resource type="ShaderMaterial" id="426"]
 shader = SubResource("425")
@@ -5376,8 +3252,6 @@ render_mode blend_mix;
 
 
 
-// Posterize
-#include \"res://addons/shaderV/rgba/posterize.gdshaderinc\"
 
 void fragment() {
 	vec4 n_out3p0;
@@ -5386,19 +3260,7 @@ void fragment() {
 	float n_out3p4 = n_out3p0.a;
 
 
-// FloatConstant:11
-	float n_out11p0 = 3.000000;
-
-
-	vec3 n_out10p0;
-// Posterize:10
-	{
-		n_out10p0 = _posterizeFunc(vec3(n_out3p0.xyz), n_out11p0);
-	}
-
-
 // Output:0
-	COLOR.rgb = n_out10p0;
 	COLOR.a = n_out3p4;
 
 
@@ -5414,7 +3276,7 @@ nodes/fragment/10/node = SubResource("427")
 nodes/fragment/10/position = Vector2(400, -140)
 nodes/fragment/11/node = SubResource("428")
 nodes/fragment/11/position = Vector2(140, -120)
-nodes/fragment/connections = PackedInt32Array(11, 0, 10, 1, 3, 0, 10, 0, 10, 0, 0, 0, 3, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(3, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="430"]
 shader = SubResource("429")
@@ -5440,8 +3302,6 @@ render_mode blend_mix;
 
 
 
-// ShiftHSV
-#include \"res://addons/shaderV/rgba/shiftHSV.gdshaderinc\"
 
 void fragment() {
 	vec4 n_out3p0;
@@ -5450,27 +3310,7 @@ void fragment() {
 	float n_out3p4 = n_out3p0.a;
 
 
-// FloatConstant:13
-	float n_out13p0 = 0.891000;
-
-
-// FloatConstant:14
-	float n_out14p0 = 1.005000;
-
-
-// FloatConstant:15
-	float n_out15p0 = 0.869000;
-
-
-	vec3 n_out12p0;
-// ShiftHSV:12
-	{
-		n_out12p0 = _hsvChangeHSVChangeFunc(vec3(n_out3p0.xyz), n_out13p0, n_out14p0, n_out15p0);
-	}
-
-
 // Output:0
-	COLOR.rgb = n_out12p0;
 	COLOR.a = n_out3p4;
 
 
@@ -5490,7 +3330,7 @@ nodes/fragment/14/node = SubResource("433")
 nodes/fragment/14/position = Vector2(180, -140)
 nodes/fragment/15/node = SubResource("434")
 nodes/fragment/15/position = Vector2(180, -80)
-nodes/fragment/connections = PackedInt32Array(15, 0, 12, 3, 14, 0, 12, 2, 3, 0, 12, 0, 3, 4, 0, 1, 13, 0, 12, 1, 12, 0, 0, 0)
+nodes/fragment/connections = PackedInt32Array(3, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="436"]
 shader = SubResource("435")
@@ -5530,63 +3370,6 @@ render_mode blend_mix;
 
 
 
-// ShineFX
-#include \"res://addons/shaderV/rgba/shineFX.gdshaderinc\"
-
-void fragment() {
-// Input:17
-	vec2 n_out17p0 = UV;
-
-
-	vec4 n_out3p0;
-// Texture2D:3
-	n_out3p0 = texture(TEXTURE, UV);
-	float n_out3p4 = n_out3p0.a;
-
-
-// FloatConstant:19
-	float n_out19p0 = 0.500000;
-
-
-// FloatConstant:20
-	float n_out20p0 = 0.700000;
-
-
-// FloatConstant:21
-	float n_out21p0 = 0.400000;
-
-
-// FloatConstant:22
-	float n_out22p0 = 2.000000;
-
-
-// FloatConstant:23
-	float n_out23p0 = 2.000000;
-
-
-// FloatConstant:24
-	float n_out24p0 = 1.000000;
-
-
-// ColorConstant:18
-	vec4 n_out18p0 = vec4(0.000000, 0.833388, 1.000000, 1.000000);
-
-
-	vec3 n_out16p0;
-	float n_out16p1;
-// ShineFX:16
-	{
-		n_out16p1 = n_out3p4;
-		n_out16p0 = _shineFunc(vec4(vec3(n_out3p0.xyz), n_out3p4), vec3(n_out17p0, 0.0).xy, n_out19p0, n_out20p0, n_out21p0, n_out22p0, n_out23p0, n_out24p0, vec3(n_out18p0.xyz)).rgb;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out16p0;
-	COLOR.a = n_out16p1;
-
-
-}
 "
 graph_offset = Vector2(8.33194, -215.869)
 mode = 1
@@ -5612,7 +3395,6 @@ nodes/fragment/23/node = SubResource("444")
 nodes/fragment/23/position = Vector2(300, 220)
 nodes/fragment/24/node = SubResource("445")
 nodes/fragment/24/position = Vector2(300, 280)
-nodes/fragment/connections = PackedInt32Array(3, 0, 16, 1, 16, 1, 0, 1, 17, 0, 16, 0, 18, 0, 16, 9, 19, 0, 16, 3, 20, 0, 16, 4, 21, 0, 16, 5, 22, 0, 16, 6, 23, 0, 16, 7, 24, 0, 16, 8, 16, 0, 0, 0, 3, 4, 16, 2)
 
 [sub_resource type="ShaderMaterial" id="447"]
 shader = SubResource("446")
@@ -5632,34 +3414,6 @@ render_mode blend_mix;
 
 
 
-
-void fragment() {
-	vec4 n_out3p0;
-// Texture2D:3
-	n_out3p0 = texture(TEXTURE, UV);
-	float n_out3p4 = n_out3p0.a;
-
-
-// ColorConstant:26
-	vec4 n_out26p0 = vec4(0.468750, 0.058594, 0.337372, 1.000000);
-	float n_out26p4 = n_out26p0.a;
-
-
-	vec3 n_out25p0;
-	float n_out25p1;
-// TintRGBA:25
-	{
-		n_out25p0 = vec3(n_out3p0.xyz) * vec3(n_out26p0.xyz);
-		n_out25p1 = n_out3p4 * n_out26p4;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out25p0;
-	COLOR.a = n_out25p1;
-
-
-}
 "
 graph_offset = Vector2(-142.104, -217.975)
 mode = 1
@@ -5671,7 +3425,6 @@ nodes/fragment/25/node = SubResource("448")
 nodes/fragment/25/position = Vector2(540, -100)
 nodes/fragment/26/node = SubResource("449")
 nodes/fragment/26/position = Vector2(260, 60)
-nodes/fragment/connections = PackedInt32Array(3, 0, 25, 0, 25, 0, 0, 0, 25, 1, 0, 1, 26, 0, 25, 2, 26, 4, 25, 3, 3, 4, 25, 1)
 
 [sub_resource type="ShaderMaterial" id="451"]
 shader = SubResource("450")
@@ -5693,8 +3446,6 @@ render_mode blend_mix;
 
 
 
-// Tonemap
-#include \"res://addons/shaderV/rgba/tonemap.gdshaderinc\"
 
 void fragment() {
 	vec4 n_out3p0;
@@ -5703,23 +3454,7 @@ void fragment() {
 	float n_out3p4 = n_out3p0.a;
 
 
-// FloatConstant:28
-	float n_out28p0 = 0.600000;
-
-
-// FloatConstant:29
-	float n_out29p0 = 2.000000;
-
-
-	vec3 n_out27p0;
-// Tonemap:27
-	{
-		n_out27p0 = _tonemapFunc(vec3(n_out3p0.xyz), n_out28p0, n_out29p0);
-	}
-
-
 // Output:0
-	COLOR.rgb = n_out27p0;
 	COLOR.a = n_out3p4;
 
 
@@ -5737,7 +3472,7 @@ nodes/fragment/28/node = SubResource("453")
 nodes/fragment/28/position = Vector2(240, -360)
 nodes/fragment/29/node = SubResource("454")
 nodes/fragment/29/position = Vector2(240, -280)
-nodes/fragment/connections = PackedInt32Array(3, 0, 27, 0, 28, 0, 27, 1, 29, 0, 27, 2, 27, 0, 0, 0, 3, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(3, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="456"]
 shader = SubResource("455")
@@ -5756,8 +3491,6 @@ render_mode blend_mix;
 
 
 
-// TurnCGA4Palette
-#include \"res://addons/shaderV/rgba/turnCGA4Palette.gdshaderinc\"
 
 void fragment() {
 	vec4 n_out3p0;
@@ -5766,19 +3499,7 @@ void fragment() {
 	float n_out3p4 = n_out3p0.a;
 
 
-// FloatConstant:31
-	float n_out31p0 = 1.500000;
-
-
-	vec3 n_out30p0;
-// TurnCGA4Palette:30
-	{
-		n_out30p0 = _cg4PaletteFunc(vec3(n_out3p0.xyz), n_out31p0);
-	}
-
-
 // Output:0
-	COLOR.rgb = n_out30p0;
 	COLOR.a = n_out3p4;
 
 
@@ -5794,7 +3515,7 @@ nodes/fragment/30/node = SubResource("457")
 nodes/fragment/30/position = Vector2(560, -340)
 nodes/fragment/31/node = SubResource("458")
 nodes/fragment/31/position = Vector2(280, -280)
-nodes/fragment/connections = PackedInt32Array(3, 0, 30, 0, 31, 0, 30, 1, 30, 0, 0, 0, 3, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(3, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="460"]
 shader = SubResource("459")
@@ -5813,8 +3534,6 @@ render_mode blend_mix;
 
 
 
-// TurnGameBoyPalette
-#include \"res://addons/shaderV/rgba/turnGBPalette.gdshaderinc\"
 
 void fragment() {
 	vec4 n_out3p0;
@@ -5823,19 +3542,7 @@ void fragment() {
 	float n_out3p4 = n_out3p0.a;
 
 
-// FloatConstant:32
-	float n_out32p0 = 1.600000;
-
-
-	vec3 n_out33p0;
-// TurnGameBoyPalette:33
-	{
-		n_out33p0 = _gameboyPaletteFunc(vec3(n_out3p0.xyz), n_out32p0);
-	}
-
-
 // Output:0
-	COLOR.rgb = n_out33p0;
 	COLOR.a = n_out3p4;
 
 
@@ -5850,7 +3557,7 @@ nodes/fragment/32/node = SubResource("461")
 nodes/fragment/32/position = Vector2(280, -280)
 nodes/fragment/33/node = SubResource("462")
 nodes/fragment/33/position = Vector2(540, -300)
-nodes/fragment/connections = PackedInt32Array(32, 0, 33, 1, 3, 0, 33, 0, 33, 0, 0, 0, 3, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(3, 4, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="464"]
 shader = SubResource("463")
@@ -5891,54 +3598,6 @@ render_mode blend_mix;
 
 
 
-// FractalGenericNoise2D
-#include \"res://addons/shaderV/rgba/noise/fractal/generic2d_fractal.gdshaderinc\"
-
-void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-// FloatConstant:4
-	float n_out4p0 = 6.000000;
-
-
-// FloatConstant:10
-	float n_out10p0 = 2.000000;
-
-
-// FloatConstant:5
-	float n_out5p0 = 2.000000;
-
-
-// FloatConstant:6
-	float n_out6p0 = 0.800000;
-
-
-// FloatConstant:7
-	float n_out7p0 = 0.500000;
-
-
-// FloatConstant:8
-	float n_out8p0 = 0.300000;
-
-
-// Vector3Constant:9
-	vec3 n_out9p0 = vec3(0.500000, 0.500000, 0.000000);
-
-
-	float n_out2p0;
-// FractalGenericNoise2D:2
-	{
-		n_out2p0 = _genericNoise2DFBM(vec3(n_out3p0, 0.0).xy, int(n_out4p0), vec3(n_out10p0).xy, n_out5p0, n_out6p0, n_out7p0, n_out8p0, n_out9p0.xy);
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out2p0);
-
-
-}
 "
 graph_offset = Vector2(-116.618, -6.67545)
 mode = 1
@@ -5962,7 +3621,6 @@ nodes/fragment/9/node = SubResource("473")
 nodes/fragment/9/position = Vector2(-300, 540)
 nodes/fragment/10/node = SubResource("465")
 nodes/fragment/10/position = Vector2(-140, 140)
-nodes/fragment/connections = PackedInt32Array(3, 0, 2, 0, 4, 0, 2, 1, 6, 0, 2, 4, 7, 0, 2, 5, 8, 0, 2, 6, 9, 0, 2, 7, 5, 0, 2, 3, 10, 0, 2, 2, 2, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="475"]
 shader = SubResource("474")
@@ -6000,54 +3658,6 @@ render_mode blend_mix;
 
 
 
-// FractalPerlinNoise2D
-#include \"res://addons/shaderV/rgba/noise/fractal/perlin2d_fractal.gdshaderinc\"
-
-void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-// FloatConstant:5
-	float n_out5p0 = 6.000000;
-
-
-// Vector3Constant:10
-	vec3 n_out10p0 = vec3(2.000000, 2.000000, 0.000000);
-
-
-// FloatConstant:6
-	float n_out6p0 = 2.000000;
-
-
-// FloatConstant:7
-	float n_out7p0 = 0.800000;
-
-
-// FloatConstant:8
-	float n_out8p0 = 0.500000;
-
-
-// FloatConstant:9
-	float n_out9p0 = 0.600000;
-
-
-// Vector3Constant:11
-	vec3 n_out11p0 = vec3(0.500000, 0.500000, 0.000000);
-
-
-	float n_out4p0;
-// FractalPerlinNoise2D:4
-	{
-		n_out4p0 = _perlinNoise2DFBM(vec3(n_out3p0, 0.0).xy, int(n_out5p0), n_out10p0.xy, n_out6p0, n_out7p0, n_out8p0, n_out9p0, n_out11p0.xy);
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out4p0);
-
-
-}
 "
 graph_offset = Vector2(-231.063, 38.8457)
 mode = 1
@@ -6071,7 +3681,6 @@ nodes/fragment/10/node = SubResource("476")
 nodes/fragment/10/position = Vector2(-260, 120)
 nodes/fragment/11/node = SubResource("477")
 nodes/fragment/11/position = Vector2(-240, 540)
-nodes/fragment/connections = PackedInt32Array(3, 0, 4, 0, 5, 0, 4, 1, 6, 0, 4, 3, 7, 0, 4, 4, 8, 0, 4, 5, 9, 0, 4, 6, 10, 0, 4, 2, 11, 0, 4, 7, 4, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="485"]
 shader = SubResource("484")
@@ -6116,62 +3725,6 @@ render_mode blend_mix;
 
 
 
-// FractalWorleyNoise2D
-#include \"res://addons/shaderV/rgba/noise/fractal/worley2d_fractal.gdshaderinc\"
-
-void fragment() {
-// Input:5
-	vec2 n_out5p0 = UV;
-
-
-// FloatConstant:4
-	float n_out4p0 = 6.000000;
-
-
-// Vector3Constant:3
-	vec3 n_out3p0 = vec3(2.000000, 2.000000, 0.000000);
-
-
-// FloatConstant:7
-	float n_out7p0 = 2.000000;
-
-
-// FloatConstant:8
-	float n_out8p0 = 0.800000;
-
-
-// FloatConstant:9
-	float n_out9p0 = 0.500000;
-
-
-// FloatConstant:10
-	float n_out10p0 = 0.300000;
-
-
-// Vector3Constant:12
-	vec3 n_out12p0 = vec3(0.500000, 0.500000, 0.000000);
-
-
-// FloatConstant:11
-	float n_out11p0 = 1.000000;
-
-
-// BooleanConstant:14
-	bool n_out14p0 = false;
-
-
-	float n_out13p0;
-// FractalWorleyNoise2D:13
-	{
-		n_out13p0 = _cellularNoise2DFBM(vec3(n_out5p0, 0.0).xy, int(n_out4p0), n_out3p0.xy, n_out7p0, n_out8p0, n_out9p0, n_out10p0, n_out12p0.xy, n_out11p0, n_out14p0);
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out13p0);
-
-
-}
 "
 graph_offset = Vector2(-354.809, -74.2784)
 mode = 1
@@ -6199,7 +3752,6 @@ nodes/fragment/13/node = SubResource("489")
 nodes/fragment/13/position = Vector2(180, 200)
 nodes/fragment/14/node = SubResource("490")
 nodes/fragment/14/position = Vector2(-80, 620)
-nodes/fragment/connections = PackedInt32Array(5, 0, 13, 0, 4, 0, 13, 1, 3, 0, 13, 2, 7, 0, 13, 3, 8, 0, 13, 4, 9, 0, 13, 5, 10, 0, 13, 6, 12, 0, 13, 7, 11, 0, 13, 8, 14, 0, 13, 9, 13, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="498"]
 shader = SubResource("497")
@@ -6239,54 +3791,6 @@ render_mode blend_mix;
 
 
 
-// FractalSimplexNoise2D
-#include \"res://addons/shaderV/rgba/noise/fractal/simplex2d_fractal.gdshaderinc\"
-
-void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-// FloatConstant:4
-	float n_out4p0 = 6.000000;
-
-
-// Vector3Constant:12
-	vec3 n_out12p0 = vec3(2.000000, 2.000000, 0.000000);
-
-
-// FloatConstant:5
-	float n_out5p0 = 2.000000;
-
-
-// FloatConstant:6
-	float n_out6p0 = 0.800000;
-
-
-// FloatConstant:7
-	float n_out7p0 = 0.500000;
-
-
-// FloatConstant:8
-	float n_out8p0 = 0.500000;
-
-
-// Vector3Constant:10
-	vec3 n_out10p0 = vec3(0.500000, 0.500000, 0.000000);
-
-
-	float n_out2p0;
-// FractalSimplexNoise2D:2
-	{
-		n_out2p0 = _simplexNoise2DFBM(vec3(n_out3p0, 0.0).xy, int(n_out4p0), n_out12p0.xy, n_out5p0, n_out6p0, n_out7p0, n_out8p0, n_out10p0.xy);
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out2p0);
-
-
-}
 "
 graph_offset = Vector2(-202.473, 86.5394)
 mode = 1
@@ -6310,7 +3814,6 @@ nodes/fragment/10/node = SubResource("499")
 nodes/fragment/10/position = Vector2(-80, 480)
 nodes/fragment/12/node = SubResource("500")
 nodes/fragment/12/position = Vector2(-80, 160)
-nodes/fragment/connections = PackedInt32Array(3, 0, 2, 0, 4, 0, 2, 1, 10, 0, 2, 7, 5, 0, 2, 3, 6, 0, 2, 4, 7, 0, 2, 5, 8, 0, 2, 6, 12, 0, 2, 2, 2, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="509"]
 shader = SubResource("508")
@@ -6358,66 +3861,6 @@ render_mode blend_mix;
 
 
 
-// FractalWorleyNoise3D
-#include \"res://addons/shaderV/rgba/noise/fractal/worley3d_fractal.gdshaderinc\"
-
-void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-// FloatConstant:13
-	float n_out13p0 = 6.000000;
-
-
-// Vector3Constant:12
-	vec3 n_out12p0 = vec3(2.000000, 2.000000, 0.000000);
-
-
-// FloatConstant:11
-	float n_out11p0 = 2.000000;
-
-
-// FloatConstant:10
-	float n_out10p0 = 0.800000;
-
-
-// FloatConstant:9
-	float n_out9p0 = 0.500000;
-
-
-// FloatConstant:8
-	float n_out8p0 = 0.300000;
-
-
-// Vector3Constant:7
-	vec3 n_out7p0 = vec3(0.500000, 0.500000, 0.000000);
-
-
-// FloatConstant:6
-	float n_out6p0 = 1.000000;
-
-
-// BooleanConstant:5
-	bool n_out5p0 = false;
-
-
-// Input:4
-	float n_out4p0 = TIME;
-
-
-	float n_out2p0;
-// FractalWorleyNoise3D:2
-	{
-		n_out2p0 = _cellularNoise3DFBM(vec3(n_out3p0, 0.0).xy, int(n_out13p0), n_out12p0.xy, n_out11p0, n_out10p0, n_out9p0, n_out8p0, n_out7p0.xy, n_out6p0, n_out5p0, n_out4p0);
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out2p0);
-
-
-}
 "
 graph_offset = Vector2(-189.109, 35.1915)
 mode = 1
@@ -6447,7 +3890,6 @@ nodes/fragment/12/node = SubResource("512")
 nodes/fragment/12/position = Vector2(-60, 100)
 nodes/fragment/13/node = SubResource("513")
 nodes/fragment/13/position = Vector2(80, 40)
-nodes/fragment/connections = PackedInt32Array(3, 0, 2, 0, 4, 0, 2, 10, 5, 0, 2, 9, 6, 0, 2, 8, 7, 0, 2, 7, 8, 0, 2, 6, 9, 0, 2, 5, 10, 0, 2, 4, 11, 0, 2, 3, 12, 0, 2, 2, 13, 0, 2, 1, 2, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="523"]
 shader = SubResource("522")
@@ -6490,58 +3932,6 @@ render_mode blend_mix;
 
 
 
-// FractalPerlinNoise3D
-#include \"res://addons/shaderV/rgba/noise/fractal/perlin3d_fractal.gdshaderinc\"
-
-void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-// FloatConstant:6
-	float n_out6p0 = 6.000000;
-
-
-// Vector3Constant:11
-	vec3 n_out11p0 = vec3(2.000000, 2.000000, 0.000000);
-
-
-// FloatConstant:7
-	float n_out7p0 = 2.000000;
-
-
-// FloatConstant:8
-	float n_out8p0 = 0.800000;
-
-
-// FloatConstant:9
-	float n_out9p0 = 0.500000;
-
-
-// FloatConstant:10
-	float n_out10p0 = 0.600000;
-
-
-// Vector3Constant:12
-	vec3 n_out12p0 = vec3(0.500000, 0.500000, 0.000000);
-
-
-// Input:5
-	float n_out5p0 = TIME;
-
-
-	float n_out4p0;
-// FractalPerlinNoise3D:4
-	{
-		n_out4p0 = _perlinNoise3DFBM(vec3(n_out3p0, 0.0).xy, int(n_out6p0), n_out11p0.xy, n_out7p0, n_out8p0, n_out9p0, n_out10p0, n_out12p0.xy, n_out5p0);
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out4p0);
-
-
-}
 "
 graph_offset = Vector2(-325.64, -4.4259)
 mode = 1
@@ -6567,7 +3957,6 @@ nodes/fragment/11/node = SubResource("525")
 nodes/fragment/11/position = Vector2(-260, 120)
 nodes/fragment/12/node = SubResource("526")
 nodes/fragment/12/position = Vector2(-280, 440)
-nodes/fragment/connections = PackedInt32Array(3, 0, 4, 0, 6, 0, 4, 1, 7, 0, 4, 3, 8, 0, 4, 4, 9, 0, 4, 5, 10, 0, 4, 6, 11, 0, 4, 2, 12, 0, 4, 7, 5, 0, 4, 8, 4, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="535"]
 shader = SubResource("534")
@@ -6610,58 +3999,6 @@ render_mode blend_mix;
 
 
 
-// FractalSimplexNoise3D
-#include \"res://addons/shaderV/rgba/noise/fractal/simplex3d_fractal.gdshaderinc\"
-
-void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-// FloatConstant:5
-	float n_out5p0 = 6.000000;
-
-
-// Vector3Constant:6
-	vec3 n_out6p0 = vec3(2.000000, 2.000000, 0.000000);
-
-
-// FloatConstant:8
-	float n_out8p0 = 2.000000;
-
-
-// FloatConstant:9
-	float n_out9p0 = 0.800000;
-
-
-// FloatConstant:10
-	float n_out10p0 = 0.500000;
-
-
-// FloatConstant:11
-	float n_out11p0 = 0.600000;
-
-
-// Vector3Constant:7
-	vec3 n_out7p0 = vec3(0.500000, 0.500000, 0.000000);
-
-
-// Input:4
-	float n_out4p0 = TIME;
-
-
-	float n_out2p0;
-// FractalSimplexNoise3D:2
-	{
-		n_out2p0 = _simplexNoise3DFBM(vec3(n_out3p0, 0.0).xy, int(n_out5p0), n_out6p0.xy, n_out8p0, n_out9p0, n_out10p0, n_out11p0, n_out7p0.xy, n_out4p0);
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out2p0);
-
-
-}
 "
 graph_offset = Vector2(-346.405, 163.275)
 mode = 1
@@ -6687,7 +4024,6 @@ nodes/fragment/10/node = SubResource("536")
 nodes/fragment/10/position = Vector2(-120, 320)
 nodes/fragment/11/node = SubResource("537")
 nodes/fragment/11/position = Vector2(-120, 380)
-nodes/fragment/connections = PackedInt32Array(3, 0, 2, 0, 5, 0, 2, 1, 6, 0, 2, 2, 4, 0, 2, 8, 7, 0, 2, 7, 8, 0, 2, 3, 9, 0, 2, 4, 10, 0, 2, 5, 11, 0, 2, 6, 2, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="547"]
 shader = SubResource("546")
@@ -6733,62 +4069,6 @@ render_mode blend_mix;
 
 
 
-// FractalPerlinNoise4D
-#include \"res://addons/shaderV/rgba/noise/fractal/perlin4d_fractal.gdshaderinc\"
-
-void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-// FloatConstant:5
-	float n_out5p0 = 6.000000;
-
-
-// Vector3Constant:9
-	vec3 n_out9p0 = vec3(2.000000, 2.000000, 0.000000);
-
-
-// FloatConstant:6
-	float n_out6p0 = 2.000000;
-
-
-// FloatConstant:7
-	float n_out7p0 = 0.800000;
-
-
-// FloatConstant:8
-	float n_out8p0 = 0.500000;
-
-
-// FloatConstant:10
-	float n_out10p0 = 0.600000;
-
-
-// Vector3Constant:11
-	vec3 n_out11p0 = vec3(0.500000, 0.500000, 0.000000);
-
-
-// FloatConstant:12
-	float n_out12p0 = 1.000000;
-
-
-// Input:4
-	float n_out4p0 = TIME;
-
-
-	float n_out2p0;
-// FractalPerlinNoise4D:2
-	{
-		n_out2p0 = _perlinNoise4DFBM(vec3(n_out3p0, 0.0).xy, int(n_out5p0), n_out9p0.xy, n_out6p0, n_out7p0, n_out8p0, n_out10p0, n_out11p0.xy, n_out4p0, n_out12p0);
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out2p0);
-
-
-}
 "
 graph_offset = Vector2(-371.857, 241.222)
 mode = 1
@@ -6816,7 +4096,6 @@ nodes/fragment/11/node = SubResource("549")
 nodes/fragment/11/position = Vector2(-200, 440)
 nodes/fragment/12/node = SubResource("550")
 nodes/fragment/12/position = Vector2(-60, 520)
-nodes/fragment/connections = PackedInt32Array(3, 0, 2, 0, 4, 0, 2, 9, 5, 0, 2, 1, 9, 0, 2, 2, 6, 0, 2, 3, 7, 0, 2, 4, 8, 0, 2, 5, 10, 0, 2, 6, 11, 0, 2, 7, 12, 0, 2, 8, 2, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="560"]
 shader = SubResource("559")
@@ -6862,62 +4141,6 @@ render_mode blend_mix;
 
 
 
-// FractalSimplexNoise4D
-#include \"res://addons/shaderV/rgba/noise/fractal/simplex4d_fractal.gdshaderinc\"
-
-void fragment() {
-// Input:3
-	vec2 n_out3p0 = UV;
-
-
-// FloatConstant:5
-	float n_out5p0 = 6.000000;
-
-
-// Vector3Constant:6
-	vec3 n_out6p0 = vec3(2.000000, 2.000000, 0.000000);
-
-
-// FloatConstant:7
-	float n_out7p0 = 2.000000;
-
-
-// FloatConstant:8
-	float n_out8p0 = 0.800000;
-
-
-// FloatConstant:10
-	float n_out10p0 = 0.500000;
-
-
-// FloatConstant:11
-	float n_out11p0 = 0.600000;
-
-
-// Vector3Constant:9
-	vec3 n_out9p0 = vec3(0.500000, 0.500000, 0.000000);
-
-
-// FloatConstant:12
-	float n_out12p0 = 1.000000;
-
-
-// Input:4
-	float n_out4p0 = TIME;
-
-
-	float n_out2p0;
-// FractalSimplexNoise4D:2
-	{
-		n_out2p0 = _simplexNoise4DFBM(vec3(n_out3p0, 0.0).xy, int(n_out5p0), n_out6p0.xy, n_out7p0, n_out8p0, n_out10p0, n_out11p0, n_out9p0.xy, n_out4p0, n_out12p0);
-	}
-
-
-// Output:0
-	COLOR.rgb = vec3(n_out2p0);
-
-
-}
 "
 graph_offset = Vector2(-245.436, 47.5641)
 mode = 1
@@ -6945,7 +4168,6 @@ nodes/fragment/11/node = SubResource("562")
 nodes/fragment/11/position = Vector2(-40, 380)
 nodes/fragment/12/node = SubResource("563")
 nodes/fragment/12/position = Vector2(-40, 520)
-nodes/fragment/connections = PackedInt32Array(3, 0, 2, 0, 4, 0, 2, 9, 7, 0, 2, 3, 5, 0, 2, 1, 6, 0, 2, 2, 8, 0, 2, 4, 10, 0, 2, 5, 11, 0, 2, 6, 9, 0, 2, 7, 12, 0, 2, 8, 2, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="573"]
 shader = SubResource("572")
@@ -6979,46 +4201,6 @@ render_mode blend_mix;
 
 
 
-// NormalFromHeightmap
-#include \"res://addons/shaderV/rgba/normalFromHeightmap.gdshaderinc\"
-
-void fragment() {
-// Input:4
-	vec2 n_out4p0 = UV;
-
-
-// Vector3Constant:5
-	vec3 n_out5p0 = vec3(68.000000, 68.000000, 0.000000);
-
-
-// FloatConstant:6
-	float n_out6p0 = 10.000000;
-
-
-// BooleanConstant:7
-	bool n_out7p0 = false;
-
-
-// BooleanConstant:8
-	bool n_out8p0 = false;
-
-
-// BooleanConstant:9
-	bool n_out9p0 = false;
-
-
-	vec3 n_out2p0;
-// NormalFromHeightmap:2
-	{
-		n_out2p0 = _normalFromHeightmapFunc(vec3(n_out4p0, 0.0).xy, TEXTURE, n_out5p0.xy, n_out6p0, n_out7p0, n_out8p0, n_out9p0);
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out2p0;
-
-
-}
 "
 graph_offset = Vector2(-300.192, -48.4031)
 mode = 1
@@ -7040,7 +4222,6 @@ nodes/fragment/8/node = SubResource("580")
 nodes/fragment/8/position = Vector2(-180, 380)
 nodes/fragment/9/node = SubResource("581")
 nodes/fragment/9/position = Vector2(-180, 440)
-nodes/fragment/connections = PackedInt32Array(3, 0, 2, 0, 4, 0, 2, 1, 5, 0, 2, 2, 6, 0, 2, 3, 7, 0, 2, 4, 8, 0, 2, 5, 9, 0, 2, 6, 2, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="583"]
 shader = SubResource("582")
@@ -7048,28 +4229,24 @@ shader = SubResource("582")
 [sub_resource type="VisualShaderNodeCustom" id="584"]
 output_port_for_preview = 0
 default_input_values = [0, Vector3(1, 1, 0)]
-expanded_output_ports = [0]
 initialized = true
 script = ExtResource("89")
 
 [sub_resource type="VisualShaderNodeCustom" id="585"]
 output_port_for_preview = 0
 default_input_values = [0, Vector3(1, 1, 1)]
-expanded_output_ports = [0]
 initialized = true
 script = ExtResource("91")
 
 [sub_resource type="VisualShaderNodeCustom" id="586"]
 output_port_for_preview = 0
 default_input_values = [0, Vector3(1, 1, 0)]
-expanded_output_ports = [0]
 initialized = true
 script = ExtResource("92")
 
 [sub_resource type="VisualShaderNodeCustom" id="587"]
 output_port_for_preview = 0
 default_input_values = [0, Vector3(1, 1, 1)]
-expanded_output_ports = [0]
 initialized = true
 script = ExtResource("90")
 
@@ -7084,35 +4261,6 @@ render_mode blend_mix;
 
 
 
-// CartesianToSpherical
-#include \"res://addons/shaderV/tools/transformCoordinates/cartesianToSpherical.gdshaderinc\"
-// SphericalToCartesian
-#include \"res://addons/shaderV/tools/transformCoordinates/sphericalToCartesian.gdshaderinc\"
-
-void fragment() {
-// Input:6
-	vec2 n_out6p0 = UV;
-
-
-	vec3 n_out3p0;
-// CartesianToSpherical:3
-	{
-		n_out3p0 = _cartesianToSphericalFunc(vec3(n_out6p0, 0.0));
-	}
-
-
-	vec3 n_out5p0;
-// SphericalToCartesian:5
-	{
-		n_out5p0 = _sphericalToCartesianFunc(n_out3p0);
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out5p0;
-
-
-}
 "
 graph_offset = Vector2(-421.011, -248.045)
 mode = 1
@@ -7128,7 +4276,6 @@ nodes/fragment/5/node = SubResource("587")
 nodes/fragment/5/position = Vector2(260, 140)
 nodes/fragment/6/node = SubResource("588")
 nodes/fragment/6/position = Vector2(-540, -80)
-nodes/fragment/connections = PackedInt32Array(3, 0, 5, 0, 2, 0, 4, 0, 5, 0, 0, 0, 6, 0, 2, 0, 6, 0, 3, 0)
 
 [sub_resource type="ShaderMaterial" id="590"]
 shader = SubResource("589")
@@ -7162,52 +4309,6 @@ render_mode blend_mix;
 
 
 
-// GridShape
-#include \"res://addons/shaderV/rgba/generate_shapes/gridShape.gdshaderinc\"
-
-void fragment() {
-// Input:6
-	vec2 n_out6p0 = UV;
-
-
-// Vector3Constant:8
-	vec3 n_out8p0 = vec3(8.000000, 8.000000, 0.000000);
-
-
-// Vector3Constant:7
-	vec3 n_out7p0 = vec3(0.200000, 0.200000, 0.000000);
-
-
-// Vector3Constant:5
-	vec3 n_out5p0 = vec3(0.050000, 0.050000, 0.000000);
-
-
-// ColorConstant:3
-	vec4 n_out3p0 = vec4(1.000000, 0.000000, 0.000000, 1.000000);
-
-
-// ColorConstant:4
-	vec4 n_out4p0 = vec4(1.000000, 1.000000, 0.000000, 0.000000);
-
-
-	vec3 n_out2p0;
-	float n_out2p1;
-// GridShape:2
-	float n_in2p5 = 1.00000;
-	float n_in2p7 = 0.00000;
-	{
-		vec4 n_out2p0n_out2p1 = _gridFunc(vec3(n_out6p0, 0.0).xy, n_out7p0.xy, n_out5p0.xy, n_out8p0.xy, vec4(vec3(n_out3p0.xyz), n_in2p5), vec4(vec3(n_out4p0.xyz), n_in2p7));
-		n_out2p0 = n_out2p0n_out2p1.rgb;
-		n_out2p1 = n_out2p0n_out2p1.a;
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out2p0;
-	COLOR.a = n_out2p1;
-
-
-}
 "
 graph_offset = Vector2(-178.57, 110.562)
 mode = 1
@@ -7227,7 +4328,6 @@ nodes/fragment/7/node = SubResource("596")
 nodes/fragment/7/position = Vector2(-320, 220)
 nodes/fragment/8/node = SubResource("597")
 nodes/fragment/8/position = Vector2(-320, 140)
-nodes/fragment/connections = PackedInt32Array(3, 0, 2, 4, 4, 0, 2, 6, 5, 0, 2, 3, 6, 0, 2, 0, 7, 0, 2, 2, 8, 0, 2, 1, 2, 1, 0, 1, 2, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="599"]
 shader = SubResource("598")
@@ -7261,44 +4361,14 @@ render_mode blend_mix;
 
 
 
-// SobelEdge
-#include \"res://addons/shaderV/rgba/sobelEdge.gdshaderinc\"
 
 void fragment() {
 // ColorConstant:9
 	vec4 n_out9p0 = vec4(1.000000, 1.000000, 1.000000, 1.000000);
 
 
-// Input:4
-	vec2 n_out4p0 = UV;
-
-
-// FloatConstant:5
-	float n_out5p0 = -1.000000;
-
-
-// FloatConstant:6
-	float n_out6p0 = 0.005000;
-
-
-// BooleanConstant:7
-	bool n_out7p0 = false;
-
-
-// BooleanConstant:8
-	bool n_out8p0 = false;
-
-
-	float n_out2p0;
-// SobelEdge:2
-	{
-		n_out2p0 = _sobelEdgeFunc(TEXTURE, vec3(n_out4p0, 0.0).xy, n_out5p0, n_out6p0, n_out7p0, n_out8p0);
-	}
-
-
 // Output:0
 	COLOR.rgb = vec3(n_out9p0.xyz);
-	COLOR.a = n_out2p0;
 
 
 }
@@ -7323,7 +4393,7 @@ nodes/fragment/8/node = SubResource("606")
 nodes/fragment/8/position = Vector2(-100, 380)
 nodes/fragment/9/node = SubResource("VisualShaderNodeColorConstant_vb5u8")
 nodes/fragment/9/position = Vector2(220, 100)
-nodes/fragment/connections = PackedInt32Array(3, 0, 2, 0, 4, 0, 2, 1, 5, 0, 2, 2, 6, 0, 2, 3, 7, 0, 2, 4, 8, 0, 2, 5, 2, 0, 0, 1, 9, 0, 0, 0)
+nodes/fragment/connections = PackedInt32Array(9, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="608"]
 shader = SubResource("607")

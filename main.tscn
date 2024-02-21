@@ -247,6 +247,7 @@ layout_mode = 2
 layout_mode = 2
 
 [connection signal="beat_tracking_has_started" from="." to="." method="_on_beat_tracking_has_started"]
+[connection signal="beat_tracking_has_started" from="." to="equalizer" method="_on_menu_beat_tracking_has_started" flags=6]
 [connection signal="display_intro_additional_prompt" from="." to="." method="_on_display_intro_additional_prompt" flags=6]
 [connection signal="game_ending" from="." to="." method="_on_game_ending"]
 [connection signal="game_has_started" from="." to="." method="_on_game_has_started"]
