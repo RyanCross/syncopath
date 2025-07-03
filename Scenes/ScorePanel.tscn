@@ -2,7 +2,7 @@
 
 [ext_resource type="FontFile" uid="uid://drmbltel11xaa" path="res://Fonts/glitch-goblin-font/GlitchGoblin-2O87v.ttf" id="1_23iis"]
 [ext_resource type="Texture2D" uid="uid://dv0oxssbilfq1" path="res://Images/ux/UI Hologram Interface - Wenrexa/Card X1/Card X2.png" id="1_vcg05"]
-[ext_resource type="Script" path="res://Scripts/score_panel.gd" id="2_d1pxp"]
+[ext_resource type="Script" uid="uid://dv0vuhn6v3cmq" path="res://Scripts/score_panel.gd" id="2_d1pxp"]
 [ext_resource type="Theme" uid="uid://bbk4lpdcigx8v" path="res://theme.tres" id="2_ibnba"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_6q65s"]

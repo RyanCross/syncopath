@@ -1,12 +1,12 @@
 [gd_scene load_steps=5 format=3 uid="uid://bsowmyxk2elk3"]
 
-[ext_resource type="Script" path="res://Scripts/analyzer.gd" id="1_otkdm"]
-[ext_resource type="Shader" path="res://Shaders/analyzer.gdshader" id="2_y2x1e"]
+[ext_resource type="Script" uid="uid://bwpup32lji48f" path="res://Scripts/analyzer.gd" id="1_otkdm"]
+[ext_resource type="Shader" uid="uid://cr1wm2bfqdnap" path="res://Shaders/analyzer.gdshader" id="2_y2x1e"]
 [ext_resource type="AudioStream" uid="uid://i552n3q2hc0l" path="res://Sounds/Beats/fpc3beat120bpm.wav" id="3_2uh6f"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lch42"]
 shader = ExtResource("2_y2x1e")
-shader_parameter/freq_data = null
+shader_parameter/freq_data = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
 [node name="Analyzer" type="Control"]
 layout_mode = 3

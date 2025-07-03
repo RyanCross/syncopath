@@ -21,11 +21,22 @@ signal display_intro_additional_prompt
 #endregion
 
 @onready var title := $Title
-@onready var prompt := $VBoxContainer/Prompt
-@onready var prompt2 := $VBoxContainer/Prompt2
-@onready var prompt3 := $VBoxContainer/Prompt3
-@onready var prompt4 := $VBoxContainer/Prompt4
+@onready var inputToBeginPrompt_1 := $VBoxContainer/InputToBegin
+@onready var tapAlongPrompt_2 := $VBoxContainer/TapAlong
+@onready var keepTappingPrompt_3 := $VBoxContainer/KeepTapping
+@onready var countdownPrompt_4 := $VBoxContainer/Countdown
 @onready var trackPlayer = $ActiveTrack
+
+@onready var gameStartVisiblePrompts = [
+	title,
+	inputToBeginPrompt_1,
+]
+
+@onready var gameStartHiddenPrompts = [
+	tapAlongPrompt_2,
+	keepTappingPrompt_3,
+	countdownPrompt_4,
+]
 
 @onready var beatsPerMinute := 120 #TODO store each track in it's own audioplayer, store BPM as metadata on the track node
 @onready var beatsPerSecond := beatsPerMinute / 60 
@@ -118,12 +129,14 @@ func _process(delta):
 			
 			var timeTillGameOver = gameDurationMs - timeSinceGameStartMs
 			# if game ending display 0, otherwise update countdown node that will be displayed at last 5 seconds
+			var countdownLabel : Label = countdownPrompt_4.get_node("GameEndingCountdownLabel")
+
 			if (timeTillGameOver > 0):
 				var displayTime = timeTillGameOver
 				# hidden until last 5 seconds of game
-				$VBoxContainer/Prompt4/GameEndingCountdownLabel.set_text(String.num(round(displayTime / 1000)))
+				countdownLabel.set_text(String.num(round(displayTime / 1000)))
 			else:
-				$VBoxContainer/Prompt4/GameEndingCountdownLabel.set_text("0")
+				countdownLabel.set_text("0")
 		if timeSinceGameStartMs >= introDurationMs / 2:
 			emit_signal("display_intro_additional_prompt")
 		if !beatTrackingStarted:
@@ -156,11 +169,42 @@ func _process(delta):
 		if timeSinceGameStartMs > gameDurationMs:
 			var finalScore = calculateFinalScore()
 			emit_signal("game_over", finalScore, beatDistances)
+
+func restart_game():
+	# reset all game state variables
+	gameStarted = false
+	beatTrackingStarted = false
+	gameIsEnding = false
+	gameOver = false
+	timeSinceGameStartMs = 0
+	perfectBeatTimings.clear()
+	playerBeatTimings.clear()
+	beatScores.clear()
+	beatDistances.clear()
+	# reset the track player
+	trackPlayer.stop()
+	trackPlayer.seek(0)
+
+	# restart all prompts to their default state
+	for prompt in gameStartVisiblePrompts:
+		prompt.set_visible(true)
+		for child in prompt.get_children():
+			if child is Control:
+				child.modulate_opacity = 1.0
+	for prompt in gameStartHiddenPrompts:
+		prompt.set_visible(false)
+		for child in prompt.get_children():
+			if child is Control:
+				child.modulate_opacity = 0.0
+	# reset the scoreboard
+	$ScorePanel.reset_scoreboard()
+	
+	return
 		
 func _on_game_has_started():
 	print("Game Start")
-	TweenUtils.fadeOutAndDestroy(prompt) 
-	TweenUtils.fadeOutAndDestroy(title)	
+	TweenUtils.fadeOutAndHide(inputToBeginPrompt_1) 
+	TweenUtils.fadeOutAndHide(title)	
 	$CassetteHum.stop()
 	$CassettePlay.play()
 	await $CassettePlay.finished
@@ -175,19 +219,19 @@ func _on_game_has_started():
 	# timers are for juice, creatings small delays in visual/audio changes
 	await get_tree().create_timer(.5).timeout
 	await get_tree().create_timer(2).timeout
-	TweenUtils.fadeInAndMakeVisible(prompt2)
+	TweenUtils.fadeInAndMakeVisible(tapAlongPrompt_2)
 
 	
 func _on_beat_tracking_has_started(): 
-	TweenUtils.fadeOutAndDestroy(prompt3)
+	TweenUtils.fadeOutAndHide(keepTappingPrompt_3)
 	beatTrackingStarted = true
 	
 func _on_game_over(_finalScore, _beatDistances):	
-	TweenUtils.fadeOutAndDestroy(prompt4, .5)
+	TweenUtils.fadeOutAndHide(countdownPrompt_4, .5)
 	gameOver = true;
 
 func _on_game_ending():
-	TweenUtils.fadeInAndMakeVisible(prompt4, endingCountdownFadeInTime)
+	TweenUtils.fadeInAndMakeVisible(countdownPrompt_4, endingCountdownFadeInTime)
 	gameIsEnding = true;
 
 func debug_capture_beat_info(captureTimeMs : String):
@@ -198,6 +242,6 @@ func debug_capture_beat_info(captureTimeMs : String):
 	debugPlayerBeatTracking.add_child(beatCaptureInfo)
 	
 func _on_display_intro_additional_prompt():
-	TweenUtils.fadeOutAndDestroy(prompt2)
+	TweenUtils.fadeOutAndHide(tapAlongPrompt_2)
 	await get_tree().create_timer(1).timeout
-	TweenUtils.fadeInAndMakeVisible(prompt3)
+	TweenUtils.fadeInAndMakeVisible(keepTappingPrompt_3)

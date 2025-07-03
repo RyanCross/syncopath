@@ -1,21 +1,21 @@
 [gd_scene load_steps=15 format=3 uid="uid://dns3vic506tdf"]
 
-[ext_resource type="Script" path="res://Scripts/main.gd" id="1_df0y5"]
+[ext_resource type="Script" uid="uid://4wlalwrwgqo4" path="res://Scripts/main.gd" id="1_df0y5"]
 [ext_resource type="AudioStream" uid="uid://cwkvl0pbioowe" path="res://Sounds/SFX/COMAv_Cassette_Tape_Deep_Hum_BLEEOOP.wav" id="2_8pd4q"]
-[ext_resource type="Shader" path="res://Shaders/analyzer.gdshader" id="2_glvls"]
-[ext_resource type="Script" path="res://Scripts/analyzer.gd" id="2_ids38"]
-[ext_resource type="Script" path="res://Scripts/ActiveTrack.gd" id="3_romnm"]
+[ext_resource type="Shader" uid="uid://cr1wm2bfqdnap" path="res://Shaders/analyzer.gdshader" id="2_glvls"]
+[ext_resource type="Script" uid="uid://bwpup32lji48f" path="res://Scripts/analyzer.gd" id="2_ids38"]
+[ext_resource type="Script" uid="uid://dqopmhq6ulog2" path="res://Scripts/ActiveTrack.gd" id="3_romnm"]
 [ext_resource type="FontFile" uid="uid://drmbltel11xaa" path="res://Fonts/glitch-goblin-font/GlitchGoblin-2O87v.ttf" id="4_n04ua"]
 [ext_resource type="AudioStream" uid="uid://dykriuyc7vaba" path="res://Sounds/SFX/cassette_deck_play.wav" id="5_8ddpg"]
 [ext_resource type="Texture2D" uid="uid://cg55xdtkd1td2" path="res://Fonts/T_Space_Key_Dark.png" id="5_yh7ir"]
-[ext_resource type="Shader" path="res://Shaders/wavy.gdshader" id="6_53bqg"]
+[ext_resource type="Shader" uid="uid://rem62kdifdal" path="res://Shaders/wavy.gdshader" id="6_53bqg"]
 [ext_resource type="Texture2D" uid="uid://csl1q3hv1e5cv" path="res://Fonts/T_Mouse_Left_Key_Dark.png" id="6_ga2p0"]
 [ext_resource type="AudioStream" uid="uid://i552n3q2hc0l" path="res://Sounds/Beats/fpc3beat120bpm.wav" id="7_a3l7o"]
 [ext_resource type="PackedScene" uid="uid://dmbxfskpuaso4" path="res://Scenes/ScorePanel.tscn" id="9_0hlc4"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ankj7"]
 shader = ExtResource("2_glvls")
-shader_parameter/freq_data = null
+shader_parameter/freq_data = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7v7rn"]
 shader = ExtResource("6_53bqg")
@@ -112,48 +112,48 @@ anchor_bottom = 0.87907
 theme_override_constants/separation = 20
 metadata/_edit_use_anchors_ = true
 
-[node name="Prompt" type="HBoxContainer" parent="VBoxContainer"]
+[node name="InputToBegin" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 25
 alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Prompt"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/InputToBegin"]
 layout_mode = 2
 texture = ExtResource("5_yh7ir")
 
-[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/Prompt"]
+[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/InputToBegin"]
 layout_mode = 2
 texture = ExtResource("6_ga2p0")
 
-[node name="Label" type="Label" parent="VBoxContainer/Prompt"]
+[node name="Label" type="Label" parent="VBoxContainer/InputToBegin"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_n04ua")
 theme_override_font_sizes/font_size = 96
 text = "To Begin"
 horizontal_alignment = 1
 
-[node name="Prompt2" type="HBoxContainer" parent="VBoxContainer"]
+[node name="TapAlong" type="HBoxContainer" parent="VBoxContainer"]
 visible = false
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 theme_override_constants/separation = 25
 alignment = 1
 
-[node name="Label" type="Label" parent="VBoxContainer/Prompt2"]
+[node name="Label" type="Label" parent="VBoxContainer/TapAlong"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_n04ua")
 theme_override_font_sizes/font_size = 72
 text = "Tap Along To The Beat"
 horizontal_alignment = 1
 
-[node name="Prompt3" type="HBoxContainer" parent="VBoxContainer"]
+[node name="KeepTapping" type="HBoxContainer" parent="VBoxContainer"]
 visible = false
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 theme_override_constants/separation = 25
 alignment = 1
 
-[node name="Label" type="Label" parent="VBoxContainer/Prompt3"]
+[node name="Label" type="Label" parent="VBoxContainer/KeepTapping"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_n04ua")
 theme_override_font_sizes/font_size = 70
@@ -161,30 +161,25 @@ text = "Keep Tapping.
 The audio is going to fade out"
 horizontal_alignment = 1
 
-[node name="Prompt4" type="HBoxContainer" parent="VBoxContainer"]
+[node name="Countdown" type="HBoxContainer" parent="VBoxContainer"]
 visible = false
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 theme_override_constants/separation = 25
 alignment = 1
 
-[node name="Label" type="Label" parent="VBoxContainer/Prompt4"]
+[node name="Label" type="Label" parent="VBoxContainer/Countdown"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_n04ua")
 theme_override_font_sizes/font_size = 72
 text = "Almost There! "
 horizontal_alignment = 1
 
-[node name="GameEndingCountdownLabel" type="Label" parent="VBoxContainer/Prompt4"]
+[node name="GameEndingCountdownLabel" type="Label" parent="VBoxContainer/Countdown"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_n04ua")
 theme_override_font_sizes/font_size = 72
 text = "5"
-
-[node name="Prompt5" type="HBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 25
-alignment = 1
 
 [node name="ScorePanel" parent="." instance=ExtResource("9_0hlc4")]
 visible = false
