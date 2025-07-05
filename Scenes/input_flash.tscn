@@ -1,0 +1,47 @@
+[gd_scene load_steps=3 format=3 uid="uid://das7hohy4up7m"]
+
+[ext_resource type="Gradient" uid="uid://dxbrcqebhqsbi" path="res://Images/flashGradient.tres" id="1_exblg"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4ca4b"]
+gradient = ExtResource("1_exblg")
+fill_from = Vector2(1, 0)
+fill_to = Vector2(0, 0)
+
+[node name="InputFlash" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 128.0
+offset_bottom = 1088.0
+texture = SubResource("GradientTexture2D_4ca4b")
+flip_h = true
+
+[node name="TextureRect3" type="TextureRect" parent="."]
+layout_mode = 0
+offset_top = 1088.0
+offset_right = 128.0
+offset_bottom = 3008.0
+rotation = -1.5708
+texture = SubResource("GradientTexture2D_4ca4b")
+flip_h = true
+
+[node name="TextureRect4" type="TextureRect" parent="."]
+layout_mode = 0
+offset_top = 128.0
+offset_right = 128.0
+offset_bottom = 2048.0
+rotation = -1.5708
+texture = SubResource("GradientTexture2D_4ca4b")
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 1792.0
+offset_right = 1920.0
+offset_bottom = 1088.0
+texture = SubResource("GradientTexture2D_4ca4b")

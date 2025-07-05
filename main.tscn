@@ -1,9 +1,10 @@
-[gd_scene load_steps=19 format=3 uid="uid://dns3vic506tdf"]
+[gd_scene load_steps=20 format=3 uid="uid://dns3vic506tdf"]
 
 [ext_resource type="Script" uid="uid://4wlalwrwgqo4" path="res://Scripts/main.gd" id="1_df0y5"]
 [ext_resource type="AudioStream" uid="uid://cwkvl0pbioowe" path="res://Sounds/SFX/COMAv_Cassette_Tape_Deep_Hum_BLEEOOP.wav" id="2_8pd4q"]
 [ext_resource type="Shader" uid="uid://cr1wm2bfqdnap" path="res://Shaders/analyzer.gdshader" id="2_glvls"]
 [ext_resource type="Script" uid="uid://bwpup32lji48f" path="res://Scripts/analyzer.gd" id="2_ids38"]
+[ext_resource type="PackedScene" uid="uid://das7hohy4up7m" path="res://Scenes/input_flash.tscn" id="2_yaehf"]
 [ext_resource type="Script" uid="uid://dqopmhq6ulog2" path="res://Scripts/ActiveTrack.gd" id="3_romnm"]
 [ext_resource type="FontFile" uid="uid://drmbltel11xaa" path="res://Fonts/glitch-goblin-font/GlitchGoblin-2O87v.ttf" id="4_n04ua"]
 [ext_resource type="AudioStream" uid="uid://dykriuyc7vaba" path="res://Sounds/SFX/cassette_deck_play.wav" id="5_8ddpg"]
@@ -38,6 +39,15 @@ offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_df0y5")
+
+[node name="InputFlash" parent="." instance=ExtResource("2_yaehf")]
+visible = false
+z_index = 1
+layout_mode = 2
+anchors_preset = 0
+offset_left = -2.0
+offset_right = -2.00012
+offset_bottom = -0.00012207
 
 [node name="CassetteHum" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_8pd4q")
@@ -264,7 +274,6 @@ script = ExtResource("16_2cqfq")
 metadata/_edit_use_anchors_ = true
 
 [node name="RichTextLabel" type="RichTextLabel" parent="RestartBtn"]
-visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.132353

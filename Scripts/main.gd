@@ -26,6 +26,7 @@ signal display_intro_additional_prompt
 @onready var keepTappingPrompt_3 := $VBoxContainer/KeepTapping
 @onready var countdownPrompt_4 := $VBoxContainer/Countdown
 @onready var trackPlayer = $ActiveTrack
+@onready var inputFlash = $InputFlash
 
 @onready var gameStartVisiblePrompts = [
 	title,
@@ -60,6 +61,7 @@ var beatTrackingStarted := false
 var gameIsEnding := false
 var gameOver := false
 var promptStage := 1;
+var hasAudioFaded = false;
 
 var perfectBeatTimings = Array()
 var playerBeatTimings = Array()
@@ -124,6 +126,9 @@ func _process(delta):
 		if Input.is_action_just_pressed("primary_action"):
 			if gameStarted == false:
 				emit_signal("game_has_started")
+			if promptStage > 1 && promptStage < 5:
+				TweenUtils.fadeInFadeOut(inputFlash)
+				
 		if gameStarted:
 			timeSinceGameStartMs = Time.get_ticks_msec() - timeElapsedBeforeGameStart
 			debugTimeSinceGameStart.set_text("Game Time: " +  String.num(roundi(timeSinceGameStartMs)) + " | ")
@@ -138,11 +143,12 @@ func _process(delta):
 				countdownLabel.set_text(String.num(round(displayTime / 1000)))
 			else:
 				countdownLabel.set_text("0")
-		if timeSinceGameStartMs >= introDurationMs / 2 && promptStage == 1:
+		if timeSinceGameStartMs >= introDurationMs / 2 && promptStage == 2:
 			emit_signal("display_intro_additional_prompt")
 		if !beatTrackingStarted:
-			if(introDurationMs - fadeTrackBufferMs - timeSinceGameStartMs <= 0):
+			if(introDurationMs - fadeTrackBufferMs - timeSinceGameStartMs <= 0) && !hasAudioFaded:
 					emit_signal("time_to_fade_track_audio", fadeTrackBufferMs)
+					hasAudioFaded = true
 
 			if (introDurationMs - timeSinceGameStartMs >= 0):
 				debugTimeTillTrackingStart.set_text("Time till tracking start: " + String.num(introDurationMs - timeSinceGameStartMs))
@@ -186,7 +192,6 @@ func restart_game():
 		for child in prompt.get_children():
 			if child is Label:
 				TweenUtils.fadeInAndMakeVisible(child, 0)
-	
 		
 	await get_tree().create_timer(1).timeout
 	
@@ -196,6 +201,7 @@ func restart_game():
 	beatTrackingStarted = false
 	gameIsEnding = false
 	gameOver = false
+	hasAudioFaded = false
 	timeSinceGameStartMs = 0
 	perfectBeatTimings.clear()
 	playerBeatTimings.clear()
@@ -226,6 +232,7 @@ func _on_game_has_started():
 	await get_tree().create_timer(.5).timeout
 	await get_tree().create_timer(2).timeout
 	TweenUtils.fadeInAndMakeVisible(tapAlongPrompt_2)
+	promptStage = 2
 
 	
 func _on_beat_tracking_has_started(): 
@@ -235,6 +242,7 @@ func _on_beat_tracking_has_started():
 func _on_game_over(_finalScore, _beatDistances):	
 	TweenUtils.fadeOutAndHide(countdownPrompt_4, .5)
 	gameOver = true;
+	promptStage = 5 # end of prompts, and thus input flash
 
 func _on_game_ending():
 	TweenUtils.fadeInAndMakeVisible(countdownPrompt_4, endingCountdownFadeInTime)
@@ -250,7 +258,6 @@ func debug_capture_beat_info(captureTimeMs : String):
 	
 func _on_display_intro_additional_prompt():
 	TweenUtils.fadeOutAndHide(tapAlongPrompt_2)
-	promptStage = 2
 	await get_tree().create_timer(1).timeout
 	TweenUtils.fadeInAndMakeVisible(keepTappingPrompt_3)
 	promptStage = 3
