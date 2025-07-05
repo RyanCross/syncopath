@@ -123,7 +123,6 @@ text = "0 Points
 horizontal_alignment = 2
 
 [node name="SliderToCopy" type="HSlider" parent="VBoxContainer/MarginContainer2/BeatSlidersVbox"]
-visible = false
 z_index = 2
 layout_mode = 2
 theme_override_constants/grabber_offset = 0
