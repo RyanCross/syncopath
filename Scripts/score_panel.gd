@@ -8,7 +8,7 @@ extends TextureRect
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
-
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
@@ -33,9 +33,11 @@ func _on_menu_game_over(finalScore, beatDistances):
 func reset_scoreboard():
 	finalScoreLabel.set_text("Final Score: 0")
 	self.set_visible(false)
+	verticalLine.set_visible(false)
 	for child in beatSlidersParent.get_children():
-		if child is HSlider:
+		if child.name != "PointValuesToCopy" && child.name != "SliderToCopy" && child.name != "TimingLabels":
 			child.set_visible(false)
 			child.queue_free()
 		elif child.name == "PointValuesToCopy":
 			child.set_visible(false)
+		

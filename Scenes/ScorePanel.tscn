@@ -40,10 +40,10 @@ layer = 0
 visible = false
 z_index = 1
 anchors_preset = -1
-anchor_left = 0.506771
-anchor_top = 0.2
-anchor_right = 0.511458
-anchor_bottom = 0.698148
+anchor_left = 0.504167
+anchor_top = 0.222222
+anchor_right = 0.5125
+anchor_bottom = 0.696296
 theme_override_styles/separator = SubResource("StyleBoxLine_6q65s")
 metadata/_edit_use_anchors_ = true
 
@@ -65,19 +65,19 @@ layout_mode = 2
 theme = ExtResource("2_ibnba")
 theme_override_constants/separation = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer2/BeatSlidersVbox"]
+[node name="TimingLabels" type="HBoxContainer" parent="VBoxContainer/MarginContainer2/BeatSlidersVbox"]
 layout_mode = 2
 theme_override_constants/separation = 290
 alignment = 1
 
-[node name="Early" type="Label" parent="VBoxContainer/MarginContainer2/BeatSlidersVbox/HBoxContainer"]
+[node name="Early" type="Label" parent="VBoxContainer/MarginContainer2/BeatSlidersVbox/TimingLabels"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_23iis")
 theme_override_font_sizes/font_size = 24
 text = "Early
 "
 
-[node name="Perfect" type="Label" parent="VBoxContainer/MarginContainer2/BeatSlidersVbox/HBoxContainer"]
+[node name="Perfect" type="Label" parent="VBoxContainer/MarginContainer2/BeatSlidersVbox/TimingLabels"]
 layout_mode = 2
 theme = ExtResource("2_ibnba")
 theme_override_font_sizes/font_size = 24
@@ -85,7 +85,7 @@ text = "Perfect
 "
 horizontal_alignment = 1
 
-[node name="Late" type="Label" parent="VBoxContainer/MarginContainer2/BeatSlidersVbox/HBoxContainer"]
+[node name="Late" type="Label" parent="VBoxContainer/MarginContainer2/BeatSlidersVbox/TimingLabels"]
 layout_mode = 2
 theme = ExtResource("2_ibnba")
 theme_override_font_sizes/font_size = 24
@@ -131,11 +131,3 @@ min_value = -500.0
 max_value = 500.0
 editable = false
 scrollable = false
-
-[node name="HSlider" type="HSlider" parent="VBoxContainer/MarginContainer2/BeatSlidersVbox"]
-visible = false
-layout_mode = 2
-min_value = -50.0
-max_value = 50.0
-value = 1.0
-editable = false

@@ -50,5 +50,8 @@ func _process(_delta):
 
 func _on_menu_beat_tracking_has_started():
 	# hacky solution to stop the audio feed "echoes" bug after beat tracking starts.
-	await get_tree().create_timer(.5).timeout
+	await get_tree().create_timer(.4).timeout
 	visualizeAudio = false # Replace with function body.
+
+func _on_restart_btn_pressed() -> void:
+	visualizeAudio = true

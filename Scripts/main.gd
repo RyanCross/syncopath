@@ -59,6 +59,7 @@ var gameStarted := false
 var beatTrackingStarted := false
 var gameIsEnding := false
 var gameOver := false
+var promptStage := 1;
 
 var perfectBeatTimings = Array()
 var playerBeatTimings = Array()
@@ -137,7 +138,7 @@ func _process(delta):
 				countdownLabel.set_text(String.num(round(displayTime / 1000)))
 			else:
 				countdownLabel.set_text("0")
-		if timeSinceGameStartMs >= introDurationMs / 2:
+		if timeSinceGameStartMs >= introDurationMs / 2 && promptStage == 1:
 			emit_signal("display_intro_additional_prompt")
 		if !beatTrackingStarted:
 			if(introDurationMs - fadeTrackBufferMs - timeSinceGameStartMs <= 0):
@@ -171,7 +172,26 @@ func _process(delta):
 			emit_signal("game_over", finalScore, beatDistances)
 
 func restart_game():
+	# reset the scoreboard
+	$ScorePanel.reset_scoreboard()
+
+	# restart all prompts to their default state
+	for prompt in gameStartVisiblePrompts:
+		TweenUtils.fadeInAndMakeVisible(prompt, 0)
+		for child in prompt.get_children():
+			if child is Label:
+				TweenUtils.fadeInAndMakeVisible(child, 0)
+	for prompt in gameStartHiddenPrompts:
+		prompt.set_visible(false)
+		for child in prompt.get_children():
+			if child is Label:
+				TweenUtils.fadeInAndMakeVisible(child, 0)
+	
+		
+	await get_tree().create_timer(1).timeout
+	
 	# reset all game state variables
+	promptStage = 1
 	gameStarted = false
 	beatTrackingStarted = false
 	gameIsEnding = false
@@ -185,20 +205,6 @@ func restart_game():
 	trackPlayer.stop()
 	trackPlayer.seek(0)
 
-	# restart all prompts to their default state
-	for prompt in gameStartVisiblePrompts:
-		prompt.set_visible(true)
-		for child in prompt.get_children():
-			if child is Control:
-				child.modulate_opacity = 1.0
-	for prompt in gameStartHiddenPrompts:
-		prompt.set_visible(false)
-		for child in prompt.get_children():
-			if child is Control:
-				child.modulate_opacity = 0.0
-	# reset the scoreboard
-	$ScorePanel.reset_scoreboard()
-	
 	return
 		
 func _on_game_has_started():
@@ -232,6 +238,7 @@ func _on_game_over(_finalScore, _beatDistances):
 
 func _on_game_ending():
 	TweenUtils.fadeInAndMakeVisible(countdownPrompt_4, endingCountdownFadeInTime)
+	promptStage = 4
 	gameIsEnding = true;
 
 func debug_capture_beat_info(captureTimeMs : String):
@@ -243,5 +250,10 @@ func debug_capture_beat_info(captureTimeMs : String):
 	
 func _on_display_intro_additional_prompt():
 	TweenUtils.fadeOutAndHide(tapAlongPrompt_2)
+	promptStage = 2
 	await get_tree().create_timer(1).timeout
 	TweenUtils.fadeInAndMakeVisible(keepTappingPrompt_3)
+	promptStage = 3
+
+func _on_restart_btn_pressed() -> void:
+	restart_game()

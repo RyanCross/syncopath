@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dns3vic506tdf"]
+[gd_scene load_steps=19 format=3 uid="uid://dns3vic506tdf"]
 
 [ext_resource type="Script" uid="uid://4wlalwrwgqo4" path="res://Scripts/main.gd" id="1_df0y5"]
 [ext_resource type="AudioStream" uid="uid://cwkvl0pbioowe" path="res://Sounds/SFX/COMAv_Cassette_Tape_Deep_Hum_BLEEOOP.wav" id="2_8pd4q"]
@@ -12,6 +12,10 @@
 [ext_resource type="Texture2D" uid="uid://csl1q3hv1e5cv" path="res://Fonts/T_Mouse_Left_Key_Dark.png" id="6_ga2p0"]
 [ext_resource type="AudioStream" uid="uid://i552n3q2hc0l" path="res://Sounds/Beats/fpc3beat120bpm.wav" id="7_a3l7o"]
 [ext_resource type="PackedScene" uid="uid://dmbxfskpuaso4" path="res://Scenes/ScorePanel.tscn" id="9_0hlc4"]
+[ext_resource type="Texture2D" uid="uid://dof443umeh7pr" path="res://Images/ux/UI Hologram Interface - Wenrexa/Button 1/Button Normal.png" id="13_vivmo"]
+[ext_resource type="Texture2D" uid="uid://b1c11t8cmc8e5" path="res://Images/ux/UI Hologram Interface - Wenrexa/Button 1/Button Active.png" id="14_2cqfq"]
+[ext_resource type="Texture2D" uid="uid://drh4gw1my1k84" path="res://Images/ux/UI Hologram Interface - Wenrexa/Button 1/Button Hover.png" id="15_yaehf"]
+[ext_resource type="Script" uid="uid://cc4sgu3qo3qgt" path="res://Scripts/restart_btn.gd" id="16_2cqfq"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ankj7"]
 shader = ExtResource("2_glvls")
@@ -184,10 +188,10 @@ text = "5"
 [node name="ScorePanel" parent="." instance=ExtResource("9_0hlc4")]
 visible = false
 layout_mode = 1
-anchor_left = 0.241271
-anchor_top = 0.0381395
-anchor_right = 0.766793
-anchor_bottom = 0.871472
+anchor_left = 0.237624
+anchor_top = 0.0288372
+anchor_right = 0.763146
+anchor_bottom = 0.86217
 offset_right = 0.0
 grow_horizontal = 1
 grow_vertical = 1
@@ -241,12 +245,53 @@ layout_mode = 2
 [node name="MissedBeats" type="Label" parent="DebugModeViewport/DebugContents/PlayerBeatTracking"]
 layout_mode = 2
 
+[node name="RestartBtn" type="TextureButton" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.39604
+anchor_top = 0.862326
+anchor_right = 0.60865
+anchor_bottom = 0.988837
+grow_horizontal = 2
+grow_vertical = 0
+action_mode = 0
+texture_normal = ExtResource("13_vivmo")
+texture_pressed = ExtResource("14_2cqfq")
+texture_hover = ExtResource("15_yaehf")
+stretch_mode = 4
+script = ExtResource("16_2cqfq")
+metadata/_edit_use_anchors_ = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="RestartBtn"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.132353
+anchor_top = 0.0588235
+anchor_right = 0.857843
+anchor_bottom = 0.882353
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("4_n04ua")
+theme_override_font_sizes/normal_font_size = 64
+text = "Restart"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
 [connection signal="beat_tracking_has_started" from="." to="." method="_on_beat_tracking_has_started"]
 [connection signal="beat_tracking_has_started" from="." to="equalizer" method="_on_menu_beat_tracking_has_started" flags=6]
-[connection signal="display_intro_additional_prompt" from="." to="." method="_on_display_intro_additional_prompt" flags=6]
+[connection signal="display_intro_additional_prompt" from="." to="." method="_on_display_intro_additional_prompt"]
 [connection signal="game_ending" from="." to="." method="_on_game_ending"]
 [connection signal="game_has_started" from="." to="." method="_on_game_has_started"]
 [connection signal="game_over" from="." to="." method="_on_game_over"]
 [connection signal="game_over" from="." to="ScorePanel" method="_on_menu_game_over"]
+[connection signal="game_over" from="." to="RestartBtn" method="_on_menu_game_over"]
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
-[connection signal="time_to_fade_track_audio" from="." to="ActiveTrack" method="_on_time_to_fade_track_audio" flags=6]
+[connection signal="time_to_fade_track_audio" from="." to="ActiveTrack" method="_on_time_to_fade_track_audio"]
+[connection signal="pressed" from="RestartBtn" to="." method="_on_restart_btn_pressed"]
+[connection signal="pressed" from="RestartBtn" to="ActiveTrack" method="_on_restart"]
+[connection signal="pressed" from="RestartBtn" to="equalizer" method="_on_restart_btn_pressed"]
+[connection signal="pressed" from="RestartBtn" to="RestartBtn" method="_on_pressed"]
